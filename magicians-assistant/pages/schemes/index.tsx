@@ -72,9 +72,6 @@ export default function SchemesPage({ schemeCards }: { schemeCards: Card[] }) {
       <main>
         <h1>Schemes</h1>
         <Navigation />
-
-        <hr />
-
         {gameStarted ? (
           <>
             <h2>Current Scheme</h2>
