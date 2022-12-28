@@ -1,17 +1,11 @@
 import Head from 'next/head';
-import Image from 'next/image';
 import { useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import type { Card } from 'scryfall-api';
-import Navigation from '../_navigation';
-
-const shuffle = (array: Array<any>) => {
-  for (let i = array.length - 1; i > 0; i--) {
-    let j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-
-  return array;
-};
+import Navigation from '../../components/Navigation';
+import useConfirmExit from '../../hooks/useConfirmExit';
+import { shuffle } from '../../utils';
+import CurrentScheme from './_current';
+import OngoingSchemes from './_ongoing';
 
 export async function getStaticProps() {
   const res = await fetch('https://api.scryfall.com/cards/search?q=t:scheme');
@@ -24,29 +18,18 @@ export async function getStaticProps() {
   };
 }
 
-const alertUser = (e: any) => {
-  if (!(process.env.NODE_ENV === 'development')) {
-    e.preventDefault();
-    e.returnValue = '';
-  }
-};
-
 export default function SchemesPage({ schemeCards }: { schemeCards: Card[] }) {
   const [gameStarted, setGameStarted] = useState<boolean>(false);
   const [currentSchemeIndex, setCurrentSchemeIndex] = useState<number>(0);
   const [ongoingSchemes, setOngoingSchemes] = useState<Card[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const { setNeedConfirm } = useConfirmExit();
   const currentScheme = useMemo(
     () => schemeCards[currentSchemeIndex],
     [currentSchemeIndex, schemeCards]
   );
-  const imagePath = useMemo(
-    () => currentScheme.image_uris?.normal,
-    [currentScheme]
-  );
 
   useLayoutEffect(() => {
-    console.log({ currentScheme });
     if (
       currentScheme.type_line === 'Ongoing Scheme' &&
       !ongoingSchemes.find((scheme) => scheme.id === currentScheme.id) // make sure it's not already ongoing
@@ -56,13 +39,7 @@ export default function SchemesPage({ schemeCards }: { schemeCards: Card[] }) {
   }, [currentScheme]);
 
   useEffect(() => {
-    if (gameStarted) {
-      window.addEventListener('beforeunload', alertUser);
-
-      return () => {
-        window.removeEventListener('beforeunload', alertUser);
-      };
-    }
+    setNeedConfirm(gameStarted);
 
     return () => {};
   }, [gameStarted]);
@@ -85,18 +62,11 @@ export default function SchemesPage({ schemeCards }: { schemeCards: Card[] }) {
         {gameStarted ? (
           <>
             <h2>Current Scheme</h2>
-            <p>
-              <strong>{currentScheme.name}</strong>
-            </p>
-            <p>
-              <Image
-                src={`${imagePath}`}
-                width="300"
-                height="428"
-                alt={`${currentScheme.oracle_text}`}
-                onLoadingComplete={() => setLoading(false)}
-              />
-            </p>
+            <CurrentScheme
+              scheme={currentScheme}
+              onLoad={() => setLoading(false)}
+            />
+
             <button
               onClick={() => {
                 setLoading(true);
@@ -104,39 +74,17 @@ export default function SchemesPage({ schemeCards }: { schemeCards: Card[] }) {
               }}
               disabled={loading}
             >
-              Next Card
+              Draw Next Scheme
             </button>
 
             <h2>Ongoing Schemes</h2>
             {ongoingSchemes.length > 0 ? (
               <ul>
                 {ongoingSchemes.map((scheme) => (
-                  <li key={scheme.id}>
-                    <p>
-                      <strong>{scheme.name}</strong>
-                    </p>
-                    <p>{scheme.oracle_text}</p>
-                    <p>
-                      <button
-                        onClick={() => {
-                          if (
-                            window.confirm(
-                              'Are you sure this scheme is ready to be abandoned?'
-                            )
-                          ) {
-                            const filteredOngoingSchemes =
-                              ongoingSchemes.filter(
-                                (filteringScheme) =>
-                                  scheme.id !== filteringScheme.id
-                              );
-                            setOngoingSchemes(filteredOngoingSchemes);
-                          }
-                        }}
-                      >
-                        Abandon
-                      </button>
-                    </p>
-                  </li>
+                  <OngoingSchemes
+                    schemes={ongoingSchemes}
+                    setSchemes={setOngoingSchemes}
+                  />
                 ))}
               </ul>
             ) : (

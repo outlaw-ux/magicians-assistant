@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import Navigation from '../_navigation';
+import Navigation from '../../components/Navigation';
 
 export default function CountersPage() {
   return (
