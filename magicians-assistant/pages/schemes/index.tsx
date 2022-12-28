@@ -29,14 +29,30 @@ export default function SchemesPage({ schemeCards }: { schemeCards: Card[] }) {
     [currentSchemeIndex, schemeCards]
   );
 
+  const handleNextSchemeClick = () => {
+    setLoading(true);
+    setCurrentSchemeIndex((schemeIdx: number) => {
+      const maxIdx = schemeCards.length - 1;
+      const nextIdx = schemeIdx + 1;
+
+      if (nextIdx >= maxIdx) {
+        return schemeIdx;
+      }
+
+      return nextIdx;
+    });
+  };
+
   useLayoutEffect(() => {
+    console.log('uselayouteffect', currentSchemeIndex, currentScheme);
     if (
+      gameStarted &&
       currentScheme.type_line === 'Ongoing Scheme' &&
       !ongoingSchemes.find((scheme) => scheme.id === currentScheme.id) // make sure it's not already ongoing
     ) {
       setOngoingSchemes((schemes) => [...schemes, currentScheme]);
     }
-  }, [currentScheme]);
+  }, [currentScheme, gameStarted, ongoingSchemes]);
 
   useEffect(() => {
     setNeedConfirm(gameStarted);
@@ -62,31 +78,23 @@ export default function SchemesPage({ schemeCards }: { schemeCards: Card[] }) {
         {gameStarted ? (
           <>
             <h2>Current Scheme</h2>
-            <CurrentScheme
-              scheme={currentScheme}
-              onLoad={() => setLoading(false)}
-            />
+            {currentScheme && (
+              <CurrentScheme
+                scheme={currentScheme}
+                onLoad={() => setLoading(false)}
+              />
+            )}
 
-            <button
-              onClick={() => {
-                setLoading(true);
-                setCurrentSchemeIndex((schemeIdx) => (schemeIdx += 1));
-              }}
-              disabled={loading}
-            >
+            <button onClick={handleNextSchemeClick} disabled={loading}>
               Draw Next Scheme
             </button>
 
             <h2>Ongoing Schemes</h2>
             {ongoingSchemes.length > 0 ? (
-              <ul>
-                {ongoingSchemes.map((scheme) => (
-                  <OngoingSchemes
-                    schemes={ongoingSchemes}
-                    setSchemes={setOngoingSchemes}
-                  />
-                ))}
-              </ul>
+              <OngoingSchemes
+                schemes={ongoingSchemes}
+                setSchemes={setOngoingSchemes}
+              />
             ) : (
               <p>None.</p>
             )}
