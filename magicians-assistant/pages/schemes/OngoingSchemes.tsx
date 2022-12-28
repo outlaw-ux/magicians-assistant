@@ -1,5 +1,3 @@
 export default function Card() {
-  return (
-        <div>OngoingSchemes</div>
-  )
+  return <div>OngoingSchemes</div>;
 }
