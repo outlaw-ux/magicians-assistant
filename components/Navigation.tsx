@@ -1,6 +1,9 @@
 import Link from "next/link";
+import { useGameContext } from "../context";
 
 export default function Navigation() {
+  const { toggleGameStart } = useGameContext();
+
   return (
     <>
       <ul>
@@ -37,7 +40,7 @@ export default function Navigation() {
           <Link href="/treachery">Treachery</Link>
         </li> */}
       </ul>
-
+      <button onClick={toggleGameStart}>End Game</button>
       <hr />
     </>
   );

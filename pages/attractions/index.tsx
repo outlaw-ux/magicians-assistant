@@ -1,6 +1,6 @@
 import Head from "next/head";
-import Image from "next/image";
-import type { Card } from "scryfall-api";
+import type { Card as CardType } from "scryfall-api";
+import Card from "../../components/Card";
 import Navigation from "../../components/Navigation";
 
 export async function getStaticProps() {
@@ -19,7 +19,7 @@ export async function getStaticProps() {
 export default function AttractionsPage({
   attractionCards,
 }: {
-  attractionCards: Card[];
+  attractionCards: CardType[];
 }) {
   console.log(attractionCards);
   return (
@@ -47,10 +47,8 @@ export default function AttractionsPage({
                 <strong>{attraction.name}</strong>
               </p>
               <p>
-                <Image
+                <Card
                   src={`${attraction.image_uris?.normal}`}
-                  width="300"
-                  height="428"
                   alt={`${attraction.oracle_text}`}
                 />
               </p>

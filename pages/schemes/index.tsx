@@ -1,6 +1,7 @@
 import Head from "next/head";
 import { useLayoutEffect, useState } from "react";
 import Navigation from "../../components/Navigation";
+import StartGame from "../../components/StartGame";
 import { useGameContext, useSchemesContext } from "../../context";
 import CurrentScheme from "./_current";
 import OngoingSchemes from "./_ongoing";
@@ -52,40 +53,24 @@ export default function SchemesPage() {
       <main>
         <h1>Schemes</h1>
         <Navigation />
-        {gameStarted ? (
-          <>
-            <h2>Current Scheme</h2>
-            {currentScheme && (
-              <CurrentScheme
-                onLoad={() =>
-                  setTimeout(() => {
-                    setDisabledNextButton(false);
-                  }, 500)
-                }
-              />
-            )}
 
-            <button
-              onClick={handleNextSchemeClick}
-              disabled={disabledNextButton}>
-              Draw Next Scheme
-            </button>
-
-            <h2>Ongoing Schemes</h2>
-            {ongoingSchemes.length > 0 ? <OngoingSchemes /> : <p>None.</p>}
-          </>
-        ) : (
-          <>
-            <h2>Start Game?</h2>
-            <p>
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Suscipit
-              voluptatibus alias in ducimus aliquam nihil nemo, deserunt, itaque
-              laborum quo at, eveniet debitis optio veritatis nostrum dolorum
-              fugit distinctio eaque?
-            </p>
-            <button onClick={toggleGameStart}>Start Game</button>
-          </>
+        <h2>Current Scheme</h2>
+        {currentScheme && (
+          <CurrentScheme
+            onLoad={() =>
+              setTimeout(() => {
+                setDisabledNextButton(false);
+              }, 500)
+            }
+          />
         )}
+
+        <button onClick={handleNextSchemeClick} disabled={disabledNextButton}>
+          Draw Next Scheme
+        </button>
+
+        <h2>Ongoing Schemes</h2>
+        {ongoingSchemes.length > 0 ? <OngoingSchemes /> : <p>None.</p>}
       </main>
     </>
   );

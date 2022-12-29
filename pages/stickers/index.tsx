@@ -1,6 +1,6 @@
 import Head from "next/head";
-import Image from "next/image";
-import type { Card } from "scryfall-api";
+import type { Card as CardType } from "scryfall-api";
+import Card from "../../components/Card";
 import Navigation from "../../components/Navigation";
 
 export async function getStaticProps() {
@@ -17,7 +17,7 @@ export async function getStaticProps() {
 export default function StickersPage({
   stickerCards,
 }: {
-  stickerCards: Card[];
+  stickerCards: CardType[];
 }) {
   return (
     <>
@@ -44,10 +44,8 @@ export default function StickersPage({
                 <strong>{sticker.name}</strong>
               </p>
               <p>
-                <Image
+                <Card
                   src={`${sticker.image_uris?.normal}`}
-                  width="300"
-                  height="428"
                   alt={`${sticker.oracle_text}`}
                 />
               </p>

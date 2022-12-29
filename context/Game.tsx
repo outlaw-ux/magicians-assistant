@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
+import StartGame from "../components/StartGame";
 import { useConfirmExit } from "../hooks";
 
 interface IGame {
@@ -24,7 +25,7 @@ export function GameContextWrapper({
     setGameStarted((currentState) => !currentState);
   };
 
-  let sharedState = {
+  const sharedState = {
     ...defaultContext,
     gameStarted,
     toggleGameStart,
@@ -37,7 +38,9 @@ export function GameContextWrapper({
   }, [gameStarted, setNeedConfirm]);
 
   return (
-    <GameContext.Provider value={sharedState}>{children}</GameContext.Provider>
+    <GameContext.Provider value={sharedState}>
+      {gameStarted ? children : <StartGame />}
+    </GameContext.Provider>
   );
 }
 

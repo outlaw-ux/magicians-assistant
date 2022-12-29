@@ -3,7 +3,7 @@ import Navigation from "../components/Navigation";
 import { useGameContext } from "../context/Game";
 
 export default function Home() {
-  const { gameStarted, toggleGameStart } = useGameContext();
+  const { toggleGameStart } = useGameContext();
   return (
     <>
       <Head>
@@ -16,18 +16,12 @@ export default function Home() {
         <h1>Magicians Assistant</h1>
         <Navigation />
 
-        {gameStarted ? (
-          <p>
-            Thanks for starting, now you won&apos;t loose you place as you
-            navigate the Assistant.
-          </p>
-        ) : (
-          <p>Not much to do around here until you start a new game.</p>
-        )}
+        <p>
+          Thanks for starting, now you won&apos;t loose you place as you
+          navigate the Assistant.
+        </p>
 
-        <button onClick={toggleGameStart}>
-          {gameStarted ? "End" : "Start"} Game
-        </button>
+        <button onClick={toggleGameStart}>End Game</button>
       </main>
     </>
   );

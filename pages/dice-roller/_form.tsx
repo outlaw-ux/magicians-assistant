@@ -1,29 +1,27 @@
 import { useCallback } from "react";
 import { DEFAULT_DICE_IN_HAND, STANDARD_DICE } from "../../constants";
-import type { DieType, IDiceForm } from "../../types";
+import { useDiceContext } from "../../context";
 
-export default function DiceRollingForm({
-  diceInHand,
-  pickUpDice,
-  onRoll,
-}: IDiceForm) {
+export default function DiceRollingForm() {
+  const { diceInHand, setDiceInHand, handleDiceRoll, totalDiceRoll } =
+    useDiceContext();
   const handlePickUpDice = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const amount = Number(event.target.value);
-      const sides = event.target.name as DieType;
+      const sides = event.target.name;
 
-      pickUpDice((dice) => ({
+      setDiceInHand((dice) => ({
         ...dice,
         [sides]: {
           amount,
         },
       }));
     },
-    [pickUpDice]
+    [setDiceInHand]
   );
 
   const handleEmptyHand = () => {
-    pickUpDice(DEFAULT_DICE_IN_HAND);
+    setDiceInHand(DEFAULT_DICE_IN_HAND);
   };
 
   return (
@@ -45,12 +43,14 @@ export default function DiceRollingForm({
         );
       })}
 
-      <button type="button" onClick={onRoll}>
+      <button type="button" onClick={handleDiceRoll}>
         Roll
       </button>
       <button type="button" onClick={handleEmptyHand}>
         Clear Dice
       </button>
+
+      <h2>Total: {totalDiceRoll}</h2>
     </div>
   );
 }
