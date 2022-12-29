@@ -8,6 +8,13 @@ export default function Document() {
         <Main />
         <NextScript />
       </body>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
       <hr />
       <footer>
         <p>

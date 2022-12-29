@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 interface IConfirmExit {
   needConfirm: boolean;
@@ -6,9 +6,9 @@ interface IConfirmExit {
 }
 
 const userConfirmation = (e: any) => {
-  if (!(process.env.NODE_ENV === 'development')) {
+  if (!(process.env.NODE_ENV === "development")) {
     e.preventDefault();
-    e.returnValue = '';
+    e.returnValue = "";
   }
 };
 
@@ -17,10 +17,10 @@ const useConfirmExit = (value: boolean = false): IConfirmExit => {
 
   useEffect(() => {
     if (needConfirm) {
-      window.addEventListener('beforeunload', userConfirmation);
+      window.addEventListener("beforeunload", userConfirmation);
 
       return () => {
-        window.removeEventListener('beforeunload', userConfirmation);
+        window.removeEventListener("beforeunload", userConfirmation);
       };
     }
 

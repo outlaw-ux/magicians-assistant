@@ -20,8 +20,6 @@ export default function Home() {
           Thanks for starting, now you won&apos;t loose you place as you
           navigate the Assistant.
         </p>
-
-        <button onClick={toggleGameStart}>End Game</button>
       </main>
     </>
   );

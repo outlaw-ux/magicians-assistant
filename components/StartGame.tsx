@@ -13,12 +13,7 @@ export default function StartGame() {
       </Head>
 
       <h2>Start Game?</h2>
-      <p>
-        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Suscipit
-        voluptatibus alias in ducimus aliquam nihil nemo, deserunt, itaque
-        laborum quo at, eveniet debitis optio veritatis nostrum dolorum fugit
-        distinctio eaque?
-      </p>
+      <p>Nothing to do until you deal your hand and start a new game.</p>
       <button onClick={toggleGameStart}>Start Game</button>
     </>
   );
