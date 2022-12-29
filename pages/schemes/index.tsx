@@ -2,6 +2,7 @@ import Head from "next/head";
 import { useEffect, useLayoutEffect, useMemo, useState } from "react";
 import type { Card } from "scryfall-api";
 import Navigation from "../../components/Navigation";
+import { useGameContext } from "../../context/Game";
 import useConfirmExit from "../../hooks/useConfirmExit";
 import { shuffle } from "../../utils";
 import CurrentScheme from "./_current";
@@ -19,7 +20,7 @@ export async function getStaticProps() {
 }
 
 export default function SchemesPage({ schemeCards }: { schemeCards: Card[] }) {
-  const [gameStarted, setGameStarted] = useState<boolean>(false);
+  const { gameStarted, toggleGameStart } = useGameContext();
   const [currentSchemeIndex, setCurrentSchemeIndex] = useState<number>(0);
   const [ongoingSchemes, setOngoingSchemes] = useState<Card[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -104,7 +105,7 @@ export default function SchemesPage({ schemeCards }: { schemeCards: Card[] }) {
               laborum quo at, eveniet debitis optio veritatis nostrum dolorum
               fugit distinctio eaque?
             </p>
-            <button onClick={() => setGameStarted(true)}>Start Game</button>
+            <button onClick={toggleGameStart}>Start Game</button>
           </>
         )}
       </main>

@@ -33,6 +33,9 @@ export default function Navigation() {
         {/* <li>
           <Link href="/life-tracker">Life Tracker</Link>
         </li> */}
+        {/* <li>
+          <Link href="/treachery">Treachery</Link>
+        </li> */}
       </ul>
 
       <hr />
