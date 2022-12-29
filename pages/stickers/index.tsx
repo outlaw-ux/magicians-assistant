@@ -1,10 +1,10 @@
-import Head from 'next/head';
-import Image from 'next/image';
-import type { Card } from 'scryfall-api';
-import Navigation from '../../components/Navigation';
+import Head from "next/head";
+import Image from "next/image";
+import type { Card } from "scryfall-api";
+import Navigation from "../../components/Navigation";
 
 export async function getStaticProps() {
-  const res = await fetch('https://api.scryfall.com/cards/search?q=set:sunf');
+  const res = await fetch("https://api.scryfall.com/cards/search?q=set:sunf");
   const resData = await res.json();
 
   return {
@@ -19,8 +19,6 @@ export default function StickersPage({
 }: {
   stickerCards: Card[];
 }) {
-  console.log('StickersPage', stickerCards);
-
   return (
     <>
       <Head>

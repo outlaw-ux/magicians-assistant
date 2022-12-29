@@ -1,14 +1,14 @@
-import Head from 'next/head';
-import { useEffect, useLayoutEffect, useMemo, useState } from 'react';
-import type { Card } from 'scryfall-api';
-import Navigation from '../../components/Navigation';
-import useConfirmExit from '../../hooks/useConfirmExit';
-import { shuffle } from '../../utils';
-import CurrentScheme from './_current';
-import OngoingSchemes from './_ongoing';
+import Head from "next/head";
+import { useEffect, useLayoutEffect, useMemo, useState } from "react";
+import type { Card } from "scryfall-api";
+import Navigation from "../../components/Navigation";
+import useConfirmExit from "../../hooks/useConfirmExit";
+import { shuffle } from "../../utils";
+import CurrentScheme from "./_current";
+import OngoingSchemes from "./_ongoing";
 
 export async function getStaticProps() {
-  const res = await fetch('https://api.scryfall.com/cards/search?q=t:scheme');
+  const res = await fetch("https://api.scryfall.com/cards/search?q=t:scheme");
   const resData = await res.json();
 
   return {
@@ -44,21 +44,20 @@ export default function SchemesPage({ schemeCards }: { schemeCards: Card[] }) {
   };
 
   useLayoutEffect(() => {
-    console.log('uselayouteffect', currentSchemeIndex, currentScheme);
     if (
       gameStarted &&
-      currentScheme.type_line === 'Ongoing Scheme' &&
+      currentScheme.type_line === "Ongoing Scheme" &&
       !ongoingSchemes.find((scheme) => scheme.id === currentScheme.id) // make sure it's not already ongoing
     ) {
       setOngoingSchemes((schemes) => [...schemes, currentScheme]);
     }
-  }, [currentScheme, gameStarted, ongoingSchemes]);
+  }, [currentScheme, currentSchemeIndex, gameStarted, ongoingSchemes]);
 
   useEffect(() => {
     setNeedConfirm(gameStarted);
 
     return () => {};
-  }, [gameStarted]);
+  }, [gameStarted, setNeedConfirm]);
 
   return (
     <>

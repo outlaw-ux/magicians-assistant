@@ -1,4 +1,4 @@
-import type { Card } from 'scryfall-api';
+import type { Card } from "scryfall-api";
 
 export default function OngoingSchemes({
   schemes,
@@ -9,7 +9,7 @@ export default function OngoingSchemes({
 }) {
   return (
     <ul>
-      {schemes.map((scheme) => (
+      {schemes?.map((scheme) => (
         <li key={scheme.id}>
           <p>
             <strong>{scheme.name}</strong>
@@ -20,7 +20,7 @@ export default function OngoingSchemes({
               onClick={() => {
                 if (
                   window.confirm(
-                    'Are you sure this scheme is ready to be abandoned?'
+                    "Are you sure this scheme is ready to be abandoned?"
                   )
                 ) {
                   const filteredOngoingSchemes = schemes.filter(
@@ -28,8 +28,7 @@ export default function OngoingSchemes({
                   );
                   setSchemes(filteredOngoingSchemes);
                 }
-              }}
-            >
+              }}>
               Abandon
             </button>
           </p>

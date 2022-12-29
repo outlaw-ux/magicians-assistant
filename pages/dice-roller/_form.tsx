@@ -1,6 +1,6 @@
-import { useCallback } from 'react';
-import { DEFAULT_DICE_IN_HAND, STANDARD_DICE } from './helpers';
-import type { DieType, IDiceForm } from './types';
+import { useCallback } from "react";
+import { DEFAULT_DICE_IN_HAND, STANDARD_DICE } from "../../constants";
+import type { DieType, IDiceForm } from "../../types";
 
 export default function DiceRollingForm({
   diceInHand,
@@ -19,7 +19,7 @@ export default function DiceRollingForm({
         },
       }));
     },
-    [diceInHand]
+    [pickUpDice]
   );
 
   const handleEmptyHand = () => {
@@ -29,12 +29,13 @@ export default function DiceRollingForm({
   return (
     <div>
       {STANDARD_DICE.map((die) => {
+        const value = `${diceInHand?.[die]?.amount || 0}`;
         return (
           <p key={die}>
             <input
               type="number"
               name={die}
-              value={`${diceInHand[die]?.amount || 0}`}
+              value={value}
               min="0"
               max="10"
               onChange={handlePickUpDice}

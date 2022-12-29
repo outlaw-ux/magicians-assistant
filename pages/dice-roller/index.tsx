@@ -1,11 +1,11 @@
-import Head from 'next/head';
-import React, { useCallback, useState } from 'react';
-import Navigation from '../../components/Navigation';
-import { DEFAULT_DICE_IN_HAND } from './helpers';
-import { roll } from '../../utils';
-import { DieType, IDice, IDiceInHand, IDiceResults } from './types';
-import DiceRollingForm from './_form';
-import DiceRollHistory from './_history';
+import Head from "next/head";
+import React, { useCallback, useState } from "react";
+import Navigation from "../../components/Navigation";
+import { DEFAULT_DICE_IN_HAND } from "../../constants";
+import { roll } from "../../utils";
+import { DieType, IDice, IDiceInHand, IDiceResults } from "../../types";
+import DiceRollingForm from "./_form";
+import DiceRollHistory from "./_history";
 
 /**
  * @TODO
@@ -36,7 +36,7 @@ export default function DiceRollerPage() {
         total: 0,
       };
 
-      const sides = Number(die.replace('d', ''));
+      const sides = Number(die.replace("d", ""));
       rollResults.amount = Number(diceInHand[die as DieType].amount) || 0;
 
       for (let index = 0; index < rollResults.amount; index++) {

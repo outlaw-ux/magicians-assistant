@@ -1,7 +1,7 @@
-import { DieType, IDiceResults } from './types';
+import { DieType, IDiceResults } from "../../types";
 
 export default function DiceRollHistory({
-  resultsHistory,
+  resultsHistory = [],
 }: {
   resultsHistory: IDiceResults[];
 }) {
@@ -31,7 +31,7 @@ export default function DiceRollHistory({
               }
               return (
                 <p key={die}>
-                  <strong>{die}</strong>: {JSON.stringify(rolls, undefined, 1)}{' '}
+                  <strong>{die}</strong>: {JSON.stringify(rolls, undefined, 1)}{" "}
                   = <em>{total}</em>
                 </p>
               );
