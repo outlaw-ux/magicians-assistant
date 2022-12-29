@@ -1,37 +1,23 @@
 import Head from "next/head";
 import { useEffect, useLayoutEffect, useMemo, useState } from "react";
-import type { Card } from "scryfall-api";
 import Navigation from "../../components/Navigation";
-import { useGameContext } from "../../context/Game";
-import useConfirmExit from "../../hooks/useConfirmExit";
-import { shuffle } from "../../utils";
+import { useGameContext, useSchemesContext } from "../../context";
 import CurrentScheme from "./_current";
 import OngoingSchemes from "./_ongoing";
 
-export async function getStaticProps() {
-  const res = await fetch("https://api.scryfall.com/cards/search?q=t:scheme");
-  const resData = await res.json();
-
-  return {
-    props: {
-      schemeCards: shuffle(resData.data),
-    },
-  };
-}
-
-export default function SchemesPage({ schemeCards }: { schemeCards: Card[] }) {
+export default function SchemesPage() {
   const { gameStarted, toggleGameStart } = useGameContext();
-  const [currentSchemeIndex, setCurrentSchemeIndex] = useState<number>(0);
-  const [ongoingSchemes, setOngoingSchemes] = useState<Card[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const { setNeedConfirm } = useConfirmExit();
-  const currentScheme = useMemo(
-    () => schemeCards[currentSchemeIndex],
-    [currentSchemeIndex, schemeCards]
-  );
+  const {
+    ongoingSchemes,
+    currentScheme,
+    setCurrentSchemeIndex,
+    setOngoingSchemes,
+    schemeCards,
+  } = useSchemesContext();
+  const [disabledNextButton, setDisabledNextButton] = useState(true);
 
   const handleNextSchemeClick = () => {
-    setLoading(true);
+    setDisabledNextButton(true);
     setCurrentSchemeIndex((schemeIdx: number) => {
       const maxIdx = schemeCards.length - 1;
       const nextIdx = schemeIdx + 1;
@@ -47,18 +33,12 @@ export default function SchemesPage({ schemeCards }: { schemeCards: Card[] }) {
   useLayoutEffect(() => {
     if (
       gameStarted &&
-      currentScheme.type_line === "Ongoing Scheme" &&
+      currentScheme?.type_line === "Ongoing Scheme" &&
       !ongoingSchemes.find((scheme) => scheme.id === currentScheme.id) // make sure it's not already ongoing
     ) {
       setOngoingSchemes((schemes) => [...schemes, currentScheme]);
     }
-  }, [currentScheme, currentSchemeIndex, gameStarted, ongoingSchemes]);
-
-  useEffect(() => {
-    setNeedConfirm(gameStarted);
-
-    return () => {};
-  }, [gameStarted, setNeedConfirm]);
+  }, [currentScheme, gameStarted]);
 
   return (
     <>
@@ -78,11 +58,13 @@ export default function SchemesPage({ schemeCards }: { schemeCards: Card[] }) {
             {currentScheme && (
               <CurrentScheme
                 scheme={currentScheme}
-                onLoad={() => setLoading(false)}
+                onLoad={() => setDisabledNextButton(false)}
               />
             )}
 
-            <button onClick={handleNextSchemeClick} disabled={loading}>
+            <button
+              onClick={handleNextSchemeClick}
+              disabled={disabledNextButton}>
               Draw Next Scheme
             </button>
 

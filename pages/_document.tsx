@@ -21,7 +21,7 @@ export default function Document() {
         <p>
           <small>
             Portions of content & imagery for Magic: The Gathering is provided
-            by Scryfall API and is not associated with this.
+            by Scryfall API and is not associated with this product.
           </small>
         </p>
         <p>
