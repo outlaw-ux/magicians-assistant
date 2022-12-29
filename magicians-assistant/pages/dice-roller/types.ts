@@ -16,7 +16,6 @@ export interface IDiceResults extends IDiceInHand {
 
 export interface IDiceForm {
   diceInHand: IDiceInHand;
-  pickUpDice: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  pickUpDice: React.Dispatch<React.SetStateAction<IDiceInHand>>;
   onRoll: () => void;
-  onClear: () => void;
 }
