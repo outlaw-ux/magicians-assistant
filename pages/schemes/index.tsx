@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { useEffect, useLayoutEffect, useMemo, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import Navigation from "../../components/Navigation";
 import { useGameContext, useSchemesContext } from "../../context";
 import CurrentScheme from "./_current";
@@ -38,7 +38,7 @@ export default function SchemesPage() {
     ) {
       setOngoingSchemes((schemes) => [...schemes, currentScheme]);
     }
-  }, [currentScheme, gameStarted]);
+  }, [currentScheme, gameStarted, ongoingSchemes, setOngoingSchemes]);
 
   return (
     <>
@@ -57,8 +57,11 @@ export default function SchemesPage() {
             <h2>Current Scheme</h2>
             {currentScheme && (
               <CurrentScheme
-                scheme={currentScheme}
-                onLoad={() => setDisabledNextButton(false)}
+                onLoad={() =>
+                  setTimeout(() => {
+                    setDisabledNextButton(false);
+                  }, 500)
+                }
               />
             )}
 
@@ -69,14 +72,7 @@ export default function SchemesPage() {
             </button>
 
             <h2>Ongoing Schemes</h2>
-            {ongoingSchemes.length > 0 ? (
-              <OngoingSchemes
-                schemes={ongoingSchemes}
-                setSchemes={setOngoingSchemes}
-              />
-            ) : (
-              <p>None.</p>
-            )}
+            {ongoingSchemes.length > 0 ? <OngoingSchemes /> : <p>None.</p>}
           </>
         ) : (
           <>

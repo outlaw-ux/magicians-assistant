@@ -18,8 +18,8 @@ export default function Home() {
 
         {gameStarted ? (
           <p>
-            Thanks for starting, now you won't loose you place as you navigate
-            the Assistant.
+            Thanks for starting, now you won&apos;t loose you place as you
+            navigate the Assistant.
           </p>
         ) : (
           <p>Not much to do around here until you start a new game.</p>

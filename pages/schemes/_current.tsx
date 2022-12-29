@@ -1,29 +1,26 @@
 import Image from "next/image";
 import { useMemo } from "react";
-import type { Card } from "scryfall-api";
+import { useSchemesContext } from "../../context";
 
-export default function CurrentScheme({
-  scheme,
-  onLoad,
-}: {
-  scheme: Card;
-  onLoad: () => void;
-}) {
-  const imagePath = useMemo(() => scheme?.image_uris?.normal, [scheme]);
+export default function CurrentScheme({ onLoad }: { onLoad: () => void }) {
+  const { currentScheme } = useSchemesContext();
+  const imagePath = currentScheme?.image_uris?.normal;
 
   return (
     <>
       <p>
-        <strong>{scheme?.name}</strong>
+        <strong>{currentScheme?.name}</strong>
       </p>
       <p>
         {imagePath && (
           <Image
-            src={`${imagePath}`}
+            src={imagePath}
             width="300"
             height="428"
-            alt={`${scheme.oracle_text}`}
-            onLoadingComplete={onLoad}
+            alt={`${currentScheme?.oracle_text}`}
+            onLoad={onLoad}
+            placeholder="blur"
+            blurDataURL="/assets/loading.jpg"
           />
         )}
       </p>
