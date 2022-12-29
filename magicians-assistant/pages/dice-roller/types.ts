@@ -14,8 +14,9 @@ export interface IDiceResults extends IDiceInHand {
   datetime: Date;
 }
 
-export interface IDiceInput {
-  die?: DieType;
-  pickUpDie?: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  value?: string;
+export interface IDiceForm {
+  diceInHand: IDiceInHand;
+  pickUpDice: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onRoll: () => void;
+  onClear: () => void;
 }

@@ -1,9 +1,10 @@
 import Head from 'next/head';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import Navigation from '../../components/Navigation';
+import { STANDARD_DICE } from './helpers';
 import { roll } from '../../utils';
 import { DieType, IDice, IDiceInHand, IDiceResults } from './types';
-import DiceInput from './_dice-input';
+import DiceRollingForm from './_form';
 import DiceRollHistory from './_history';
 
 /**
@@ -12,7 +13,6 @@ import DiceRollHistory from './_history';
  * Highlight lowest and highest in each roll (if more than two dice of same type)
  */
 
-const STANDARD_DICE: DieType[] = ['d4', 'd6', 'd8', 'd10', 'd12', 'd20'];
 const DEFAULT_DICE_IN_HAND: IDiceInHand = {};
 
 STANDARD_DICE.forEach((die) => {
@@ -25,7 +25,6 @@ export default function DiceRollerPage() {
     useState<IDiceInHand>(DEFAULT_DICE_IN_HAND);
   const [resultsHistory, setResultsHistory] = useState<IDiceResults[]>();
   const handlePickUpDice = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log('handlePickUpDice');
     setDiceInHand((dice) => ({
       ...dice,
       [event.target.name]: {
@@ -33,6 +32,12 @@ export default function DiceRollerPage() {
         amount: Number(event.target.value),
       },
     }));
+  };
+  const handleEmptyHand = () => {
+    setDiceInHand(DEFAULT_DICE_IN_HAND);
+  };
+  const handleClearHistory = () => {
+    setResultsHistory(undefined);
   };
 
   const handleDiceRoll = useCallback(() => {
@@ -87,24 +92,19 @@ export default function DiceRollerPage() {
         <h1>Dice Roller</h1>
         <Navigation />
 
-        {STANDARD_DICE.map((die) => {
-          return (
-            <DiceInput
-              die={die}
-              pickUpDie={handlePickUpDice}
-              value={`${diceInHand[die]?.amount || 0}`}
-              key={die}
-            />
-          );
-        })}
-
-        <button type="button" onClick={handleDiceRoll}>
-          Roll
-        </button>
+        <DiceRollingForm
+          diceInHand={diceInHand}
+          pickUpDice={handlePickUpDice}
+          onRoll={handleDiceRoll}
+          onClear={handleEmptyHand}
+        />
 
         <h2>Total: {totalDiceRoll}</h2>
 
         <h2>History</h2>
+        <button type="button" onClick={handleClearHistory}>
+          Clear History
+        </button>
         {resultsHistory?.length ? (
           <ol>
             {resultsHistory?.reverse().map((history) => (

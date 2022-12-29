@@ -1,9 +1,4 @@
-import Head from 'next/head';
-import React, { useCallback, useState } from 'react';
-import Navigation from '../../components/Navigation';
-import { roll } from '../../utils';
-import { DieType, IDice, IDiceInHand, IDiceResults } from './types';
-import DiceInput from './_dice-input';
+import { DieType, IDiceInHand, IDiceResults } from './types';
 
 /**
  * @TODO
