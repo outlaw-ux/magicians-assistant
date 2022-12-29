@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import Link from "next/link";
 
 export default function Navigation() {
   return (
@@ -8,26 +8,31 @@ export default function Navigation() {
           <Link href="/">Home</Link>
         </li>
         <li>
-          <Link href="/schemes">Schemes</Link>
+          <Link href="/schemes">Archenemy Schemes</Link>
         </li>
         <li>
-          <Link href="/attractions">Unfinity Attractions</Link>
+          Unfinity
+          <ul>
+            <li>
+              <Link href="/attractions">Attractions</Link>
+            </li>
+            <li>
+              <Link href="/stickers">Stickers</Link>
+            </li>
+          </ul>
         </li>
-        <li>
+        {/* <li>
           <Link href="/counters">Counter Manager</Link>
-        </li>
-        <li>
+        </li> */}
+        {/* <li>
           <Link href="/tokens">Token Manager</Link>
-        </li>
+        </li> */}
         <li>
           <Link href="/dice-roller">Dice Roller</Link>
         </li>
-        <li>
+        {/* <li>
           <Link href="/life-tracker">Life Tracker</Link>
-        </li>
-        <li>
-          <Link href="/stickers">Stickers</Link>
-        </li>
+        </li> */}
       </ul>
 
       <hr />
