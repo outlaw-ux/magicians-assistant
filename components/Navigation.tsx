@@ -33,9 +33,9 @@ export default function Navigation() {
         <li>
           <Link href="/dice-roller">Dice Roller</Link>
         </li>
-        {/* <li>
+        <li>
           <Link href="/life-tracker">Life Tracker</Link>
-        </li> */}
+        </li>
         {/* <li>
           <Link href="/treachery">Treachery</Link>
         </li> */}
