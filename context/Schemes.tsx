@@ -1,7 +1,14 @@
-import React, { createContext, useContext, useMemo, useState } from "react";
+import React, {
+  createContext,
+  useContext,
+  useLayoutEffect,
+  useMemo,
+  useState,
+} from "react";
 import type { Card } from "scryfall-api";
 import { shuffle } from "../utils";
 import scryfallCards from "../scryfall/schemes.json";
+import { useGameContext } from "./Game";
 
 interface ISchemes {
   currentScheme: Card | undefined;
@@ -27,14 +34,16 @@ export function SchemesContextWrapper({
 }: {
   children: React.ReactNode;
 }) {
+  const { gameStarted } = useGameContext();
   const [ongoingSchemes, setOngoingSchemes] = useState<Card[]>([]);
-  const [currentSchemeIndex, setCurrentSchemeIndex] = useState<number>(0);
-  const currentScheme = useMemo(
-    () => schemeCards?.[currentSchemeIndex],
+  const [currentSchemeIndex, setCurrentSchemeIndex] = useState<number>(-1);
+  const currentScheme: Card | undefined = useMemo(
+    () =>
+      currentSchemeIndex >= 0 ? schemeCards?.[currentSchemeIndex] : undefined,
     [currentSchemeIndex]
   );
 
-  let sharedState = {
+  const sharedState = {
     ...defaultContext,
     ongoingSchemes,
     currentScheme,
@@ -42,6 +51,16 @@ export function SchemesContextWrapper({
     setOngoingSchemes,
     schemeCards,
   };
+
+  useLayoutEffect(() => {
+    if (
+      gameStarted &&
+      currentScheme?.type_line === "Ongoing Scheme" &&
+      !ongoingSchemes.find((scheme) => scheme.id === currentScheme.id) // make sure it's not already ongoing
+    ) {
+      setOngoingSchemes((schemes) => [...schemes, currentScheme]);
+    }
+  }, [currentScheme, gameStarted, ongoingSchemes, setOngoingSchemes]);
 
   return (
     <SchemesContext.Provider value={sharedState}>
