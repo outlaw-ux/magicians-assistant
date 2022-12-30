@@ -1,27 +1,8 @@
 import Head from "next/head";
-import type { Card as CardType } from "scryfall-api";
-import Card from "../../components/Card";
 import Navigation from "../../components/Navigation";
+import CurrentAttraction from "./_current";
 
-export async function getStaticProps() {
-  const res = await fetch(
-    "https://api.scryfall.com/cards/search?q=set:unf%20type:artifact%20type:attraction"
-  );
-  const resData = await res.json();
-
-  return {
-    props: {
-      attractionCards: resData.data,
-    },
-  };
-}
-
-export default function AttractionsPage({
-  attractionCards,
-}: {
-  attractionCards: CardType[];
-}) {
-  console.log(attractionCards);
+export default function AttractionsPage() {
   return (
     <>
       <Head>
@@ -35,26 +16,7 @@ export default function AttractionsPage({
         <h1>Unfinity Attractions</h1>
         <Navigation />
 
-        <p>
-          Nothing more than a list of the attraction cards for now. What else
-          can we do with these?
-        </p>
-
-        {attractionCards.map((attraction) => {
-          return (
-            <div key={attraction.id}>
-              <p>
-                <strong>{attraction.name}</strong>
-              </p>
-              <p>
-                <Card
-                  src={`${attraction.image_uris?.normal}`}
-                  alt={`${attraction.oracle_text}`}
-                />
-              </p>
-            </div>
-          );
-        })}
+        <CurrentAttraction />
       </main>
     </>
   );

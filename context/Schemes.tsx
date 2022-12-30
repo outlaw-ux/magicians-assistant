@@ -7,7 +7,7 @@ import React, {
 } from "react";
 import type { Card } from "scryfall-api";
 import { shuffle } from "../utils";
-import scryfallCards from "../scryfall/schemes.json";
+import scryfallSchemeCards from "../scryfall/schemes.json";
 import { useGameContext } from "./Game";
 
 interface ISchemes {
@@ -27,7 +27,7 @@ const defaultContext: ISchemes = {
 };
 
 const SchemesContext = createContext(defaultContext);
-const schemeCards = shuffle(scryfallCards.data);
+const schemeCards = shuffle(scryfallSchemeCards.data);
 
 export function SchemesContextWrapper({
   children,
