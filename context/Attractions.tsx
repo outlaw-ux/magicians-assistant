@@ -11,9 +11,7 @@ interface IAttractions {
 
 const defaultContext: IAttractions = {
   currentAttraction: undefined,
-  drawNextCard: () => {
-    console.log("defaultContext");
-  },
+  drawNextCard: () => {},
   attractionCards: [],
 };
 
@@ -28,12 +26,9 @@ export function AttractionsContextWrapper({
   const [currentAttractionIndex, setCurrentAttractionIndex] =
     useState<number>(-1);
   const drawNextCard = () => {
-    console.log("drawNextCard");
     setCurrentAttractionIndex((attractionIdx) => {
       const maxIdx = attractionCards.length - 1;
       const nextIdx = attractionIdx + 1;
-
-      console.log(nextIdx, maxIdx, attractionIdx);
 
       return nextIdx >= maxIdx ? attractionIdx : nextIdx;
     });

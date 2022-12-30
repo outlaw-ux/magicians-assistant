@@ -7,13 +7,10 @@ export default function CurrentAttraction() {
   const [disabledNextButton, setDisabledNextButton] = useState(false);
 
   const handleNextAttractionClick = () => {
-    console.log("handleNextAttractionClick");
     setDisabledNextButton(true);
     drawNextCard();
   };
   const imagePath = currentAttraction?.image_uris?.normal;
-
-  console.log({ currentAttraction });
 
   return (
     <>
