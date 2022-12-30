@@ -1,6 +1,6 @@
 import Head from "next/head";
 import Navigation from "../../components/Navigation";
-import CurrentAttraction from "./_current";
+import CurrentAttractions from "./_current";
 
 export default function AttractionsPage() {
   return (
@@ -16,7 +16,7 @@ export default function AttractionsPage() {
         <h1>Unfinity Attractions</h1>
         <Navigation />
 
-        <CurrentAttraction />
+        <CurrentAttractions />
       </main>
     </>
   );

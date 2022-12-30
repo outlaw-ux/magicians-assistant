@@ -2,40 +2,61 @@ import { useState } from "react";
 import Card from "../../components/Card";
 import { useAttractionsContext } from "../../context";
 
-export default function CurrentAttraction() {
-  const { currentAttraction, drawNextCard } = useAttractionsContext();
+export default function CurrentAttractions() {
+  const { currentAttractions, drawNextCard, sendToJunkyard } =
+    useAttractionsContext();
   const [disabledNextButton, setDisabledNextButton] = useState(false);
 
   const handleNextAttractionClick = () => {
     setDisabledNextButton(true);
     drawNextCard();
   };
-  const imagePath = currentAttraction?.image_uris?.normal;
+
+  const reverseCurrentAttractions = [...currentAttractions].reverse();
 
   return (
     <>
-      <h2>Current Attraction</h2>
-
-      <p>
-        <strong>{currentAttraction?.name}</strong>
-      </p>
-      <p>
-        {imagePath && (
-          <Card
-            src={imagePath}
-            alt={`${currentAttraction?.oracle_text}`}
-            onLoad={() =>
-              setTimeout(() => {
-                setDisabledNextButton(false);
-              }, 500)
-            }
-          />
-        )}
-      </p>
+      <h2>Current Attractions</h2>
 
       <button onClick={handleNextAttractionClick} disabled={disabledNextButton}>
-        Draw {currentAttraction ? "Next" : "First"} Attraction
+        Visit New Attraction
       </button>
+
+      {reverseCurrentAttractions.map((attraction) => {
+        const imagePath = attraction?.image_uris?.normal;
+        return (
+          <div key={attraction?.id}>
+            <p>
+              <strong>{attraction?.name}</strong>
+            </p>
+            <p>
+              {imagePath && (
+                <Card
+                  src={imagePath}
+                  alt={`${attraction?.oracle_text}`}
+                  onLoad={() =>
+                    setTimeout(() => {
+                      setDisabledNextButton(false);
+                    }, 500)
+                  }
+                />
+              )}
+            </p>
+            <button
+              onClick={() => {
+                if (
+                  window.confirm(
+                    `Are you sure you want to send '${attraction?.name}' to the Junkyard?`
+                  )
+                ) {
+                  sendToJunkyard(attraction?.id);
+                }
+              }}>
+              Send '{attraction?.name}' to Junkyard
+            </button>
+          </div>
+        );
+      })}
     </>
   );
 }
