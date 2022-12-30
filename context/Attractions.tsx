@@ -1,30 +1,22 @@
-import React, {
-  createContext,
-  useContext,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { createContext, useContext, useRef, useState } from "react";
 import type { Card } from "scryfall-api";
 import { shuffle } from "../utils";
-import scryfallAttractionCards from "../scryfall/attractions.json";
 
 interface IAttractions {
   currentAttractions: Card[];
-  drawNextCard: () => void;
+  drawNextCard: () => Promise<void>;
   attractionDeck: Card[];
   sendToJunkyard: (value: Card["id"]) => void;
 }
 
 const defaultContext: IAttractions = {
   currentAttractions: [],
-  drawNextCard: () => {},
+  drawNextCard: () => new Promise(() => {}),
   sendToJunkyard: () => {},
   attractionDeck: [],
 };
 
 const AttractionsContext = createContext(defaultContext);
-const attractionDeck: Card[] = shuffle(scryfallAttractionCards.data);
 
 export function AttractionsContextWrapper({
   children,
@@ -32,27 +24,29 @@ export function AttractionsContextWrapper({
   children: React.ReactNode;
 }) {
   const currentAttractionIndex = useRef(-1);
-  // const [currentAttractionIndex, setCurrentAttractionIndex] =
-  //   useState<number>(-1);
+  const [attractionDeck, setAttractionDeck] = useState<Card[]>([]);
   const [currentAttractions, setCurrentAttractions] = useState<Card[]>([]);
-  const drawNextCard = () => {
+  const drawNextCard = async () => {
+    if (attractionDeck.length === 0) {
+      const Deck = (await import("../scryfall/attractions.json")).default;
+      const shuffledDeck = shuffle(Deck.data);
+      setAttractionDeck(() => {
+        updateCurrentAttractions(shuffledDeck);
+        return shuffledDeck;
+      });
+    } else {
+      updateCurrentAttractions();
+    }
+  };
+  const updateCurrentAttractions = (deck: Card[] = attractionDeck) => {
     currentAttractionIndex.current += 1;
-    setCurrentAttractions((attractions) =>
-      currentAttractionIndex.current >= 0
-        ? [...attractions, attractionDeck?.[currentAttractionIndex.current]]
-        : []
-    );
-    // setCurrentAttractionIndex((attractionIdx) => {
-    //   const maxIdx = attractionDeck.length - 1;
-    //   const nextIdx = attractionIdx + 1;
-    //   const outputIdx = nextIdx >= maxIdx ? attractionIdx : nextIdx;
 
-    //   setCurrentAttractions((attractions) =>
-    //     attractionIdx >= 0 ? [...attractions, attractionDeck?.[outputIdx]] : []
-    //   );
-
-    //   return outputIdx;
-    // });
+    setCurrentAttractions((attractions) => {
+      console.log(currentAttractionIndex.current, deck);
+      return currentAttractionIndex.current >= 0
+        ? [...attractions, deck?.[currentAttractionIndex.current]]
+        : [];
+    });
   };
 
   const sendToJunkyard = (attractionID: Card["id"]) => {

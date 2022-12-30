@@ -40,7 +40,16 @@ export default function Navigation() {
           <Link href="/treachery">Treachery</Link>
         </li> */}
       </ul>
-      <button onClick={toggleGameStart}>End Game</button>
+      <button
+        onClick={() => {
+          if (
+            window.confirm(`Are you sure you want to end your current session?`)
+          ) {
+            toggleGameStart();
+          }
+        }}>
+        End Game
+      </button>
       <hr />
     </>
   );
