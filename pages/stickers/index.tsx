@@ -1,24 +1,9 @@
 import Head from "next/head";
-import type { Card as CardType } from "scryfall-api";
 import Card from "../../components/Card";
 import Navigation from "../../components/Navigation";
+import stickerCards from "../../scryfall/stickers.json";
 
-export async function getStaticProps() {
-  const res = await fetch("https://api.scryfall.com/cards/search?q=set:sunf");
-  const resData = await res.json();
-
-  return {
-    props: {
-      stickerCards: resData.data,
-    },
-  };
-}
-
-export default function StickersPage({
-  stickerCards,
-}: {
-  stickerCards: CardType[];
-}) {
+export default function StickersPage() {
   return (
     <>
       <Head>
@@ -37,7 +22,7 @@ export default function StickersPage({
           we do with these?
         </p>
 
-        {stickerCards.map((sticker) => {
+        {stickerCards.data.map((sticker) => {
           return (
             <div key={sticker.id}>
               <p>

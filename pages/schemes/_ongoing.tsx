@@ -38,7 +38,8 @@ export default function OngoingSchemes() {
                         );
                         setOngoingSchemes(filteredOngoingSchemes);
                       }
-                    }}>
+                    }}
+                  >
                     Abandon
                   </button>
                 </p>

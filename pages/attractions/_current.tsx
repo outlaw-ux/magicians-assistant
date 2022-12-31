@@ -51,8 +51,9 @@ export default function CurrentAttractions() {
                 ) {
                   sendToJunkyard(attraction?.id);
                 }
-              }}>
-              Send '{attraction?.name}' to Junkyard
+              }}
+            >
+              Send &apos;{attraction?.name}&apos; to Junkyard
             </button>
           </div>
         );

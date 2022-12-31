@@ -47,7 +47,8 @@ export default function Navigation() {
           ) {
             toggleGameStart();
           }
-        }}>
+        }}
+      >
         End Game
       </button>
       <hr />
