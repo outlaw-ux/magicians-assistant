@@ -27,9 +27,9 @@ export default function Navigation() {
         {/* <li>
           <Link href="/counters">Counter Manager</Link>
         </li> */}
-        {/* <li>
+        <li>
           <Link href="/tokens">Token Manager</Link>
-        </li> */}
+        </li>
         <li>
           <Link href="/dice-roller">Dice Roller</Link>
         </li>

@@ -1,5 +1,6 @@
 import Head from "next/head";
 import Navigation from "../../components/Navigation";
+import SelectToken from "./_select-token";
 
 export default function TokensPage() {
   return (
@@ -13,12 +14,9 @@ export default function TokensPage() {
       <main>
         <h1>Token Manager</h1>
         <Navigation />
-        <p>
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Suscipit
-          voluptatibus alias in ducimus aliquam nihil nemo, deserunt, itaque
-          laborum quo at, eveniet debitis optio veritatis nostrum dolorum fugit
-          distinctio eaque?
-        </p>
+        <p>Add some tokens to your battlefield!</p>
+
+        <SelectToken />
       </main>
     </>
   );
