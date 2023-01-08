@@ -1,28 +1,31 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import {
-  AttractionsContextWrapper,
+  DecksContextWrapper,
   DiceContextWrapper,
   GameContextWrapper,
   LifeContextWrapper,
   SchemesContextWrapper,
   BattlefieldContextWrapper,
+  SupabaseProvider,
 } from "../context";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <GameContextWrapper>
-      <BattlefieldContextWrapper>
-        <AttractionsContextWrapper>
-          <LifeContextWrapper>
-            <DiceContextWrapper>
-              <SchemesContextWrapper>
-                <Component {...pageProps} />
-              </SchemesContextWrapper>
-            </DiceContextWrapper>
-          </LifeContextWrapper>
-        </AttractionsContextWrapper>
-      </BattlefieldContextWrapper>
-    </GameContextWrapper>
+    <SupabaseProvider>
+      <GameContextWrapper>
+        <BattlefieldContextWrapper>
+          <DecksContextWrapper>
+            <LifeContextWrapper>
+              <DiceContextWrapper>
+                <SchemesContextWrapper>
+                  <Component {...pageProps} />
+                </SchemesContextWrapper>
+              </DiceContextWrapper>
+            </LifeContextWrapper>
+          </DecksContextWrapper>
+        </BattlefieldContextWrapper>
+      </GameContextWrapper>
+    </SupabaseProvider>
   );
 }

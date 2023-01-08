@@ -1,8 +1,17 @@
 import Head from "next/head";
+import { useEffect } from "react";
+import { useSelect } from "react-supabase";
 import Navigation from "../../components/Navigation";
 import CurrentAttractions from "./_current";
 
 export default function AttractionsPage() {
+  const [{ count, data, error, fetching }, reexecute] =
+    useSelect("attractions");
+
+  useEffect(() => {
+    console.log("AttractionsPage", { count, data, error, fetching });
+  }, [count, data, error, fetching]);
+
   return (
     <>
       <Head>
@@ -16,7 +25,7 @@ export default function AttractionsPage() {
         <h1>Unfinity Attractions</h1>
         <Navigation />
 
-        <CurrentAttractions />
+        {!fetching && data && <CurrentAttractions currentAttractions={data} />}
       </main>
     </>
   );

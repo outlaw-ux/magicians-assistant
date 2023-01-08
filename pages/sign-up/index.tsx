@@ -1,17 +1,17 @@
 import Head from "next/head";
-import Navigation from "../components/Navigation";
+import Navigation from "../../components/Navigation";
 
 export default function Home() {
   return (
     <>
       <Head>
-        <title>Magicians Assistant</title>
+        <title>Sign Up :: Magicians Assistant</title>
         <meta name="description" content="" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <h1>Magicians Assistant</h1>
+        <h1>Sign Up</h1>
         <Navigation />
 
         <p>

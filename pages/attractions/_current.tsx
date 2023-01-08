@@ -1,10 +1,13 @@
 import { useState } from "react";
 import Card from "../../components/Card";
-import { useAttractionsContext } from "../../context";
+import { useDecksContext } from "../../context";
 
-export default function CurrentAttractions() {
-  const { currentAttractions, drawNextCard, sendToJunkyard } =
-    useAttractionsContext();
+export default function CurrentAttractions({
+  currentAttractions = [],
+}: {
+  currentAttractions?: any | any[];
+}) {
+  const { drawNextCard, sendToJunkyard } = useDecksContext();
   const [disabledNextButton, setDisabledNextButton] = useState(false);
 
   const handleNextAttractionClick = () => {
@@ -51,8 +54,7 @@ export default function CurrentAttractions() {
                 ) {
                   sendToJunkyard(attraction?.id);
                 }
-              }}
-            >
+              }}>
               Send &apos;{attraction?.name}&apos; to Junkyard
             </button>
           </div>

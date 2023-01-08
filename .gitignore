@@ -11,6 +11,10 @@ npm-debug.*
 web-build/
 .next/
 .vscode/
+.env.local
 
 # macOS
 .DS_Store
+
+# firebase
+utils/db/firebaseServiceAccountKey.json
