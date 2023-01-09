@@ -38,9 +38,7 @@ export function GameContextWrapper({
   }, [gameStarted, setNeedConfirm]);
 
   return (
-    <GameContext.Provider value={sharedState}>
-      {gameStarted ? children : <StartGame />}
-    </GameContext.Provider>
+    <GameContext.Provider value={sharedState}>{children}</GameContext.Provider>
   );
 }
 

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import type { Card as CardType } from "scryfall-api";
-import Card from "../../components/Card";
+import Card from "../../../components/Card";
 
 export default function TokenListItem({ token }: { token: CardType }) {
   const [viewLargeCard, setViewLargeCard] = useState(false);

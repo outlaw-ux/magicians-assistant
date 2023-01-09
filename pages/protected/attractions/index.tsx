@@ -5,12 +5,11 @@ import Navigation from "../../components/Navigation";
 import CurrentAttractions from "./_current";
 
 export default function AttractionsPage() {
-  const [{ count, data, error, fetching }, reexecute] =
-    useSelect("attractions");
+  // const [{ count, data, error, fetching }] = useSelect("attractions");
 
-  useEffect(() => {
-    console.log("AttractionsPage", { count, data, error, fetching });
-  }, [count, data, error, fetching]);
+  // useEffect(() => {
+  //   console.log("AttractionsPage", { count, data, error, fetching });
+  // }, [count, data, error, fetching]);
 
   return (
     <>
@@ -25,7 +24,7 @@ export default function AttractionsPage() {
         <h1>Unfinity Attractions</h1>
         <Navigation />
 
-        {!fetching && data && <CurrentAttractions currentAttractions={data} />}
+        {/* {!fetching && data && <CurrentAttractions currentAttractions={data} />} */}
       </main>
     </>
   );

@@ -7,7 +7,7 @@ import React, {
   useState,
 } from "react";
 import type { Card } from "scryfall-api";
-import { shuffle, supabase } from "../utils";
+// import { shuffle, supabase } from "../utils";
 
 interface IDecks {
   currentDecks: Card[];
@@ -31,20 +31,20 @@ export function DecksContextWrapper({
   children: React.ReactNode;
 }) {
   const loadDecks = async () => {
-    const { data: attractions, error } = await supabase
-      .from("attractions")
-      .select("*");
+    // const { data: attractions, error } = await supabase
+    //   .from("attractions")
+    //   .select("*");
 
-    console.log(attractions, error);
+    // console.log(attractions, error);
 
-    if (error) {
-      throw new Error(error.message);
-    }
+    // if (error) {
+    //   throw new Error(error.message);
+    // }
 
-    console.log({ attractions });
+    // console.log({ attractions });
 
     setLoaded(true);
-    setDeckDeck(shuffle(attractions));
+    // setDeckDeck(shuffle(attractions));
   };
 
   const [loaded, setLoaded] = useState(false);

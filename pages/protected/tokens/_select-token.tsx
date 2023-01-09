@@ -1,10 +1,10 @@
-import React, { useLayoutEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import type { Card as CardType } from "scryfall-api";
 import DOMPurify from "dompurify";
 import { useDebounce } from "use-debounce";
 import TokenListItem from "./_list-item";
 
-export default function SelectToken() {
+export default function SelectToken({ tokens }: { tokens: CardType[] }) {
   const [searchValue, setSearchValue] = useState<string>();
   const [loading, setLoading] = useState(false);
   const [tokenList, setTokenList] = useState<CardType[]>();
@@ -32,7 +32,8 @@ export default function SelectToken() {
     setSearchValue(value);
   };
 
-  useLayoutEffect(() => {
+  useEffect(() => {
+    console.log({ tokens });
     searchTokenList(debouncedValue);
   }, [debouncedValue]);
 
