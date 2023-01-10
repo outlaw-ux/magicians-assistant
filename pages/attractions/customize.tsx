@@ -40,7 +40,7 @@ export default function AttractionsCustomizeDeck() {
     [supabase, user, setDeckId]
   );
 
-  const selectOrCreateDeck = async () => {
+  const selectOrCreateDeck = useCallback(async () => {
     setLoadingDecks(true);
     return supabase
       .from("decks")
@@ -58,7 +58,15 @@ export default function AttractionsCustomizeDeck() {
           setDeckCardIds(allCardIds);
         }
       });
-  };
+  }, [
+    attractionCards,
+    createDeck,
+    setDeckCardIds,
+    setDeckId,
+    setLoadingDecks,
+    supabase,
+    user,
+  ]);
 
   const handleSaveDeck = useCallback(async () => {
     supabase
@@ -72,7 +80,7 @@ export default function AttractionsCustomizeDeck() {
       .then((output) => {
         console.log("handleSaveDeck", output);
       });
-  }, [deckId, deckCardIds, user]);
+  }, [deckId, deckCardIds, user, supabase]);
 
   const handleCardToggle = useCallback(
     (cardId: Attraction["id"]) => {
@@ -102,6 +110,7 @@ export default function AttractionsCustomizeDeck() {
     attractionCards,
     getAttractionCards,
     loadingAttractions,
+    selectOrCreateDeck,
     setAttractionCards,
     setLoadingAttractions,
     supabase,
@@ -112,8 +121,8 @@ export default function AttractionsCustomizeDeck() {
       <Navigation />
       <h2>Attractions Deck</h2>
       <p>
-        Once you've customized your deck you can save it and access it from{" "}
-        <Link href="/attractions/deck">Your Deck</Link> page
+        {`Once you've customized your deck you can save it and access it from
+        ${(<Link href="/attractions/deck">Your Deck</Link>)} page`}
       </p>
       {loadingAttractions || loadingDecks ? (
         "Loading..."
