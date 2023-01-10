@@ -60,7 +60,7 @@ const OtpSms = () => {
 
   return (
     <form id="auth-magic-link" onSubmit={handleMagicLinkSignIn}>
-      <h3>SMS</h3>
+      <h3>SMS Login</h3>
       <div id="magic-wrapper">
         <div id="magic-form">
           <div id="magic-phone">

@@ -1,20 +1,16 @@
-import { useEffect } from "react";
-import Auth from "../components/Auth";
+import Navigation from "../components/Navigation";
 import { useSupabaseContext } from "../context/Supabase";
-import Game from "./Game";
 
-const Home = () => {
-  const user = useSupabaseContext();
-
-  useEffect(() => {
-    console.log("Home", user);
-  }, [user]);
+export default function Game() {
+  const { user } = useSupabaseContext();
 
   return (
-    <div className="container" style={{ padding: "50px 0 100px 0" }}>
-      !user ? <Auth /> : <Game />}
+    <div id="account-page">
+      <h2>Home Page</h2>
+
+      <Navigation />
+
+      <pre>{JSON.stringify(user, undefined, 2)}</pre>
     </div>
   );
-};
-
-export default Home;
+}

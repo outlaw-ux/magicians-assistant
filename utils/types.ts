@@ -1,0 +1,4 @@
+import { Database } from "./database.types";
+
+export type Attraction = Database["public"]["Tables"]["attractions"]["Row"];
+export type Deck = Database["public"]["Tables"]["decks"]["Row"];
