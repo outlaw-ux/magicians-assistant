@@ -48,7 +48,9 @@ export default function AttractionsCustomizeTableRow({
           </>
         )}
       </td>
-      <td>{card.name}</td>
+      <td>
+        <p>{card.name}</p>
+      </td>
       <td>
         <p style={{ whiteSpace: "pre-wrap" }}>{card.oracle_text}</p>
       </td>

@@ -121,8 +121,8 @@ export default function AttractionsCustomizeDeck() {
       <Navigation />
       <h2>Attractions Deck</h2>
       <p>
-        {`Once you've customized your deck you can save it and access it from
-        ${(<Link href="/attractions/deck">Your Deck</Link>)} page`}
+        Once you&apos;ve customized your deck you can save it and access it from{" "}
+        <Link href="/attractions/deck">Your Deck</Link> page
       </p>
       {loadingAttractions || loadingDecks ? (
         "Loading..."
@@ -148,12 +148,15 @@ export default function AttractionsCustomizeDeck() {
           </tbody>
         </table>
       )}
-      <button
-        onClick={handleSaveDeck}
-        type="button"
-        disabled={deckCardIds.length < 10}>
-        Save
-      </button>
+      <p>
+        <button
+          onClick={handleSaveDeck}
+          type="button"
+          disabled={deckCardIds.length < 10}>
+          Save
+        </button>{" "}
+        {deckCardIds.length < 10 && <span>Gotta have 10 Attractions</span>}
+      </p>
     </div>
   );
 }

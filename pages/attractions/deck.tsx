@@ -44,7 +44,9 @@ export default function AttractionsDeck() {
         ) : deck?.length ? (
           <p>Here is your deck</p>
         ) : (
-          <p>Create a new deck first</p>
+          <p>
+            Create a <Link href="/attractions/customize">new deck</Link> first
+          </p>
         )}
       </pre>
     </div>
