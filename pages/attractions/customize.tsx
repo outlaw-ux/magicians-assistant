@@ -5,12 +5,14 @@ import { useSupabaseContext } from "../../context/Supabase";
 import { Attraction, Deck } from "../../utils/types";
 import AttractionsCustomizeTableRow from "./_table-row";
 import { DECK_TYPE } from "./_constants";
+import { useGameContext } from "../../context";
 
 const filterCards = (cards: any[]) => cards?.map((c) => c.id);
 
 export default function AttractionsCustomizeDeck() {
   const { supabase, user } = useSupabaseContext();
   if (!supabase || !user) throw new Error("How did you even get here?");
+  const { getDeck } = useGameContext();
   const [loadingAttractions, setLoadingAttractions] = useState(false);
   const [loadingDecks, setLoadingDecks] = useState(false);
   const [attractionCards, setAttractionCards] = useState<Attraction[]>([]);
@@ -42,22 +44,19 @@ export default function AttractionsCustomizeDeck() {
 
   const selectOrCreateDeck = useCallback(async () => {
     setLoadingDecks(true);
-    return supabase
-      .from("decks")
-      .select("*")
-      .eq("user_id", user.id)
-      .eq("type", DECK_TYPE)
-      .then(({ data: existingDeck }) => {
-        setLoadingDecks(false);
-        if (existingDeck?.length) {
-          setDeckId(existingDeck[0].id);
-          setDeckCardIds(existingDeck[0].cards);
-        } else {
-          const allCardIds = filterCards(attractionCards);
-          createDeck(allCardIds);
-          setDeckCardIds(allCardIds);
-        }
-      });
+
+    getDeck().then((existingDeck) => {
+      console.log({ existingDeck });
+      setLoadingDecks(false);
+      if (existingDeck?.length) {
+        setDeckId(existingDeck[0].id);
+        setDeckCardIds(existingDeck[0].cards);
+      } else {
+        const allCardIds = filterCards(attractionCards);
+        createDeck(allCardIds);
+        setDeckCardIds(allCardIds);
+      }
+    });
   }, [
     attractionCards,
     createDeck,

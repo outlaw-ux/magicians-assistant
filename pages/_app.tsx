@@ -5,6 +5,7 @@ import { createBrowserSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { SessionContextProvider } from "@supabase/auth-helpers-react";
 import { SupabaseProvider } from "../context/Supabase";
 import { Database } from "../utils/database.types";
+import { GameProvider } from "../context/Game";
 
 function App({
   Component,
@@ -20,7 +21,9 @@ function App({
       supabaseClient={supabaseClient}
       initialSession={pageProps.initialSession}>
       <SupabaseProvider>
-        <Component {...pageProps} />
+        <GameProvider>
+          <Component {...pageProps} />
+        </GameProvider>
       </SupabaseProvider>
     </SessionContextProvider>
   );
