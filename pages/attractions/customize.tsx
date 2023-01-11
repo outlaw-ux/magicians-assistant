@@ -4,8 +4,8 @@ import Navigation from "../../components/Navigation";
 import { useSupabaseContext } from "../../context/Supabase";
 import { Attraction, Deck } from "../../utils/types";
 import AttractionsCustomizeTableRow from "./_table-row";
+import { DECK_TYPE } from "./_constants";
 
-const DECK_TYPE = "attractions";
 const filterCards = (cards: any[]) => cards?.map((c) => c.id);
 
 export default function AttractionsCustomizeDeck() {

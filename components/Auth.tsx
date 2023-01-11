@@ -1,11 +1,7 @@
 import OtpSms from "./OtpSms";
 
 const Auth = () => {
-  return (
-    <>
-      <OtpSms />
-    </>
-  );
+  return <OtpSms />;
 };
 
 export default Auth;

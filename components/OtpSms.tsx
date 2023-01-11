@@ -92,7 +92,7 @@ const OtpSms = () => {
             />
           </div>
           <button type="submit" disabled={loading}>
-            Sign In
+            {sent ? "Sign In" : "Send Token"}
           </button>
         </div>
         {message && <span id="magic-response-message">{message}</span>}
