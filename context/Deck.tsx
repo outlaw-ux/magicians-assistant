@@ -1,19 +1,27 @@
 import { PostgrestResponse } from "@supabase/supabase-js";
 import React, { createContext, useCallback, useContext, useState } from "react";
-import type { Attraction, Deck, DeckTypes } from "../utils/types";
+import type {
+  Attraction,
+  Deck,
+  DeckTypes,
+  SchemeCard,
+  StickerCard,
+  TokenCard,
+} from "../utils/types";
 import { useCardsContext } from "./Cards";
 import { useSupabaseContext } from "./Supabase";
 
 type DeckState = { [type: string]: Deck[] };
+type CardTypes = Attraction | SchemeCard | TokenCard | StickerCard;
 
 interface IDeck {
   loadingDecks: boolean;
   getDecks: (type: DeckTypes) => Promise<Deck[] | null>;
   updateDeck: (
     deckId: Deck["id"],
-    cards: { selected: boolean; card: Attraction }[],
+    cards: { selected: boolean; card: CardTypes }[],
     name: Deck["name"]
-  ) => Promise<void>;
+  ) => Promise<void | PostgrestResponse<undefined>>;
 }
 
 const defaultContext: IDeck = {
@@ -35,12 +43,8 @@ export function DeckProvider({ children }: { children: React.ReactNode }) {
   const [decks, setDecks] = useState<DeckState>();
   const [loadingDecks, setLoadingDecks] = useState(false);
 
-  const updateDeck = useCallback(
-    async (
-      deckId: Deck["id"],
-      cards: { selected: boolean; card: Attraction }[],
-      name: Deck["name"]
-    ) => {
+  const updateDeck: IDeck["updateDeck"] = useCallback(
+    async (deckId, cards, name) => {
       setDecks((deck) => {
         if (deck) {
           const updatedDeck: DeckState = {};
@@ -56,22 +60,18 @@ export function DeckProvider({ children }: { children: React.ReactNode }) {
         }
         return deck;
       });
-      supabase
-        .from("decks")
-        .upsert({
-          id: deckId,
-          cards: JSON.stringify(cards),
-          name,
-        })
-        .then((output) => {
-          console.log("updateDeck", output);
-        });
+
+      return supabase.from("decks").upsert({
+        id: deckId,
+        cards: JSON.stringify(cards),
+        name,
+      });
     },
     [supabase]
   );
 
   const createDeck = useCallback(
-    async (type: DeckTypes, cards: Attraction[]) => {
+    async (type: DeckTypes, cards: CardTypes[]) => {
       const { data: deckData, error: deckError } = await supabase
         .from("decks")
         .insert({

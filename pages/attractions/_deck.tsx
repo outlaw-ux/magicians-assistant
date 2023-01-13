@@ -75,10 +75,6 @@ export default function AttractionsDeck() {
     }
   }, [supabase, user, getDecks, availableCards]);
 
-  useLayoutEffect(() => {
-    console.log({ reverseOrderOngoingCards });
-  }, [reverseOrderOngoingCards]);
-
   return (
     <div id="attractions-page">
       {loadingDecks ? (

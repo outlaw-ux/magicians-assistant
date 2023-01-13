@@ -13,7 +13,7 @@ export default function Navigation() {
           <Link href="/attractions">Attractions</Link>
         </li>
         <li>
-          <Link href="/decks">Decks</Link>
+          <Link href="/schemes">Schemes</Link>
         </li>
       </ul>
 
