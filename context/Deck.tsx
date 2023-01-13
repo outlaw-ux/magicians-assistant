@@ -1,6 +1,5 @@
 import { PostgrestResponse } from "@supabase/supabase-js";
 import React, { createContext, useCallback, useContext, useState } from "react";
-import { collapseTextChangeRangesAcrossMultipleVersions } from "typescript";
 import type { Attraction, Deck, DeckTypes } from "../utils/types";
 import { useCardsContext } from "./Cards";
 import { useSupabaseContext } from "./Supabase";
@@ -32,7 +31,7 @@ const DeckContext = createContext(defaultContext);
 export function DeckProvider({ children }: { children: React.ReactNode }) {
   const { supabase, user } = useSupabaseContext();
   if (!supabase || !user) throw new Error("How did you even get here?");
-  const { getCardsByType, loadingCards } = useCardsContext();
+  const { getCardsByType } = useCardsContext();
   const [decks, setDecks] = useState<DeckState>();
   const [loadingDecks, setLoadingDecks] = useState(false);
 

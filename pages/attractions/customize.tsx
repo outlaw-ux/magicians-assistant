@@ -18,10 +18,10 @@ export default function AttractionsCustomizeDeck() {
         }
       });
     }
-  }, [attractionDeck]);
+  }, [attractionDeck, getDecks]);
 
   const cards = useMemo(
-    (): Attraction[] =>
+    (): { selected: boolean; card: Attraction }[] =>
       attractionDeck?.cards ? JSON.parse(attractionDeck?.cards) : [],
     [attractionDeck]
   );
@@ -39,7 +39,7 @@ export default function AttractionsCustomizeDeck() {
         }
       }
     },
-    [attractionDeck, cards]
+    [attractionDeck, cards, updateDeck]
   );
 
   return (
