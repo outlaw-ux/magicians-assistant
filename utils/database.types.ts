@@ -9,1435 +9,1470 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
-      attractions: {
+      cards_attractions: {
         Row: {
-          object: string | null
-          id: string
-          oracle_id: string | null
-          "multiverse_ids/0": number | null
-          tcgplayer_id: number | null
-          name: string | null
-          lang: string | null
-          released_at: string | null
-          uri: string | null
-          scryfall_uri: string | null
-          layout: string | null
-          highres_image: boolean | null
-          image_status: string | null
-          "image_uris/small": string | null
-          "image_uris/normal": string | null
-          "image_uris/large": string | null
-          "image_uris/png": string | null
-          "image_uris/art_crop": string | null
-          "image_uris/border_crop": string | null
-          mana_cost: string | null
-          cmc: string | null
-          type_line: string | null
-          oracle_text: string | null
-          "all_parts/0/object": string | null
-          "all_parts/0/id": string | null
           "all_parts/0/component": string | null
+          "all_parts/0/id": string | null
           "all_parts/0/name": string | null
+          "all_parts/0/object": string | null
           "all_parts/0/type_line": string | null
           "all_parts/0/uri": string | null
-          "all_parts/1/object": string | null
-          "all_parts/1/id": string | null
           "all_parts/1/component": string | null
+          "all_parts/1/id": string | null
           "all_parts/1/name": string | null
+          "all_parts/1/object": string | null
           "all_parts/1/type_line": string | null
           "all_parts/1/uri": string | null
-          "legalities/standard": string | null
-          "legalities/future": string | null
-          "legalities/historic": string | null
-          "legalities/gladiator": string | null
-          "legalities/pioneer": string | null
-          "legalities/explorer": string | null
-          "legalities/modern": string | null
-          "legalities/legacy": string | null
-          "legalities/pauper": string | null
-          "legalities/vintage": string | null
-          "legalities/penny": string | null
-          "legalities/commander": string | null
-          "legalities/brawl": string | null
-          "legalities/historicbrawl": string | null
-          "legalities/alchemy": string | null
-          "legalities/paupercommander": string | null
-          "legalities/duel": string | null
-          "legalities/oldschool": string | null
-          "legalities/premodern": string | null
-          "games/0": string | null
-          reserved: boolean | null
-          foil: boolean | null
-          nonfoil: boolean | null
-          "finishes/0": string | null
-          "finishes/1": string | null
-          oversized: boolean | null
-          promo: boolean | null
-          reprint: boolean | null
-          variation: boolean | null
-          set_id: string | null
-          set: string | null
-          set_name: string | null
-          set_type: string | null
-          set_uri: string | null
-          set_search_uri: string | null
-          scryfall_set_uri: string | null
-          rulings_uri: string | null
-          prints_search_uri: string | null
-          collector_number: string | null
-          digital: boolean | null
-          rarity: string | null
-          flavor_text: string | null
-          "attraction_lights/0": number | null
-          "attraction_lights/1": number | null
-          card_back_id: string | null
+          "all_parts/2/component": string | null
+          "all_parts/2/id": string | null
+          "all_parts/2/name": string | null
+          "all_parts/2/object": string | null
+          "all_parts/2/type_line": string | null
+          "all_parts/2/uri": string | null
+          "all_parts/3/component": string | null
+          "all_parts/3/id": string | null
+          "all_parts/3/name": string | null
+          "all_parts/3/object": string | null
+          "all_parts/3/type_line": string | null
+          "all_parts/3/uri": string | null
+          "all_parts/4/component": string | null
+          "all_parts/4/id": string | null
+          "all_parts/4/name": string | null
+          "all_parts/4/object": string | null
+          "all_parts/4/type_line": string | null
+          "all_parts/4/uri": string | null
+          "all_parts/5/component": string | null
+          "all_parts/5/id": string | null
+          "all_parts/5/name": string | null
+          "all_parts/5/object": string | null
+          "all_parts/5/type_line": string | null
+          "all_parts/5/uri": string | null
+          "all_parts/6/component": string | null
+          "all_parts/6/id": string | null
+          "all_parts/6/name": string | null
+          "all_parts/6/object": string | null
+          "all_parts/6/type_line": string | null
+          "all_parts/6/uri": string | null
           artist: string | null
           "artist_ids/0": string | null
-          illustration_id: string | null
+          "attraction_lights/0": number | null
+          "attraction_lights/1": number | null
+          "attraction_lights/2": string | null
+          "attraction_lights/3": string | null
+          booster: boolean | null
           border_color: string | null
+          card_back_id: string | null
+          cardmarket_id: string | null
+          cmc: string | null
+          collector_number: string | null
+          digital: boolean | null
+          edhrec_rank: number | null
+          "finishes/0": string | null
+          "finishes/1": string | null
+          flavor_text: string | null
+          foil: boolean | null
           frame: number | null
           full_art: boolean | null
-          textless: boolean | null
-          booster: boolean | null
-          story_spotlight: boolean | null
-          edhrec_rank: number | null
+          "games/0": string | null
+          highres_image: boolean | null
+          id: string
+          illustration_id: string | null
+          image_status: string | null
+          "image_uris/art_crop": string | null
+          "image_uris/border_crop": string | null
+          "image_uris/large": string | null
+          "image_uris/normal": string | null
+          "image_uris/png": string | null
+          "image_uris/small": string | null
+          "keywords/0": string | null
+          "keywords/1": string | null
+          lang: string | null
+          layout: string | null
+          "legalities/alchemy": string | null
+          "legalities/brawl": string | null
+          "legalities/commander": string | null
+          "legalities/duel": string | null
+          "legalities/explorer": string | null
+          "legalities/future": string | null
+          "legalities/gladiator": string | null
+          "legalities/historic": string | null
+          "legalities/historicbrawl": string | null
+          "legalities/legacy": string | null
+          "legalities/modern": string | null
+          "legalities/oldschool": string | null
+          "legalities/pauper": string | null
+          "legalities/paupercommander": string | null
+          "legalities/penny": string | null
+          "legalities/pioneer": string | null
+          "legalities/premodern": string | null
+          "legalities/standard": string | null
+          "legalities/vintage": string | null
+          mana_cost: string | null
+          "multiverse_ids/0": number | null
+          name: string | null
+          nonfoil: boolean | null
+          object: string | null
+          oracle_id: string | null
+          oracle_text: string | null
+          oversized: boolean | null
+          "preview/previewed_at": string | null
           "preview/source": string | null
           "preview/source_uri": string | null
-          "preview/previewed_at": string | null
-          "prices/usd": number | null
-          "prices/usd_foil": number | null
-          "prices/usd_etched": string | null
           "prices/eur": string | null
           "prices/eur_foil": string | null
           "prices/tix": string | null
+          "prices/usd": number | null
+          "prices/usd_etched": string | null
+          "prices/usd_foil": number | null
+          prints_search_uri: string | null
+          promo: boolean | null
+          "purchase_uris/cardhoarder": string | null
+          "purchase_uris/cardmarket": string | null
+          "purchase_uris/tcgplayer": string | null
+          rarity: string | null
+          "related_uris/edhrec": string | null
           "related_uris/gatherer": string | null
           "related_uris/tcgplayer_infinite_articles": string | null
           "related_uris/tcgplayer_infinite_decks": string | null
-          "related_uris/edhrec": string | null
-          "purchase_uris/tcgplayer": string | null
-          "purchase_uris/cardmarket": string | null
-          "purchase_uris/cardhoarder": string | null
-          "attraction_lights/2": string | null
+          released_at: string | null
+          reprint: boolean | null
+          reserved: boolean | null
+          rulings_uri: string | null
+          scryfall_set_uri: string | null
+          scryfall_uri: string | null
           security_stamp: string | null
-          "attraction_lights/3": string | null
-          cardmarket_id: string | null
-          "keywords/0": string | null
-          "all_parts/2/object": string | null
-          "all_parts/2/id": string | null
-          "all_parts/2/component": string | null
-          "all_parts/2/name": string | null
-          "all_parts/2/type_line": string | null
-          "all_parts/2/uri": string | null
-          "all_parts/3/object": string | null
-          "all_parts/3/id": string | null
-          "all_parts/3/component": string | null
-          "all_parts/3/name": string | null
-          "all_parts/3/type_line": string | null
-          "all_parts/3/uri": string | null
-          "all_parts/4/object": string | null
-          "all_parts/4/id": string | null
-          "all_parts/4/component": string | null
-          "all_parts/4/name": string | null
-          "all_parts/4/type_line": string | null
-          "all_parts/4/uri": string | null
-          "all_parts/5/object": string | null
-          "all_parts/5/id": string | null
-          "all_parts/5/component": string | null
-          "all_parts/5/name": string | null
-          "all_parts/5/type_line": string | null
-          "all_parts/5/uri": string | null
-          "all_parts/6/object": string | null
-          "all_parts/6/id": string | null
-          "all_parts/6/component": string | null
-          "all_parts/6/name": string | null
-          "all_parts/6/type_line": string | null
-          "all_parts/6/uri": string | null
-          "keywords/1": string | null
+          set: string | null
+          set_id: string | null
+          set_name: string | null
+          set_search_uri: string | null
+          set_type: string | null
+          set_uri: string | null
+          story_spotlight: boolean | null
+          tcgplayer_id: number | null
+          textless: boolean | null
+          type_line: string | null
+          uri: string | null
+          variation: boolean | null
         }
         Insert: {
-          object?: string | null
-          id: string
-          oracle_id?: string | null
-          "multiverse_ids/0"?: number | null
-          tcgplayer_id?: number | null
-          name?: string | null
-          lang?: string | null
-          released_at?: string | null
-          uri?: string | null
-          scryfall_uri?: string | null
-          layout?: string | null
-          highres_image?: boolean | null
-          image_status?: string | null
-          "image_uris/small"?: string | null
-          "image_uris/normal"?: string | null
-          "image_uris/large"?: string | null
-          "image_uris/png"?: string | null
-          "image_uris/art_crop"?: string | null
-          "image_uris/border_crop"?: string | null
-          mana_cost?: string | null
-          cmc?: string | null
-          type_line?: string | null
-          oracle_text?: string | null
-          "all_parts/0/object"?: string | null
-          "all_parts/0/id"?: string | null
           "all_parts/0/component"?: string | null
+          "all_parts/0/id"?: string | null
           "all_parts/0/name"?: string | null
+          "all_parts/0/object"?: string | null
           "all_parts/0/type_line"?: string | null
           "all_parts/0/uri"?: string | null
-          "all_parts/1/object"?: string | null
-          "all_parts/1/id"?: string | null
           "all_parts/1/component"?: string | null
+          "all_parts/1/id"?: string | null
           "all_parts/1/name"?: string | null
+          "all_parts/1/object"?: string | null
           "all_parts/1/type_line"?: string | null
           "all_parts/1/uri"?: string | null
-          "legalities/standard"?: string | null
-          "legalities/future"?: string | null
-          "legalities/historic"?: string | null
-          "legalities/gladiator"?: string | null
-          "legalities/pioneer"?: string | null
-          "legalities/explorer"?: string | null
-          "legalities/modern"?: string | null
-          "legalities/legacy"?: string | null
-          "legalities/pauper"?: string | null
-          "legalities/vintage"?: string | null
-          "legalities/penny"?: string | null
-          "legalities/commander"?: string | null
-          "legalities/brawl"?: string | null
-          "legalities/historicbrawl"?: string | null
-          "legalities/alchemy"?: string | null
-          "legalities/paupercommander"?: string | null
-          "legalities/duel"?: string | null
-          "legalities/oldschool"?: string | null
-          "legalities/premodern"?: string | null
-          "games/0"?: string | null
-          reserved?: boolean | null
-          foil?: boolean | null
-          nonfoil?: boolean | null
-          "finishes/0"?: string | null
-          "finishes/1"?: string | null
-          oversized?: boolean | null
-          promo?: boolean | null
-          reprint?: boolean | null
-          variation?: boolean | null
-          set_id?: string | null
-          set?: string | null
-          set_name?: string | null
-          set_type?: string | null
-          set_uri?: string | null
-          set_search_uri?: string | null
-          scryfall_set_uri?: string | null
-          rulings_uri?: string | null
-          prints_search_uri?: string | null
-          collector_number?: string | null
-          digital?: boolean | null
-          rarity?: string | null
-          flavor_text?: string | null
-          "attraction_lights/0"?: number | null
-          "attraction_lights/1"?: number | null
-          card_back_id?: string | null
+          "all_parts/2/component"?: string | null
+          "all_parts/2/id"?: string | null
+          "all_parts/2/name"?: string | null
+          "all_parts/2/object"?: string | null
+          "all_parts/2/type_line"?: string | null
+          "all_parts/2/uri"?: string | null
+          "all_parts/3/component"?: string | null
+          "all_parts/3/id"?: string | null
+          "all_parts/3/name"?: string | null
+          "all_parts/3/object"?: string | null
+          "all_parts/3/type_line"?: string | null
+          "all_parts/3/uri"?: string | null
+          "all_parts/4/component"?: string | null
+          "all_parts/4/id"?: string | null
+          "all_parts/4/name"?: string | null
+          "all_parts/4/object"?: string | null
+          "all_parts/4/type_line"?: string | null
+          "all_parts/4/uri"?: string | null
+          "all_parts/5/component"?: string | null
+          "all_parts/5/id"?: string | null
+          "all_parts/5/name"?: string | null
+          "all_parts/5/object"?: string | null
+          "all_parts/5/type_line"?: string | null
+          "all_parts/5/uri"?: string | null
+          "all_parts/6/component"?: string | null
+          "all_parts/6/id"?: string | null
+          "all_parts/6/name"?: string | null
+          "all_parts/6/object"?: string | null
+          "all_parts/6/type_line"?: string | null
+          "all_parts/6/uri"?: string | null
           artist?: string | null
           "artist_ids/0"?: string | null
-          illustration_id?: string | null
+          "attraction_lights/0"?: number | null
+          "attraction_lights/1"?: number | null
+          "attraction_lights/2"?: string | null
+          "attraction_lights/3"?: string | null
+          booster?: boolean | null
           border_color?: string | null
+          card_back_id?: string | null
+          cardmarket_id?: string | null
+          cmc?: string | null
+          collector_number?: string | null
+          digital?: boolean | null
+          edhrec_rank?: number | null
+          "finishes/0"?: string | null
+          "finishes/1"?: string | null
+          flavor_text?: string | null
+          foil?: boolean | null
           frame?: number | null
           full_art?: boolean | null
-          textless?: boolean | null
-          booster?: boolean | null
-          story_spotlight?: boolean | null
-          edhrec_rank?: number | null
+          "games/0"?: string | null
+          highres_image?: boolean | null
+          id: string
+          illustration_id?: string | null
+          image_status?: string | null
+          "image_uris/art_crop"?: string | null
+          "image_uris/border_crop"?: string | null
+          "image_uris/large"?: string | null
+          "image_uris/normal"?: string | null
+          "image_uris/png"?: string | null
+          "image_uris/small"?: string | null
+          "keywords/0"?: string | null
+          "keywords/1"?: string | null
+          lang?: string | null
+          layout?: string | null
+          "legalities/alchemy"?: string | null
+          "legalities/brawl"?: string | null
+          "legalities/commander"?: string | null
+          "legalities/duel"?: string | null
+          "legalities/explorer"?: string | null
+          "legalities/future"?: string | null
+          "legalities/gladiator"?: string | null
+          "legalities/historic"?: string | null
+          "legalities/historicbrawl"?: string | null
+          "legalities/legacy"?: string | null
+          "legalities/modern"?: string | null
+          "legalities/oldschool"?: string | null
+          "legalities/pauper"?: string | null
+          "legalities/paupercommander"?: string | null
+          "legalities/penny"?: string | null
+          "legalities/pioneer"?: string | null
+          "legalities/premodern"?: string | null
+          "legalities/standard"?: string | null
+          "legalities/vintage"?: string | null
+          mana_cost?: string | null
+          "multiverse_ids/0"?: number | null
+          name?: string | null
+          nonfoil?: boolean | null
+          object?: string | null
+          oracle_id?: string | null
+          oracle_text?: string | null
+          oversized?: boolean | null
+          "preview/previewed_at"?: string | null
           "preview/source"?: string | null
           "preview/source_uri"?: string | null
-          "preview/previewed_at"?: string | null
-          "prices/usd"?: number | null
-          "prices/usd_foil"?: number | null
-          "prices/usd_etched"?: string | null
           "prices/eur"?: string | null
           "prices/eur_foil"?: string | null
           "prices/tix"?: string | null
+          "prices/usd"?: number | null
+          "prices/usd_etched"?: string | null
+          "prices/usd_foil"?: number | null
+          prints_search_uri?: string | null
+          promo?: boolean | null
+          "purchase_uris/cardhoarder"?: string | null
+          "purchase_uris/cardmarket"?: string | null
+          "purchase_uris/tcgplayer"?: string | null
+          rarity?: string | null
+          "related_uris/edhrec"?: string | null
           "related_uris/gatherer"?: string | null
           "related_uris/tcgplayer_infinite_articles"?: string | null
           "related_uris/tcgplayer_infinite_decks"?: string | null
-          "related_uris/edhrec"?: string | null
-          "purchase_uris/tcgplayer"?: string | null
-          "purchase_uris/cardmarket"?: string | null
-          "purchase_uris/cardhoarder"?: string | null
-          "attraction_lights/2"?: string | null
+          released_at?: string | null
+          reprint?: boolean | null
+          reserved?: boolean | null
+          rulings_uri?: string | null
+          scryfall_set_uri?: string | null
+          scryfall_uri?: string | null
           security_stamp?: string | null
-          "attraction_lights/3"?: string | null
-          cardmarket_id?: string | null
-          "keywords/0"?: string | null
-          "all_parts/2/object"?: string | null
-          "all_parts/2/id"?: string | null
-          "all_parts/2/component"?: string | null
-          "all_parts/2/name"?: string | null
-          "all_parts/2/type_line"?: string | null
-          "all_parts/2/uri"?: string | null
-          "all_parts/3/object"?: string | null
-          "all_parts/3/id"?: string | null
-          "all_parts/3/component"?: string | null
-          "all_parts/3/name"?: string | null
-          "all_parts/3/type_line"?: string | null
-          "all_parts/3/uri"?: string | null
-          "all_parts/4/object"?: string | null
-          "all_parts/4/id"?: string | null
-          "all_parts/4/component"?: string | null
-          "all_parts/4/name"?: string | null
-          "all_parts/4/type_line"?: string | null
-          "all_parts/4/uri"?: string | null
-          "all_parts/5/object"?: string | null
-          "all_parts/5/id"?: string | null
-          "all_parts/5/component"?: string | null
-          "all_parts/5/name"?: string | null
-          "all_parts/5/type_line"?: string | null
-          "all_parts/5/uri"?: string | null
-          "all_parts/6/object"?: string | null
-          "all_parts/6/id"?: string | null
-          "all_parts/6/component"?: string | null
-          "all_parts/6/name"?: string | null
-          "all_parts/6/type_line"?: string | null
-          "all_parts/6/uri"?: string | null
-          "keywords/1"?: string | null
+          set?: string | null
+          set_id?: string | null
+          set_name?: string | null
+          set_search_uri?: string | null
+          set_type?: string | null
+          set_uri?: string | null
+          story_spotlight?: boolean | null
+          tcgplayer_id?: number | null
+          textless?: boolean | null
+          type_line?: string | null
+          uri?: string | null
+          variation?: boolean | null
         }
         Update: {
-          object?: string | null
-          id?: string
-          oracle_id?: string | null
-          "multiverse_ids/0"?: number | null
-          tcgplayer_id?: number | null
-          name?: string | null
-          lang?: string | null
-          released_at?: string | null
-          uri?: string | null
-          scryfall_uri?: string | null
-          layout?: string | null
-          highres_image?: boolean | null
-          image_status?: string | null
-          "image_uris/small"?: string | null
-          "image_uris/normal"?: string | null
-          "image_uris/large"?: string | null
-          "image_uris/png"?: string | null
-          "image_uris/art_crop"?: string | null
-          "image_uris/border_crop"?: string | null
-          mana_cost?: string | null
-          cmc?: string | null
-          type_line?: string | null
-          oracle_text?: string | null
-          "all_parts/0/object"?: string | null
-          "all_parts/0/id"?: string | null
           "all_parts/0/component"?: string | null
+          "all_parts/0/id"?: string | null
           "all_parts/0/name"?: string | null
+          "all_parts/0/object"?: string | null
           "all_parts/0/type_line"?: string | null
           "all_parts/0/uri"?: string | null
-          "all_parts/1/object"?: string | null
-          "all_parts/1/id"?: string | null
           "all_parts/1/component"?: string | null
+          "all_parts/1/id"?: string | null
           "all_parts/1/name"?: string | null
+          "all_parts/1/object"?: string | null
           "all_parts/1/type_line"?: string | null
           "all_parts/1/uri"?: string | null
-          "legalities/standard"?: string | null
-          "legalities/future"?: string | null
-          "legalities/historic"?: string | null
-          "legalities/gladiator"?: string | null
-          "legalities/pioneer"?: string | null
-          "legalities/explorer"?: string | null
-          "legalities/modern"?: string | null
-          "legalities/legacy"?: string | null
-          "legalities/pauper"?: string | null
-          "legalities/vintage"?: string | null
-          "legalities/penny"?: string | null
-          "legalities/commander"?: string | null
-          "legalities/brawl"?: string | null
-          "legalities/historicbrawl"?: string | null
-          "legalities/alchemy"?: string | null
-          "legalities/paupercommander"?: string | null
-          "legalities/duel"?: string | null
-          "legalities/oldschool"?: string | null
-          "legalities/premodern"?: string | null
-          "games/0"?: string | null
-          reserved?: boolean | null
-          foil?: boolean | null
-          nonfoil?: boolean | null
-          "finishes/0"?: string | null
-          "finishes/1"?: string | null
-          oversized?: boolean | null
-          promo?: boolean | null
-          reprint?: boolean | null
-          variation?: boolean | null
-          set_id?: string | null
-          set?: string | null
-          set_name?: string | null
-          set_type?: string | null
-          set_uri?: string | null
-          set_search_uri?: string | null
-          scryfall_set_uri?: string | null
-          rulings_uri?: string | null
-          prints_search_uri?: string | null
-          collector_number?: string | null
-          digital?: boolean | null
-          rarity?: string | null
-          flavor_text?: string | null
-          "attraction_lights/0"?: number | null
-          "attraction_lights/1"?: number | null
-          card_back_id?: string | null
+          "all_parts/2/component"?: string | null
+          "all_parts/2/id"?: string | null
+          "all_parts/2/name"?: string | null
+          "all_parts/2/object"?: string | null
+          "all_parts/2/type_line"?: string | null
+          "all_parts/2/uri"?: string | null
+          "all_parts/3/component"?: string | null
+          "all_parts/3/id"?: string | null
+          "all_parts/3/name"?: string | null
+          "all_parts/3/object"?: string | null
+          "all_parts/3/type_line"?: string | null
+          "all_parts/3/uri"?: string | null
+          "all_parts/4/component"?: string | null
+          "all_parts/4/id"?: string | null
+          "all_parts/4/name"?: string | null
+          "all_parts/4/object"?: string | null
+          "all_parts/4/type_line"?: string | null
+          "all_parts/4/uri"?: string | null
+          "all_parts/5/component"?: string | null
+          "all_parts/5/id"?: string | null
+          "all_parts/5/name"?: string | null
+          "all_parts/5/object"?: string | null
+          "all_parts/5/type_line"?: string | null
+          "all_parts/5/uri"?: string | null
+          "all_parts/6/component"?: string | null
+          "all_parts/6/id"?: string | null
+          "all_parts/6/name"?: string | null
+          "all_parts/6/object"?: string | null
+          "all_parts/6/type_line"?: string | null
+          "all_parts/6/uri"?: string | null
           artist?: string | null
           "artist_ids/0"?: string | null
-          illustration_id?: string | null
+          "attraction_lights/0"?: number | null
+          "attraction_lights/1"?: number | null
+          "attraction_lights/2"?: string | null
+          "attraction_lights/3"?: string | null
+          booster?: boolean | null
           border_color?: string | null
+          card_back_id?: string | null
+          cardmarket_id?: string | null
+          cmc?: string | null
+          collector_number?: string | null
+          digital?: boolean | null
+          edhrec_rank?: number | null
+          "finishes/0"?: string | null
+          "finishes/1"?: string | null
+          flavor_text?: string | null
+          foil?: boolean | null
           frame?: number | null
           full_art?: boolean | null
-          textless?: boolean | null
-          booster?: boolean | null
-          story_spotlight?: boolean | null
-          edhrec_rank?: number | null
+          "games/0"?: string | null
+          highres_image?: boolean | null
+          id?: string
+          illustration_id?: string | null
+          image_status?: string | null
+          "image_uris/art_crop"?: string | null
+          "image_uris/border_crop"?: string | null
+          "image_uris/large"?: string | null
+          "image_uris/normal"?: string | null
+          "image_uris/png"?: string | null
+          "image_uris/small"?: string | null
+          "keywords/0"?: string | null
+          "keywords/1"?: string | null
+          lang?: string | null
+          layout?: string | null
+          "legalities/alchemy"?: string | null
+          "legalities/brawl"?: string | null
+          "legalities/commander"?: string | null
+          "legalities/duel"?: string | null
+          "legalities/explorer"?: string | null
+          "legalities/future"?: string | null
+          "legalities/gladiator"?: string | null
+          "legalities/historic"?: string | null
+          "legalities/historicbrawl"?: string | null
+          "legalities/legacy"?: string | null
+          "legalities/modern"?: string | null
+          "legalities/oldschool"?: string | null
+          "legalities/pauper"?: string | null
+          "legalities/paupercommander"?: string | null
+          "legalities/penny"?: string | null
+          "legalities/pioneer"?: string | null
+          "legalities/premodern"?: string | null
+          "legalities/standard"?: string | null
+          "legalities/vintage"?: string | null
+          mana_cost?: string | null
+          "multiverse_ids/0"?: number | null
+          name?: string | null
+          nonfoil?: boolean | null
+          object?: string | null
+          oracle_id?: string | null
+          oracle_text?: string | null
+          oversized?: boolean | null
+          "preview/previewed_at"?: string | null
           "preview/source"?: string | null
           "preview/source_uri"?: string | null
-          "preview/previewed_at"?: string | null
-          "prices/usd"?: number | null
-          "prices/usd_foil"?: number | null
-          "prices/usd_etched"?: string | null
           "prices/eur"?: string | null
           "prices/eur_foil"?: string | null
           "prices/tix"?: string | null
+          "prices/usd"?: number | null
+          "prices/usd_etched"?: string | null
+          "prices/usd_foil"?: number | null
+          prints_search_uri?: string | null
+          promo?: boolean | null
+          "purchase_uris/cardhoarder"?: string | null
+          "purchase_uris/cardmarket"?: string | null
+          "purchase_uris/tcgplayer"?: string | null
+          rarity?: string | null
+          "related_uris/edhrec"?: string | null
           "related_uris/gatherer"?: string | null
           "related_uris/tcgplayer_infinite_articles"?: string | null
           "related_uris/tcgplayer_infinite_decks"?: string | null
-          "related_uris/edhrec"?: string | null
-          "purchase_uris/tcgplayer"?: string | null
-          "purchase_uris/cardmarket"?: string | null
-          "purchase_uris/cardhoarder"?: string | null
-          "attraction_lights/2"?: string | null
+          released_at?: string | null
+          reprint?: boolean | null
+          reserved?: boolean | null
+          rulings_uri?: string | null
+          scryfall_set_uri?: string | null
+          scryfall_uri?: string | null
           security_stamp?: string | null
-          "attraction_lights/3"?: string | null
-          cardmarket_id?: string | null
-          "keywords/0"?: string | null
-          "all_parts/2/object"?: string | null
-          "all_parts/2/id"?: string | null
-          "all_parts/2/component"?: string | null
-          "all_parts/2/name"?: string | null
-          "all_parts/2/type_line"?: string | null
-          "all_parts/2/uri"?: string | null
-          "all_parts/3/object"?: string | null
-          "all_parts/3/id"?: string | null
-          "all_parts/3/component"?: string | null
-          "all_parts/3/name"?: string | null
-          "all_parts/3/type_line"?: string | null
-          "all_parts/3/uri"?: string | null
-          "all_parts/4/object"?: string | null
-          "all_parts/4/id"?: string | null
-          "all_parts/4/component"?: string | null
-          "all_parts/4/name"?: string | null
-          "all_parts/4/type_line"?: string | null
-          "all_parts/4/uri"?: string | null
-          "all_parts/5/object"?: string | null
-          "all_parts/5/id"?: string | null
-          "all_parts/5/component"?: string | null
-          "all_parts/5/name"?: string | null
-          "all_parts/5/type_line"?: string | null
-          "all_parts/5/uri"?: string | null
-          "all_parts/6/object"?: string | null
-          "all_parts/6/id"?: string | null
-          "all_parts/6/component"?: string | null
-          "all_parts/6/name"?: string | null
-          "all_parts/6/type_line"?: string | null
-          "all_parts/6/uri"?: string | null
-          "keywords/1"?: string | null
+          set?: string | null
+          set_id?: string | null
+          set_name?: string | null
+          set_search_uri?: string | null
+          set_type?: string | null
+          set_uri?: string | null
+          story_spotlight?: boolean | null
+          tcgplayer_id?: number | null
+          textless?: boolean | null
+          type_line?: string | null
+          uri?: string | null
+          variation?: boolean | null
         }
       }
       decks: {
         Row: {
-          id: number
+          cards: string | null
           created_at: string | null
-          user_id: string | null
+          id: number
+          name: string
           type: string | null
-          cards: Json | null
+          user_id: string | null
         }
         Insert: {
-          id?: number
+          cards?: string | null
           created_at?: string | null
-          user_id?: string | null
+          id?: number
+          name?: string
           type?: string | null
-          cards?: Json | null
+          user_id?: string | null
         }
         Update: {
-          id?: number
+          cards?: string | null
           created_at?: string | null
-          user_id?: string | null
+          id?: number
+          name?: string
           type?: string | null
-          cards?: Json | null
+          user_id?: string | null
+        }
+      }
+      games: {
+        Row: {
+          counters: Json | null
+          created_at: string | null
+          decks: Json | null
+          id: string
+          players: Json | null
+          starting_life: number | null
+          teams: Json | null
+          variant: string | null
+        }
+        Insert: {
+          counters?: Json | null
+          created_at?: string | null
+          decks?: Json | null
+          id?: string
+          players?: Json | null
+          starting_life?: number | null
+          teams?: Json | null
+          variant?: string | null
+        }
+        Update: {
+          counters?: Json | null
+          created_at?: string | null
+          decks?: Json | null
+          id?: string
+          players?: Json | null
+          starting_life?: number | null
+          teams?: Json | null
+          variant?: string | null
         }
       }
       profiles: {
         Row: {
+          avatar_url: string | null
+          full_name: string | null
           id: string
           updated_at: string | null
           username: string | null
-          full_name: string | null
-          avatar_url: string | null
           website: string | null
         }
         Insert: {
+          avatar_url?: string | null
+          full_name?: string | null
           id: string
           updated_at?: string | null
           username?: string | null
-          full_name?: string | null
-          avatar_url?: string | null
           website?: string | null
         }
         Update: {
+          avatar_url?: string | null
+          full_name?: string | null
           id?: string
           updated_at?: string | null
           username?: string | null
-          full_name?: string | null
-          avatar_url?: string | null
           website?: string | null
         }
       }
       schemes: {
         Row: {
-          object: string | null
-          id: string
-          oracle_id: string | null
-          "multiverse_ids/0": number | null
-          tcgplayer_id: number | null
+          "all_parts/0/component": string | null
+          "all_parts/0/id": string | null
+          "all_parts/0/name": string | null
+          "all_parts/0/object": string | null
+          "all_parts/0/type_line": string | null
+          "all_parts/0/uri": string | null
+          "all_parts/1/component": string | null
+          "all_parts/1/id": string | null
+          "all_parts/1/name": string | null
+          "all_parts/1/object": string | null
+          "all_parts/1/type_line": string | null
+          "all_parts/1/uri": string | null
+          artist: string | null
+          "artist_ids/0": string | null
+          booster: boolean | null
+          border_color: string | null
+          card_back_id: string | null
           cardmarket_id: number | null
-          name: string | null
-          lang: string | null
-          released_at: string | null
-          uri: string | null
-          scryfall_uri: string | null
-          layout: string | null
+          cmc: string | null
+          collector_number: string | null
+          "color_identity/0": string | null
+          "color_identity/1": string | null
+          "color_identity/2": string | null
+          digital: boolean | null
+          "finishes/0": string | null
+          flavor_text: Json | null
+          foil: boolean | null
+          frame: number | null
+          full_art: boolean | null
+          "games/0": string | null
           highres_image: boolean | null
+          id: string
+          illustration_id: string | null
           image_status: string | null
-          "image_uris/small": string | null
-          "image_uris/normal": string | null
-          "image_uris/large": string | null
-          "image_uris/png": string | null
           "image_uris/art_crop": string | null
           "image_uris/border_crop": string | null
+          "image_uris/large": string | null
+          "image_uris/normal": string | null
+          "image_uris/png": string | null
+          "image_uris/small": string | null
+          lang: string | null
+          layout: string | null
+          "legalities/alchemy": string | null
+          "legalities/brawl": string | null
+          "legalities/commander": string | null
+          "legalities/duel": string | null
+          "legalities/explorer": string | null
+          "legalities/future": string | null
+          "legalities/gladiator": string | null
+          "legalities/historic": string | null
+          "legalities/historicbrawl": string | null
+          "legalities/legacy": string | null
+          "legalities/modern": string | null
+          "legalities/oldschool": string | null
+          "legalities/pauper": string | null
+          "legalities/paupercommander": string | null
+          "legalities/penny": string | null
+          "legalities/pioneer": string | null
+          "legalities/premodern": string | null
+          "legalities/standard": string | null
+          "legalities/vintage": string | null
           mana_cost: string | null
-          cmc: string | null
-          type_line: string | null
+          "multiverse_ids/0": number | null
+          name: string | null
+          nonfoil: boolean | null
+          object: string | null
+          oracle_id: string | null
           oracle_text: string | null
+          oversized: boolean | null
+          "prices/eur": number | null
+          "prices/eur_foil": string | null
+          "prices/tix": string | null
+          "prices/usd": number | null
+          "prices/usd_etched": string | null
+          "prices/usd_foil": string | null
+          prints_search_uri: string | null
           "produced_mana/0": string | null
           "produced_mana/1": string | null
           "produced_mana/2": string | null
           "produced_mana/3": string | null
           "produced_mana/4": string | null
-          "legalities/standard": string | null
-          "legalities/future": string | null
-          "legalities/historic": string | null
-          "legalities/gladiator": string | null
-          "legalities/pioneer": string | null
-          "legalities/explorer": string | null
-          "legalities/modern": string | null
-          "legalities/legacy": string | null
-          "legalities/pauper": string | null
-          "legalities/vintage": string | null
-          "legalities/penny": string | null
-          "legalities/commander": string | null
-          "legalities/brawl": string | null
-          "legalities/historicbrawl": string | null
-          "legalities/alchemy": string | null
-          "legalities/paupercommander": string | null
-          "legalities/duel": string | null
-          "legalities/oldschool": string | null
-          "legalities/premodern": string | null
-          "games/0": string | null
-          reserved: boolean | null
-          foil: boolean | null
-          nonfoil: boolean | null
-          "finishes/0": string | null
-          oversized: boolean | null
           promo: boolean | null
-          reprint: boolean | null
-          variation: boolean | null
-          set_id: string | null
-          set: string | null
-          set_name: string | null
-          set_type: string | null
-          set_uri: string | null
-          set_search_uri: string | null
-          scryfall_set_uri: string | null
-          rulings_uri: string | null
-          prints_search_uri: string | null
-          collector_number: string | null
-          digital: boolean | null
+          "promo_types/0": string | null
+          "purchase_uris/cardhoarder": string | null
+          "purchase_uris/cardmarket": string | null
+          "purchase_uris/tcgplayer": string | null
           rarity: string | null
-          flavor_text: Json | null
-          card_back_id: string | null
-          artist: string | null
-          "artist_ids/0": string | null
-          illustration_id: string | null
-          border_color: string | null
-          frame: number | null
-          full_art: boolean | null
-          textless: boolean | null
-          booster: boolean | null
-          story_spotlight: boolean | null
-          "prices/usd": number | null
-          "prices/usd_foil": string | null
-          "prices/usd_etched": string | null
-          "prices/eur": number | null
-          "prices/eur_foil": string | null
-          "prices/tix": string | null
+          "related_uris/edhrec": string | null
           "related_uris/gatherer": string | null
           "related_uris/tcgplayer_infinite_articles": string | null
           "related_uris/tcgplayer_infinite_decks": string | null
-          "related_uris/edhrec": string | null
-          "purchase_uris/tcgplayer": string | null
-          "purchase_uris/cardmarket": string | null
-          "purchase_uris/cardhoarder": string | null
-          "color_identity/0": string | null
-          "color_identity/1": string | null
-          "color_identity/2": string | null
-          "all_parts/0/object": string | null
-          "all_parts/0/id": string | null
-          "all_parts/0/component": string | null
-          "all_parts/0/name": string | null
-          "all_parts/0/type_line": string | null
-          "all_parts/0/uri": string | null
-          "all_parts/1/object": string | null
-          "all_parts/1/id": string | null
-          "all_parts/1/component": string | null
-          "all_parts/1/name": string | null
-          "all_parts/1/type_line": string | null
-          "all_parts/1/uri": string | null
-          "promo_types/0": string | null
+          released_at: string | null
+          reprint: boolean | null
+          reserved: boolean | null
+          rulings_uri: string | null
+          scryfall_set_uri: string | null
+          scryfall_uri: string | null
+          set: string | null
+          set_id: string | null
+          set_name: string | null
+          set_search_uri: string | null
+          set_type: string | null
+          set_uri: string | null
+          story_spotlight: boolean | null
+          tcgplayer_id: number | null
+          textless: boolean | null
+          type_line: string | null
+          uri: string | null
+          variation: boolean | null
         }
         Insert: {
-          object?: string | null
-          id: string
-          oracle_id?: string | null
-          "multiverse_ids/0"?: number | null
-          tcgplayer_id?: number | null
+          "all_parts/0/component"?: string | null
+          "all_parts/0/id"?: string | null
+          "all_parts/0/name"?: string | null
+          "all_parts/0/object"?: string | null
+          "all_parts/0/type_line"?: string | null
+          "all_parts/0/uri"?: string | null
+          "all_parts/1/component"?: string | null
+          "all_parts/1/id"?: string | null
+          "all_parts/1/name"?: string | null
+          "all_parts/1/object"?: string | null
+          "all_parts/1/type_line"?: string | null
+          "all_parts/1/uri"?: string | null
+          artist?: string | null
+          "artist_ids/0"?: string | null
+          booster?: boolean | null
+          border_color?: string | null
+          card_back_id?: string | null
           cardmarket_id?: number | null
-          name?: string | null
-          lang?: string | null
-          released_at?: string | null
-          uri?: string | null
-          scryfall_uri?: string | null
-          layout?: string | null
+          cmc?: string | null
+          collector_number?: string | null
+          "color_identity/0"?: string | null
+          "color_identity/1"?: string | null
+          "color_identity/2"?: string | null
+          digital?: boolean | null
+          "finishes/0"?: string | null
+          flavor_text?: Json | null
+          foil?: boolean | null
+          frame?: number | null
+          full_art?: boolean | null
+          "games/0"?: string | null
           highres_image?: boolean | null
+          id: string
+          illustration_id?: string | null
           image_status?: string | null
-          "image_uris/small"?: string | null
-          "image_uris/normal"?: string | null
-          "image_uris/large"?: string | null
-          "image_uris/png"?: string | null
           "image_uris/art_crop"?: string | null
           "image_uris/border_crop"?: string | null
+          "image_uris/large"?: string | null
+          "image_uris/normal"?: string | null
+          "image_uris/png"?: string | null
+          "image_uris/small"?: string | null
+          lang?: string | null
+          layout?: string | null
+          "legalities/alchemy"?: string | null
+          "legalities/brawl"?: string | null
+          "legalities/commander"?: string | null
+          "legalities/duel"?: string | null
+          "legalities/explorer"?: string | null
+          "legalities/future"?: string | null
+          "legalities/gladiator"?: string | null
+          "legalities/historic"?: string | null
+          "legalities/historicbrawl"?: string | null
+          "legalities/legacy"?: string | null
+          "legalities/modern"?: string | null
+          "legalities/oldschool"?: string | null
+          "legalities/pauper"?: string | null
+          "legalities/paupercommander"?: string | null
+          "legalities/penny"?: string | null
+          "legalities/pioneer"?: string | null
+          "legalities/premodern"?: string | null
+          "legalities/standard"?: string | null
+          "legalities/vintage"?: string | null
           mana_cost?: string | null
-          cmc?: string | null
-          type_line?: string | null
+          "multiverse_ids/0"?: number | null
+          name?: string | null
+          nonfoil?: boolean | null
+          object?: string | null
+          oracle_id?: string | null
           oracle_text?: string | null
+          oversized?: boolean | null
+          "prices/eur"?: number | null
+          "prices/eur_foil"?: string | null
+          "prices/tix"?: string | null
+          "prices/usd"?: number | null
+          "prices/usd_etched"?: string | null
+          "prices/usd_foil"?: string | null
+          prints_search_uri?: string | null
           "produced_mana/0"?: string | null
           "produced_mana/1"?: string | null
           "produced_mana/2"?: string | null
           "produced_mana/3"?: string | null
           "produced_mana/4"?: string | null
-          "legalities/standard"?: string | null
-          "legalities/future"?: string | null
-          "legalities/historic"?: string | null
-          "legalities/gladiator"?: string | null
-          "legalities/pioneer"?: string | null
-          "legalities/explorer"?: string | null
-          "legalities/modern"?: string | null
-          "legalities/legacy"?: string | null
-          "legalities/pauper"?: string | null
-          "legalities/vintage"?: string | null
-          "legalities/penny"?: string | null
-          "legalities/commander"?: string | null
-          "legalities/brawl"?: string | null
-          "legalities/historicbrawl"?: string | null
-          "legalities/alchemy"?: string | null
-          "legalities/paupercommander"?: string | null
-          "legalities/duel"?: string | null
-          "legalities/oldschool"?: string | null
-          "legalities/premodern"?: string | null
-          "games/0"?: string | null
-          reserved?: boolean | null
-          foil?: boolean | null
-          nonfoil?: boolean | null
-          "finishes/0"?: string | null
-          oversized?: boolean | null
           promo?: boolean | null
-          reprint?: boolean | null
-          variation?: boolean | null
-          set_id?: string | null
-          set?: string | null
-          set_name?: string | null
-          set_type?: string | null
-          set_uri?: string | null
-          set_search_uri?: string | null
-          scryfall_set_uri?: string | null
-          rulings_uri?: string | null
-          prints_search_uri?: string | null
-          collector_number?: string | null
-          digital?: boolean | null
+          "promo_types/0"?: string | null
+          "purchase_uris/cardhoarder"?: string | null
+          "purchase_uris/cardmarket"?: string | null
+          "purchase_uris/tcgplayer"?: string | null
           rarity?: string | null
-          flavor_text?: Json | null
-          card_back_id?: string | null
-          artist?: string | null
-          "artist_ids/0"?: string | null
-          illustration_id?: string | null
-          border_color?: string | null
-          frame?: number | null
-          full_art?: boolean | null
-          textless?: boolean | null
-          booster?: boolean | null
-          story_spotlight?: boolean | null
-          "prices/usd"?: number | null
-          "prices/usd_foil"?: string | null
-          "prices/usd_etched"?: string | null
-          "prices/eur"?: number | null
-          "prices/eur_foil"?: string | null
-          "prices/tix"?: string | null
+          "related_uris/edhrec"?: string | null
           "related_uris/gatherer"?: string | null
           "related_uris/tcgplayer_infinite_articles"?: string | null
           "related_uris/tcgplayer_infinite_decks"?: string | null
-          "related_uris/edhrec"?: string | null
-          "purchase_uris/tcgplayer"?: string | null
-          "purchase_uris/cardmarket"?: string | null
-          "purchase_uris/cardhoarder"?: string | null
-          "color_identity/0"?: string | null
-          "color_identity/1"?: string | null
-          "color_identity/2"?: string | null
-          "all_parts/0/object"?: string | null
-          "all_parts/0/id"?: string | null
-          "all_parts/0/component"?: string | null
-          "all_parts/0/name"?: string | null
-          "all_parts/0/type_line"?: string | null
-          "all_parts/0/uri"?: string | null
-          "all_parts/1/object"?: string | null
-          "all_parts/1/id"?: string | null
-          "all_parts/1/component"?: string | null
-          "all_parts/1/name"?: string | null
-          "all_parts/1/type_line"?: string | null
-          "all_parts/1/uri"?: string | null
-          "promo_types/0"?: string | null
+          released_at?: string | null
+          reprint?: boolean | null
+          reserved?: boolean | null
+          rulings_uri?: string | null
+          scryfall_set_uri?: string | null
+          scryfall_uri?: string | null
+          set?: string | null
+          set_id?: string | null
+          set_name?: string | null
+          set_search_uri?: string | null
+          set_type?: string | null
+          set_uri?: string | null
+          story_spotlight?: boolean | null
+          tcgplayer_id?: number | null
+          textless?: boolean | null
+          type_line?: string | null
+          uri?: string | null
+          variation?: boolean | null
         }
         Update: {
-          object?: string | null
-          id?: string
-          oracle_id?: string | null
-          "multiverse_ids/0"?: number | null
-          tcgplayer_id?: number | null
+          "all_parts/0/component"?: string | null
+          "all_parts/0/id"?: string | null
+          "all_parts/0/name"?: string | null
+          "all_parts/0/object"?: string | null
+          "all_parts/0/type_line"?: string | null
+          "all_parts/0/uri"?: string | null
+          "all_parts/1/component"?: string | null
+          "all_parts/1/id"?: string | null
+          "all_parts/1/name"?: string | null
+          "all_parts/1/object"?: string | null
+          "all_parts/1/type_line"?: string | null
+          "all_parts/1/uri"?: string | null
+          artist?: string | null
+          "artist_ids/0"?: string | null
+          booster?: boolean | null
+          border_color?: string | null
+          card_back_id?: string | null
           cardmarket_id?: number | null
-          name?: string | null
-          lang?: string | null
-          released_at?: string | null
-          uri?: string | null
-          scryfall_uri?: string | null
-          layout?: string | null
+          cmc?: string | null
+          collector_number?: string | null
+          "color_identity/0"?: string | null
+          "color_identity/1"?: string | null
+          "color_identity/2"?: string | null
+          digital?: boolean | null
+          "finishes/0"?: string | null
+          flavor_text?: Json | null
+          foil?: boolean | null
+          frame?: number | null
+          full_art?: boolean | null
+          "games/0"?: string | null
           highres_image?: boolean | null
+          id?: string
+          illustration_id?: string | null
           image_status?: string | null
-          "image_uris/small"?: string | null
-          "image_uris/normal"?: string | null
-          "image_uris/large"?: string | null
-          "image_uris/png"?: string | null
           "image_uris/art_crop"?: string | null
           "image_uris/border_crop"?: string | null
+          "image_uris/large"?: string | null
+          "image_uris/normal"?: string | null
+          "image_uris/png"?: string | null
+          "image_uris/small"?: string | null
+          lang?: string | null
+          layout?: string | null
+          "legalities/alchemy"?: string | null
+          "legalities/brawl"?: string | null
+          "legalities/commander"?: string | null
+          "legalities/duel"?: string | null
+          "legalities/explorer"?: string | null
+          "legalities/future"?: string | null
+          "legalities/gladiator"?: string | null
+          "legalities/historic"?: string | null
+          "legalities/historicbrawl"?: string | null
+          "legalities/legacy"?: string | null
+          "legalities/modern"?: string | null
+          "legalities/oldschool"?: string | null
+          "legalities/pauper"?: string | null
+          "legalities/paupercommander"?: string | null
+          "legalities/penny"?: string | null
+          "legalities/pioneer"?: string | null
+          "legalities/premodern"?: string | null
+          "legalities/standard"?: string | null
+          "legalities/vintage"?: string | null
           mana_cost?: string | null
-          cmc?: string | null
-          type_line?: string | null
+          "multiverse_ids/0"?: number | null
+          name?: string | null
+          nonfoil?: boolean | null
+          object?: string | null
+          oracle_id?: string | null
           oracle_text?: string | null
+          oversized?: boolean | null
+          "prices/eur"?: number | null
+          "prices/eur_foil"?: string | null
+          "prices/tix"?: string | null
+          "prices/usd"?: number | null
+          "prices/usd_etched"?: string | null
+          "prices/usd_foil"?: string | null
+          prints_search_uri?: string | null
           "produced_mana/0"?: string | null
           "produced_mana/1"?: string | null
           "produced_mana/2"?: string | null
           "produced_mana/3"?: string | null
           "produced_mana/4"?: string | null
-          "legalities/standard"?: string | null
-          "legalities/future"?: string | null
-          "legalities/historic"?: string | null
-          "legalities/gladiator"?: string | null
-          "legalities/pioneer"?: string | null
-          "legalities/explorer"?: string | null
-          "legalities/modern"?: string | null
-          "legalities/legacy"?: string | null
-          "legalities/pauper"?: string | null
-          "legalities/vintage"?: string | null
-          "legalities/penny"?: string | null
-          "legalities/commander"?: string | null
-          "legalities/brawl"?: string | null
-          "legalities/historicbrawl"?: string | null
-          "legalities/alchemy"?: string | null
-          "legalities/paupercommander"?: string | null
-          "legalities/duel"?: string | null
-          "legalities/oldschool"?: string | null
-          "legalities/premodern"?: string | null
-          "games/0"?: string | null
-          reserved?: boolean | null
-          foil?: boolean | null
-          nonfoil?: boolean | null
-          "finishes/0"?: string | null
-          oversized?: boolean | null
           promo?: boolean | null
-          reprint?: boolean | null
-          variation?: boolean | null
-          set_id?: string | null
-          set?: string | null
-          set_name?: string | null
-          set_type?: string | null
-          set_uri?: string | null
-          set_search_uri?: string | null
-          scryfall_set_uri?: string | null
-          rulings_uri?: string | null
-          prints_search_uri?: string | null
-          collector_number?: string | null
-          digital?: boolean | null
+          "promo_types/0"?: string | null
+          "purchase_uris/cardhoarder"?: string | null
+          "purchase_uris/cardmarket"?: string | null
+          "purchase_uris/tcgplayer"?: string | null
           rarity?: string | null
-          flavor_text?: Json | null
-          card_back_id?: string | null
-          artist?: string | null
-          "artist_ids/0"?: string | null
-          illustration_id?: string | null
-          border_color?: string | null
-          frame?: number | null
-          full_art?: boolean | null
-          textless?: boolean | null
-          booster?: boolean | null
-          story_spotlight?: boolean | null
-          "prices/usd"?: number | null
-          "prices/usd_foil"?: string | null
-          "prices/usd_etched"?: string | null
-          "prices/eur"?: number | null
-          "prices/eur_foil"?: string | null
-          "prices/tix"?: string | null
+          "related_uris/edhrec"?: string | null
           "related_uris/gatherer"?: string | null
           "related_uris/tcgplayer_infinite_articles"?: string | null
           "related_uris/tcgplayer_infinite_decks"?: string | null
-          "related_uris/edhrec"?: string | null
-          "purchase_uris/tcgplayer"?: string | null
-          "purchase_uris/cardmarket"?: string | null
-          "purchase_uris/cardhoarder"?: string | null
-          "color_identity/0"?: string | null
-          "color_identity/1"?: string | null
-          "color_identity/2"?: string | null
-          "all_parts/0/object"?: string | null
-          "all_parts/0/id"?: string | null
-          "all_parts/0/component"?: string | null
-          "all_parts/0/name"?: string | null
-          "all_parts/0/type_line"?: string | null
-          "all_parts/0/uri"?: string | null
-          "all_parts/1/object"?: string | null
-          "all_parts/1/id"?: string | null
-          "all_parts/1/component"?: string | null
-          "all_parts/1/name"?: string | null
-          "all_parts/1/type_line"?: string | null
-          "all_parts/1/uri"?: string | null
-          "promo_types/0"?: string | null
+          released_at?: string | null
+          reprint?: boolean | null
+          reserved?: boolean | null
+          rulings_uri?: string | null
+          scryfall_set_uri?: string | null
+          scryfall_uri?: string | null
+          set?: string | null
+          set_id?: string | null
+          set_name?: string | null
+          set_search_uri?: string | null
+          set_type?: string | null
+          set_uri?: string | null
+          story_spotlight?: boolean | null
+          tcgplayer_id?: number | null
+          textless?: boolean | null
+          type_line?: string | null
+          uri?: string | null
+          variation?: boolean | null
         }
       }
       stickers: {
         Row: {
-          object: string | null
-          id: string
-          oracle_id: string | null
-          "multiverse_ids/0": number | null
-          tcgplayer_id: number | null
-          cardmarket_id: number | null
-          name: string | null
-          lang: string | null
-          released_at: string | null
-          uri: string | null
-          scryfall_uri: string | null
-          layout: string | null
-          highres_image: boolean | null
-          image_status: string | null
-          "image_uris/small": string | null
-          "image_uris/normal": string | null
-          "image_uris/large": string | null
-          "image_uris/png": string | null
-          "image_uris/art_crop": string | null
-          "image_uris/border_crop": string | null
-          mana_cost: string | null
-          cmc: string | null
-          type_line: string | null
-          oracle_text: string | null
-          "legalities/standard": string | null
-          "legalities/future": string | null
-          "legalities/historic": string | null
-          "legalities/gladiator": string | null
-          "legalities/pioneer": string | null
-          "legalities/explorer": string | null
-          "legalities/modern": string | null
-          "legalities/legacy": string | null
-          "legalities/pauper": string | null
-          "legalities/vintage": string | null
-          "legalities/penny": string | null
-          "legalities/commander": string | null
-          "legalities/brawl": string | null
-          "legalities/historicbrawl": string | null
-          "legalities/alchemy": string | null
-          "legalities/paupercommander": string | null
-          "legalities/duel": string | null
-          "legalities/oldschool": string | null
-          "legalities/premodern": string | null
-          "games/0": string | null
-          reserved: boolean | null
-          foil: boolean | null
-          nonfoil: boolean | null
-          "finishes/0": string | null
-          "finishes/1": string | null
-          oversized: boolean | null
-          promo: boolean | null
-          reprint: boolean | null
-          variation: boolean | null
-          set_id: string | null
-          set: string | null
-          set_name: string | null
-          set_type: string | null
-          set_uri: string | null
-          set_search_uri: string | null
-          scryfall_set_uri: string | null
-          rulings_uri: string | null
-          prints_search_uri: string | null
-          collector_number: number | null
-          digital: boolean | null
-          rarity: string | null
-          card_back_id: string | null
           artist: string | null
           "artist_ids/0": string | null
           "artist_ids/1": string | null
-          illustration_id: string | null
+          booster: boolean | null
           border_color: string | null
+          card_back_id: string | null
+          cardmarket_id: number | null
+          cmc: string | null
+          collector_number: number | null
+          digital: boolean | null
+          "finishes/0": string | null
+          "finishes/1": string | null
+          foil: boolean | null
           frame: number | null
           full_art: boolean | null
-          textless: boolean | null
-          booster: boolean | null
-          story_spotlight: boolean | null
-          "prices/usd": number | null
-          "prices/usd_foil": string | null
-          "prices/usd_etched": string | null
+          "games/0": string | null
+          highres_image: boolean | null
+          id: string
+          illustration_id: string | null
+          image_status: string | null
+          "image_uris/art_crop": string | null
+          "image_uris/border_crop": string | null
+          "image_uris/large": string | null
+          "image_uris/normal": string | null
+          "image_uris/png": string | null
+          "image_uris/small": string | null
+          "keywords/0": string | null
+          lang: string | null
+          layout: string | null
+          "legalities/alchemy": string | null
+          "legalities/brawl": string | null
+          "legalities/commander": string | null
+          "legalities/duel": string | null
+          "legalities/explorer": string | null
+          "legalities/future": string | null
+          "legalities/gladiator": string | null
+          "legalities/historic": string | null
+          "legalities/historicbrawl": string | null
+          "legalities/legacy": string | null
+          "legalities/modern": string | null
+          "legalities/oldschool": string | null
+          "legalities/pauper": string | null
+          "legalities/paupercommander": string | null
+          "legalities/penny": string | null
+          "legalities/pioneer": string | null
+          "legalities/premodern": string | null
+          "legalities/standard": string | null
+          "legalities/vintage": string | null
+          mana_cost: string | null
+          "multiverse_ids/0": number | null
+          name: string | null
+          nonfoil: boolean | null
+          object: string | null
+          oracle_id: string | null
+          oracle_text: string | null
+          oversized: boolean | null
           "prices/eur": number | null
           "prices/eur_foil": string | null
           "prices/tix": string | null
-          "related_uris/gatherer": string | null
-          "related_uris/tcgplayer_infinite_articles": string | null
-          "related_uris/tcgplayer_infinite_decks": string | null
-          "related_uris/edhrec": string | null
-          "purchase_uris/tcgplayer": string | null
-          "purchase_uris/cardmarket": string | null
-          "purchase_uris/cardhoarder": string | null
-          "keywords/0": string | null
+          "prices/usd": number | null
+          "prices/usd_etched": string | null
+          "prices/usd_foil": string | null
+          prints_search_uri: string | null
           "produced_mana/0": string | null
           "produced_mana/1": string | null
           "produced_mana/2": string | null
           "produced_mana/3": string | null
           "produced_mana/4": string | null
+          promo: boolean | null
+          "purchase_uris/cardhoarder": string | null
+          "purchase_uris/cardmarket": string | null
+          "purchase_uris/tcgplayer": string | null
+          rarity: string | null
+          "related_uris/edhrec": string | null
+          "related_uris/gatherer": string | null
+          "related_uris/tcgplayer_infinite_articles": string | null
+          "related_uris/tcgplayer_infinite_decks": string | null
+          released_at: string | null
+          reprint: boolean | null
+          reserved: boolean | null
+          rulings_uri: string | null
+          scryfall_set_uri: string | null
+          scryfall_uri: string | null
+          set: string | null
+          set_id: string | null
+          set_name: string | null
+          set_search_uri: string | null
+          set_type: string | null
+          set_uri: string | null
+          story_spotlight: boolean | null
+          tcgplayer_id: number | null
+          textless: boolean | null
+          type_line: string | null
+          uri: string | null
+          variation: boolean | null
         }
         Insert: {
-          object?: string | null
-          id: string
-          oracle_id?: string | null
-          "multiverse_ids/0"?: number | null
-          tcgplayer_id?: number | null
-          cardmarket_id?: number | null
-          name?: string | null
-          lang?: string | null
-          released_at?: string | null
-          uri?: string | null
-          scryfall_uri?: string | null
-          layout?: string | null
-          highres_image?: boolean | null
-          image_status?: string | null
-          "image_uris/small"?: string | null
-          "image_uris/normal"?: string | null
-          "image_uris/large"?: string | null
-          "image_uris/png"?: string | null
-          "image_uris/art_crop"?: string | null
-          "image_uris/border_crop"?: string | null
-          mana_cost?: string | null
-          cmc?: string | null
-          type_line?: string | null
-          oracle_text?: string | null
-          "legalities/standard"?: string | null
-          "legalities/future"?: string | null
-          "legalities/historic"?: string | null
-          "legalities/gladiator"?: string | null
-          "legalities/pioneer"?: string | null
-          "legalities/explorer"?: string | null
-          "legalities/modern"?: string | null
-          "legalities/legacy"?: string | null
-          "legalities/pauper"?: string | null
-          "legalities/vintage"?: string | null
-          "legalities/penny"?: string | null
-          "legalities/commander"?: string | null
-          "legalities/brawl"?: string | null
-          "legalities/historicbrawl"?: string | null
-          "legalities/alchemy"?: string | null
-          "legalities/paupercommander"?: string | null
-          "legalities/duel"?: string | null
-          "legalities/oldschool"?: string | null
-          "legalities/premodern"?: string | null
-          "games/0"?: string | null
-          reserved?: boolean | null
-          foil?: boolean | null
-          nonfoil?: boolean | null
-          "finishes/0"?: string | null
-          "finishes/1"?: string | null
-          oversized?: boolean | null
-          promo?: boolean | null
-          reprint?: boolean | null
-          variation?: boolean | null
-          set_id?: string | null
-          set?: string | null
-          set_name?: string | null
-          set_type?: string | null
-          set_uri?: string | null
-          set_search_uri?: string | null
-          scryfall_set_uri?: string | null
-          rulings_uri?: string | null
-          prints_search_uri?: string | null
-          collector_number?: number | null
-          digital?: boolean | null
-          rarity?: string | null
-          card_back_id?: string | null
           artist?: string | null
           "artist_ids/0"?: string | null
           "artist_ids/1"?: string | null
-          illustration_id?: string | null
+          booster?: boolean | null
           border_color?: string | null
+          card_back_id?: string | null
+          cardmarket_id?: number | null
+          cmc?: string | null
+          collector_number?: number | null
+          digital?: boolean | null
+          "finishes/0"?: string | null
+          "finishes/1"?: string | null
+          foil?: boolean | null
           frame?: number | null
           full_art?: boolean | null
-          textless?: boolean | null
-          booster?: boolean | null
-          story_spotlight?: boolean | null
-          "prices/usd"?: number | null
-          "prices/usd_foil"?: string | null
-          "prices/usd_etched"?: string | null
+          "games/0"?: string | null
+          highres_image?: boolean | null
+          id: string
+          illustration_id?: string | null
+          image_status?: string | null
+          "image_uris/art_crop"?: string | null
+          "image_uris/border_crop"?: string | null
+          "image_uris/large"?: string | null
+          "image_uris/normal"?: string | null
+          "image_uris/png"?: string | null
+          "image_uris/small"?: string | null
+          "keywords/0"?: string | null
+          lang?: string | null
+          layout?: string | null
+          "legalities/alchemy"?: string | null
+          "legalities/brawl"?: string | null
+          "legalities/commander"?: string | null
+          "legalities/duel"?: string | null
+          "legalities/explorer"?: string | null
+          "legalities/future"?: string | null
+          "legalities/gladiator"?: string | null
+          "legalities/historic"?: string | null
+          "legalities/historicbrawl"?: string | null
+          "legalities/legacy"?: string | null
+          "legalities/modern"?: string | null
+          "legalities/oldschool"?: string | null
+          "legalities/pauper"?: string | null
+          "legalities/paupercommander"?: string | null
+          "legalities/penny"?: string | null
+          "legalities/pioneer"?: string | null
+          "legalities/premodern"?: string | null
+          "legalities/standard"?: string | null
+          "legalities/vintage"?: string | null
+          mana_cost?: string | null
+          "multiverse_ids/0"?: number | null
+          name?: string | null
+          nonfoil?: boolean | null
+          object?: string | null
+          oracle_id?: string | null
+          oracle_text?: string | null
+          oversized?: boolean | null
           "prices/eur"?: number | null
           "prices/eur_foil"?: string | null
           "prices/tix"?: string | null
-          "related_uris/gatherer"?: string | null
-          "related_uris/tcgplayer_infinite_articles"?: string | null
-          "related_uris/tcgplayer_infinite_decks"?: string | null
-          "related_uris/edhrec"?: string | null
-          "purchase_uris/tcgplayer"?: string | null
-          "purchase_uris/cardmarket"?: string | null
-          "purchase_uris/cardhoarder"?: string | null
-          "keywords/0"?: string | null
+          "prices/usd"?: number | null
+          "prices/usd_etched"?: string | null
+          "prices/usd_foil"?: string | null
+          prints_search_uri?: string | null
           "produced_mana/0"?: string | null
           "produced_mana/1"?: string | null
           "produced_mana/2"?: string | null
           "produced_mana/3"?: string | null
           "produced_mana/4"?: string | null
+          promo?: boolean | null
+          "purchase_uris/cardhoarder"?: string | null
+          "purchase_uris/cardmarket"?: string | null
+          "purchase_uris/tcgplayer"?: string | null
+          rarity?: string | null
+          "related_uris/edhrec"?: string | null
+          "related_uris/gatherer"?: string | null
+          "related_uris/tcgplayer_infinite_articles"?: string | null
+          "related_uris/tcgplayer_infinite_decks"?: string | null
+          released_at?: string | null
+          reprint?: boolean | null
+          reserved?: boolean | null
+          rulings_uri?: string | null
+          scryfall_set_uri?: string | null
+          scryfall_uri?: string | null
+          set?: string | null
+          set_id?: string | null
+          set_name?: string | null
+          set_search_uri?: string | null
+          set_type?: string | null
+          set_uri?: string | null
+          story_spotlight?: boolean | null
+          tcgplayer_id?: number | null
+          textless?: boolean | null
+          type_line?: string | null
+          uri?: string | null
+          variation?: boolean | null
         }
         Update: {
-          object?: string | null
-          id?: string
-          oracle_id?: string | null
-          "multiverse_ids/0"?: number | null
-          tcgplayer_id?: number | null
-          cardmarket_id?: number | null
-          name?: string | null
-          lang?: string | null
-          released_at?: string | null
-          uri?: string | null
-          scryfall_uri?: string | null
-          layout?: string | null
-          highres_image?: boolean | null
-          image_status?: string | null
-          "image_uris/small"?: string | null
-          "image_uris/normal"?: string | null
-          "image_uris/large"?: string | null
-          "image_uris/png"?: string | null
-          "image_uris/art_crop"?: string | null
-          "image_uris/border_crop"?: string | null
-          mana_cost?: string | null
-          cmc?: string | null
-          type_line?: string | null
-          oracle_text?: string | null
-          "legalities/standard"?: string | null
-          "legalities/future"?: string | null
-          "legalities/historic"?: string | null
-          "legalities/gladiator"?: string | null
-          "legalities/pioneer"?: string | null
-          "legalities/explorer"?: string | null
-          "legalities/modern"?: string | null
-          "legalities/legacy"?: string | null
-          "legalities/pauper"?: string | null
-          "legalities/vintage"?: string | null
-          "legalities/penny"?: string | null
-          "legalities/commander"?: string | null
-          "legalities/brawl"?: string | null
-          "legalities/historicbrawl"?: string | null
-          "legalities/alchemy"?: string | null
-          "legalities/paupercommander"?: string | null
-          "legalities/duel"?: string | null
-          "legalities/oldschool"?: string | null
-          "legalities/premodern"?: string | null
-          "games/0"?: string | null
-          reserved?: boolean | null
-          foil?: boolean | null
-          nonfoil?: boolean | null
-          "finishes/0"?: string | null
-          "finishes/1"?: string | null
-          oversized?: boolean | null
-          promo?: boolean | null
-          reprint?: boolean | null
-          variation?: boolean | null
-          set_id?: string | null
-          set?: string | null
-          set_name?: string | null
-          set_type?: string | null
-          set_uri?: string | null
-          set_search_uri?: string | null
-          scryfall_set_uri?: string | null
-          rulings_uri?: string | null
-          prints_search_uri?: string | null
-          collector_number?: number | null
-          digital?: boolean | null
-          rarity?: string | null
-          card_back_id?: string | null
           artist?: string | null
           "artist_ids/0"?: string | null
           "artist_ids/1"?: string | null
-          illustration_id?: string | null
+          booster?: boolean | null
           border_color?: string | null
+          card_back_id?: string | null
+          cardmarket_id?: number | null
+          cmc?: string | null
+          collector_number?: number | null
+          digital?: boolean | null
+          "finishes/0"?: string | null
+          "finishes/1"?: string | null
+          foil?: boolean | null
           frame?: number | null
           full_art?: boolean | null
-          textless?: boolean | null
-          booster?: boolean | null
-          story_spotlight?: boolean | null
-          "prices/usd"?: number | null
-          "prices/usd_foil"?: string | null
-          "prices/usd_etched"?: string | null
+          "games/0"?: string | null
+          highres_image?: boolean | null
+          id?: string
+          illustration_id?: string | null
+          image_status?: string | null
+          "image_uris/art_crop"?: string | null
+          "image_uris/border_crop"?: string | null
+          "image_uris/large"?: string | null
+          "image_uris/normal"?: string | null
+          "image_uris/png"?: string | null
+          "image_uris/small"?: string | null
+          "keywords/0"?: string | null
+          lang?: string | null
+          layout?: string | null
+          "legalities/alchemy"?: string | null
+          "legalities/brawl"?: string | null
+          "legalities/commander"?: string | null
+          "legalities/duel"?: string | null
+          "legalities/explorer"?: string | null
+          "legalities/future"?: string | null
+          "legalities/gladiator"?: string | null
+          "legalities/historic"?: string | null
+          "legalities/historicbrawl"?: string | null
+          "legalities/legacy"?: string | null
+          "legalities/modern"?: string | null
+          "legalities/oldschool"?: string | null
+          "legalities/pauper"?: string | null
+          "legalities/paupercommander"?: string | null
+          "legalities/penny"?: string | null
+          "legalities/pioneer"?: string | null
+          "legalities/premodern"?: string | null
+          "legalities/standard"?: string | null
+          "legalities/vintage"?: string | null
+          mana_cost?: string | null
+          "multiverse_ids/0"?: number | null
+          name?: string | null
+          nonfoil?: boolean | null
+          object?: string | null
+          oracle_id?: string | null
+          oracle_text?: string | null
+          oversized?: boolean | null
           "prices/eur"?: number | null
           "prices/eur_foil"?: string | null
           "prices/tix"?: string | null
-          "related_uris/gatherer"?: string | null
-          "related_uris/tcgplayer_infinite_articles"?: string | null
-          "related_uris/tcgplayer_infinite_decks"?: string | null
-          "related_uris/edhrec"?: string | null
-          "purchase_uris/tcgplayer"?: string | null
-          "purchase_uris/cardmarket"?: string | null
-          "purchase_uris/cardhoarder"?: string | null
-          "keywords/0"?: string | null
+          "prices/usd"?: number | null
+          "prices/usd_etched"?: string | null
+          "prices/usd_foil"?: string | null
+          prints_search_uri?: string | null
           "produced_mana/0"?: string | null
           "produced_mana/1"?: string | null
           "produced_mana/2"?: string | null
           "produced_mana/3"?: string | null
           "produced_mana/4"?: string | null
+          promo?: boolean | null
+          "purchase_uris/cardhoarder"?: string | null
+          "purchase_uris/cardmarket"?: string | null
+          "purchase_uris/tcgplayer"?: string | null
+          rarity?: string | null
+          "related_uris/edhrec"?: string | null
+          "related_uris/gatherer"?: string | null
+          "related_uris/tcgplayer_infinite_articles"?: string | null
+          "related_uris/tcgplayer_infinite_decks"?: string | null
+          released_at?: string | null
+          reprint?: boolean | null
+          reserved?: boolean | null
+          rulings_uri?: string | null
+          scryfall_set_uri?: string | null
+          scryfall_uri?: string | null
+          set?: string | null
+          set_id?: string | null
+          set_name?: string | null
+          set_search_uri?: string | null
+          set_type?: string | null
+          set_uri?: string | null
+          story_spotlight?: boolean | null
+          tcgplayer_id?: number | null
+          textless?: boolean | null
+          type_line?: string | null
+          uri?: string | null
+          variation?: boolean | null
         }
       }
       tokens: {
         Row: {
-          object: string | null
-          id: string
-          oracle_id: string | null
-          arena_id: string | null
-          tcgplayer_id: string | null
-          name: string | null
-          lang: string | null
-          released_at: string | null
-          uri: string | null
-          scryfall_uri: string | null
-          layout: string | null
-          highres_image: boolean | null
-          image_status: string | null
-          "image_uris/small": string | null
-          "image_uris/normal": string | null
-          "image_uris/large": string | null
-          "image_uris/png": string | null
-          "image_uris/art_crop": string | null
-          "image_uris/border_crop": string | null
-          mana_cost: string | null
-          cmc: string | null
-          type_line: string | null
-          oracle_text: string | null
-          power: string | null
-          toughness: string | null
-          "colors/0": string | null
-          "color_identity/0": string | null
-          "keywords/0": string | null
-          "all_parts/0/object": string | null
-          "all_parts/0/id": string | null
           "all_parts/0/component": string | null
+          "all_parts/0/id": string | null
           "all_parts/0/name": string | null
+          "all_parts/0/object": string | null
           "all_parts/0/type_line": string | null
           "all_parts/0/uri": string | null
-          "all_parts/1/object": string | null
-          "all_parts/1/id": string | null
           "all_parts/1/component": string | null
+          "all_parts/1/id": string | null
           "all_parts/1/name": string | null
+          "all_parts/1/object": string | null
           "all_parts/1/type_line": string | null
           "all_parts/1/uri": string | null
-          "legalities/standard": string | null
-          "legalities/future": string | null
-          "legalities/historic": string | null
-          "legalities/gladiator": string | null
-          "legalities/pioneer": string | null
-          "legalities/explorer": string | null
-          "legalities/modern": string | null
-          "legalities/legacy": string | null
-          "legalities/pauper": string | null
-          "legalities/vintage": string | null
-          "legalities/penny": string | null
-          "legalities/commander": string | null
-          "legalities/brawl": string | null
-          "legalities/historicbrawl": string | null
-          "legalities/alchemy": string | null
-          "legalities/paupercommander": string | null
-          "legalities/duel": string | null
-          "legalities/oldschool": string | null
-          "legalities/premodern": string | null
-          "games/0": string | null
-          reserved: boolean | null
-          foil: boolean | null
-          nonfoil: boolean | null
-          "finishes/0": string | null
-          oversized: boolean | null
-          promo: boolean | null
-          reprint: boolean | null
-          variation: boolean | null
-          set_id: string | null
-          set: string | null
-          set_name: string | null
-          set_type: string | null
-          set_uri: string | null
-          set_search_uri: string | null
-          scryfall_set_uri: string | null
-          rulings_uri: string | null
-          prints_search_uri: string | null
-          collector_number: string | null
-          digital: boolean | null
-          rarity: string | null
-          card_back_id: string | null
+          arena_id: string | null
           artist: string | null
           "artist_ids/0": string | null
-          illustration_id: string | null
+          booster: boolean | null
           border_color: string | null
+          card_back_id: string | null
+          cardmarket_id: string | null
+          cmc: string | null
+          collector_number: string | null
+          "color_identity/0": string | null
+          "colors/0": string | null
+          digital: boolean | null
+          "finishes/0": string | null
+          foil: boolean | null
           frame: number | null
           full_art: boolean | null
-          textless: boolean | null
-          booster: boolean | null
-          story_spotlight: boolean | null
-          "promo_types/0": string | null
-          "prices/usd": string | null
-          "prices/usd_foil": string | null
-          "prices/usd_etched": string | null
+          "games/0": string | null
+          highres_image: boolean | null
+          id: string
+          illustration_id: string | null
+          image_status: string | null
+          "image_uris/art_crop": string | null
+          "image_uris/border_crop": string | null
+          "image_uris/large": string | null
+          "image_uris/normal": string | null
+          "image_uris/png": string | null
+          "image_uris/small": string | null
+          "keywords/0": string | null
+          lang: string | null
+          layout: string | null
+          "legalities/alchemy": string | null
+          "legalities/brawl": string | null
+          "legalities/commander": string | null
+          "legalities/duel": string | null
+          "legalities/explorer": string | null
+          "legalities/future": string | null
+          "legalities/gladiator": string | null
+          "legalities/historic": string | null
+          "legalities/historicbrawl": string | null
+          "legalities/legacy": string | null
+          "legalities/modern": string | null
+          "legalities/oldschool": string | null
+          "legalities/pauper": string | null
+          "legalities/paupercommander": string | null
+          "legalities/penny": string | null
+          "legalities/pioneer": string | null
+          "legalities/premodern": string | null
+          "legalities/standard": string | null
+          "legalities/vintage": string | null
+          mana_cost: string | null
+          name: string | null
+          nonfoil: boolean | null
+          object: string | null
+          oracle_id: string | null
+          oracle_text: string | null
+          oversized: boolean | null
+          power: string | null
           "prices/eur": string | null
           "prices/eur_foil": string | null
           "prices/tix": string | null
+          "prices/usd": string | null
+          "prices/usd_etched": string | null
+          "prices/usd_foil": string | null
+          prints_search_uri: string | null
+          promo: boolean | null
+          "promo_types/0": string | null
+          "purchase_uris/cardhoarder": string | null
+          "purchase_uris/cardmarket": string | null
+          "purchase_uris/tcgplayer": string | null
+          rarity: string | null
+          "related_uris/edhrec": string | null
           "related_uris/tcgplayer_infinite_articles": string | null
           "related_uris/tcgplayer_infinite_decks": string | null
-          "related_uris/edhrec": string | null
-          "purchase_uris/tcgplayer": string | null
-          "purchase_uris/cardmarket": string | null
-          "purchase_uris/cardhoarder": string | null
-          cardmarket_id: string | null
+          released_at: string | null
+          reprint: boolean | null
+          reserved: boolean | null
+          rulings_uri: string | null
+          scryfall_set_uri: string | null
+          scryfall_uri: string | null
+          set: string | null
+          set_id: string | null
+          set_name: string | null
+          set_search_uri: string | null
+          set_type: string | null
+          set_uri: string | null
+          story_spotlight: boolean | null
+          tcgplayer_id: string | null
+          textless: boolean | null
+          toughness: string | null
+          type_line: string | null
+          uri: string | null
+          variation: boolean | null
         }
         Insert: {
-          object?: string | null
-          id: string
-          oracle_id?: string | null
-          arena_id?: string | null
-          tcgplayer_id?: string | null
-          name?: string | null
-          lang?: string | null
-          released_at?: string | null
-          uri?: string | null
-          scryfall_uri?: string | null
-          layout?: string | null
-          highres_image?: boolean | null
-          image_status?: string | null
-          "image_uris/small"?: string | null
-          "image_uris/normal"?: string | null
-          "image_uris/large"?: string | null
-          "image_uris/png"?: string | null
-          "image_uris/art_crop"?: string | null
-          "image_uris/border_crop"?: string | null
-          mana_cost?: string | null
-          cmc?: string | null
-          type_line?: string | null
-          oracle_text?: string | null
-          power?: string | null
-          toughness?: string | null
-          "colors/0"?: string | null
-          "color_identity/0"?: string | null
-          "keywords/0"?: string | null
-          "all_parts/0/object"?: string | null
-          "all_parts/0/id"?: string | null
           "all_parts/0/component"?: string | null
+          "all_parts/0/id"?: string | null
           "all_parts/0/name"?: string | null
+          "all_parts/0/object"?: string | null
           "all_parts/0/type_line"?: string | null
           "all_parts/0/uri"?: string | null
-          "all_parts/1/object"?: string | null
-          "all_parts/1/id"?: string | null
           "all_parts/1/component"?: string | null
+          "all_parts/1/id"?: string | null
           "all_parts/1/name"?: string | null
+          "all_parts/1/object"?: string | null
           "all_parts/1/type_line"?: string | null
           "all_parts/1/uri"?: string | null
-          "legalities/standard"?: string | null
-          "legalities/future"?: string | null
-          "legalities/historic"?: string | null
-          "legalities/gladiator"?: string | null
-          "legalities/pioneer"?: string | null
-          "legalities/explorer"?: string | null
-          "legalities/modern"?: string | null
-          "legalities/legacy"?: string | null
-          "legalities/pauper"?: string | null
-          "legalities/vintage"?: string | null
-          "legalities/penny"?: string | null
-          "legalities/commander"?: string | null
-          "legalities/brawl"?: string | null
-          "legalities/historicbrawl"?: string | null
-          "legalities/alchemy"?: string | null
-          "legalities/paupercommander"?: string | null
-          "legalities/duel"?: string | null
-          "legalities/oldschool"?: string | null
-          "legalities/premodern"?: string | null
-          "games/0"?: string | null
-          reserved?: boolean | null
-          foil?: boolean | null
-          nonfoil?: boolean | null
-          "finishes/0"?: string | null
-          oversized?: boolean | null
-          promo?: boolean | null
-          reprint?: boolean | null
-          variation?: boolean | null
-          set_id?: string | null
-          set?: string | null
-          set_name?: string | null
-          set_type?: string | null
-          set_uri?: string | null
-          set_search_uri?: string | null
-          scryfall_set_uri?: string | null
-          rulings_uri?: string | null
-          prints_search_uri?: string | null
-          collector_number?: string | null
-          digital?: boolean | null
-          rarity?: string | null
-          card_back_id?: string | null
+          arena_id?: string | null
           artist?: string | null
           "artist_ids/0"?: string | null
-          illustration_id?: string | null
+          booster?: boolean | null
           border_color?: string | null
+          card_back_id?: string | null
+          cardmarket_id?: string | null
+          cmc?: string | null
+          collector_number?: string | null
+          "color_identity/0"?: string | null
+          "colors/0"?: string | null
+          digital?: boolean | null
+          "finishes/0"?: string | null
+          foil?: boolean | null
           frame?: number | null
           full_art?: boolean | null
-          textless?: boolean | null
-          booster?: boolean | null
-          story_spotlight?: boolean | null
-          "promo_types/0"?: string | null
-          "prices/usd"?: string | null
-          "prices/usd_foil"?: string | null
-          "prices/usd_etched"?: string | null
+          "games/0"?: string | null
+          highres_image?: boolean | null
+          id: string
+          illustration_id?: string | null
+          image_status?: string | null
+          "image_uris/art_crop"?: string | null
+          "image_uris/border_crop"?: string | null
+          "image_uris/large"?: string | null
+          "image_uris/normal"?: string | null
+          "image_uris/png"?: string | null
+          "image_uris/small"?: string | null
+          "keywords/0"?: string | null
+          lang?: string | null
+          layout?: string | null
+          "legalities/alchemy"?: string | null
+          "legalities/brawl"?: string | null
+          "legalities/commander"?: string | null
+          "legalities/duel"?: string | null
+          "legalities/explorer"?: string | null
+          "legalities/future"?: string | null
+          "legalities/gladiator"?: string | null
+          "legalities/historic"?: string | null
+          "legalities/historicbrawl"?: string | null
+          "legalities/legacy"?: string | null
+          "legalities/modern"?: string | null
+          "legalities/oldschool"?: string | null
+          "legalities/pauper"?: string | null
+          "legalities/paupercommander"?: string | null
+          "legalities/penny"?: string | null
+          "legalities/pioneer"?: string | null
+          "legalities/premodern"?: string | null
+          "legalities/standard"?: string | null
+          "legalities/vintage"?: string | null
+          mana_cost?: string | null
+          name?: string | null
+          nonfoil?: boolean | null
+          object?: string | null
+          oracle_id?: string | null
+          oracle_text?: string | null
+          oversized?: boolean | null
+          power?: string | null
           "prices/eur"?: string | null
           "prices/eur_foil"?: string | null
           "prices/tix"?: string | null
+          "prices/usd"?: string | null
+          "prices/usd_etched"?: string | null
+          "prices/usd_foil"?: string | null
+          prints_search_uri?: string | null
+          promo?: boolean | null
+          "promo_types/0"?: string | null
+          "purchase_uris/cardhoarder"?: string | null
+          "purchase_uris/cardmarket"?: string | null
+          "purchase_uris/tcgplayer"?: string | null
+          rarity?: string | null
+          "related_uris/edhrec"?: string | null
           "related_uris/tcgplayer_infinite_articles"?: string | null
           "related_uris/tcgplayer_infinite_decks"?: string | null
-          "related_uris/edhrec"?: string | null
-          "purchase_uris/tcgplayer"?: string | null
-          "purchase_uris/cardmarket"?: string | null
-          "purchase_uris/cardhoarder"?: string | null
-          cardmarket_id?: string | null
+          released_at?: string | null
+          reprint?: boolean | null
+          reserved?: boolean | null
+          rulings_uri?: string | null
+          scryfall_set_uri?: string | null
+          scryfall_uri?: string | null
+          set?: string | null
+          set_id?: string | null
+          set_name?: string | null
+          set_search_uri?: string | null
+          set_type?: string | null
+          set_uri?: string | null
+          story_spotlight?: boolean | null
+          tcgplayer_id?: string | null
+          textless?: boolean | null
+          toughness?: string | null
+          type_line?: string | null
+          uri?: string | null
+          variation?: boolean | null
         }
         Update: {
-          object?: string | null
-          id?: string
-          oracle_id?: string | null
-          arena_id?: string | null
-          tcgplayer_id?: string | null
-          name?: string | null
-          lang?: string | null
-          released_at?: string | null
-          uri?: string | null
-          scryfall_uri?: string | null
-          layout?: string | null
-          highres_image?: boolean | null
-          image_status?: string | null
-          "image_uris/small"?: string | null
-          "image_uris/normal"?: string | null
-          "image_uris/large"?: string | null
-          "image_uris/png"?: string | null
-          "image_uris/art_crop"?: string | null
-          "image_uris/border_crop"?: string | null
-          mana_cost?: string | null
-          cmc?: string | null
-          type_line?: string | null
-          oracle_text?: string | null
-          power?: string | null
-          toughness?: string | null
-          "colors/0"?: string | null
-          "color_identity/0"?: string | null
-          "keywords/0"?: string | null
-          "all_parts/0/object"?: string | null
-          "all_parts/0/id"?: string | null
           "all_parts/0/component"?: string | null
+          "all_parts/0/id"?: string | null
           "all_parts/0/name"?: string | null
+          "all_parts/0/object"?: string | null
           "all_parts/0/type_line"?: string | null
           "all_parts/0/uri"?: string | null
-          "all_parts/1/object"?: string | null
-          "all_parts/1/id"?: string | null
           "all_parts/1/component"?: string | null
+          "all_parts/1/id"?: string | null
           "all_parts/1/name"?: string | null
+          "all_parts/1/object"?: string | null
           "all_parts/1/type_line"?: string | null
           "all_parts/1/uri"?: string | null
-          "legalities/standard"?: string | null
-          "legalities/future"?: string | null
-          "legalities/historic"?: string | null
-          "legalities/gladiator"?: string | null
-          "legalities/pioneer"?: string | null
-          "legalities/explorer"?: string | null
-          "legalities/modern"?: string | null
-          "legalities/legacy"?: string | null
-          "legalities/pauper"?: string | null
-          "legalities/vintage"?: string | null
-          "legalities/penny"?: string | null
-          "legalities/commander"?: string | null
-          "legalities/brawl"?: string | null
-          "legalities/historicbrawl"?: string | null
-          "legalities/alchemy"?: string | null
-          "legalities/paupercommander"?: string | null
-          "legalities/duel"?: string | null
-          "legalities/oldschool"?: string | null
-          "legalities/premodern"?: string | null
-          "games/0"?: string | null
-          reserved?: boolean | null
-          foil?: boolean | null
-          nonfoil?: boolean | null
-          "finishes/0"?: string | null
-          oversized?: boolean | null
-          promo?: boolean | null
-          reprint?: boolean | null
-          variation?: boolean | null
-          set_id?: string | null
-          set?: string | null
-          set_name?: string | null
-          set_type?: string | null
-          set_uri?: string | null
-          set_search_uri?: string | null
-          scryfall_set_uri?: string | null
-          rulings_uri?: string | null
-          prints_search_uri?: string | null
-          collector_number?: string | null
-          digital?: boolean | null
-          rarity?: string | null
-          card_back_id?: string | null
+          arena_id?: string | null
           artist?: string | null
           "artist_ids/0"?: string | null
-          illustration_id?: string | null
+          booster?: boolean | null
           border_color?: string | null
+          card_back_id?: string | null
+          cardmarket_id?: string | null
+          cmc?: string | null
+          collector_number?: string | null
+          "color_identity/0"?: string | null
+          "colors/0"?: string | null
+          digital?: boolean | null
+          "finishes/0"?: string | null
+          foil?: boolean | null
           frame?: number | null
           full_art?: boolean | null
-          textless?: boolean | null
-          booster?: boolean | null
-          story_spotlight?: boolean | null
-          "promo_types/0"?: string | null
-          "prices/usd"?: string | null
-          "prices/usd_foil"?: string | null
-          "prices/usd_etched"?: string | null
+          "games/0"?: string | null
+          highres_image?: boolean | null
+          id?: string
+          illustration_id?: string | null
+          image_status?: string | null
+          "image_uris/art_crop"?: string | null
+          "image_uris/border_crop"?: string | null
+          "image_uris/large"?: string | null
+          "image_uris/normal"?: string | null
+          "image_uris/png"?: string | null
+          "image_uris/small"?: string | null
+          "keywords/0"?: string | null
+          lang?: string | null
+          layout?: string | null
+          "legalities/alchemy"?: string | null
+          "legalities/brawl"?: string | null
+          "legalities/commander"?: string | null
+          "legalities/duel"?: string | null
+          "legalities/explorer"?: string | null
+          "legalities/future"?: string | null
+          "legalities/gladiator"?: string | null
+          "legalities/historic"?: string | null
+          "legalities/historicbrawl"?: string | null
+          "legalities/legacy"?: string | null
+          "legalities/modern"?: string | null
+          "legalities/oldschool"?: string | null
+          "legalities/pauper"?: string | null
+          "legalities/paupercommander"?: string | null
+          "legalities/penny"?: string | null
+          "legalities/pioneer"?: string | null
+          "legalities/premodern"?: string | null
+          "legalities/standard"?: string | null
+          "legalities/vintage"?: string | null
+          mana_cost?: string | null
+          name?: string | null
+          nonfoil?: boolean | null
+          object?: string | null
+          oracle_id?: string | null
+          oracle_text?: string | null
+          oversized?: boolean | null
+          power?: string | null
           "prices/eur"?: string | null
           "prices/eur_foil"?: string | null
           "prices/tix"?: string | null
+          "prices/usd"?: string | null
+          "prices/usd_etched"?: string | null
+          "prices/usd_foil"?: string | null
+          prints_search_uri?: string | null
+          promo?: boolean | null
+          "promo_types/0"?: string | null
+          "purchase_uris/cardhoarder"?: string | null
+          "purchase_uris/cardmarket"?: string | null
+          "purchase_uris/tcgplayer"?: string | null
+          rarity?: string | null
+          "related_uris/edhrec"?: string | null
           "related_uris/tcgplayer_infinite_articles"?: string | null
           "related_uris/tcgplayer_infinite_decks"?: string | null
-          "related_uris/edhrec"?: string | null
-          "purchase_uris/tcgplayer"?: string | null
-          "purchase_uris/cardmarket"?: string | null
-          "purchase_uris/cardhoarder"?: string | null
-          cardmarket_id?: string | null
+          released_at?: string | null
+          reprint?: boolean | null
+          reserved?: boolean | null
+          rulings_uri?: string | null
+          scryfall_set_uri?: string | null
+          scryfall_uri?: string | null
+          set?: string | null
+          set_id?: string | null
+          set_name?: string | null
+          set_search_uri?: string | null
+          set_type?: string | null
+          set_uri?: string | null
+          story_spotlight?: boolean | null
+          tcgplayer_id?: string | null
+          textless?: boolean | null
+          toughness?: string | null
+          type_line?: string | null
+          uri?: string | null
+          variation?: boolean | null
         }
       }
     }

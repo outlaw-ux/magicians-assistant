@@ -1,16 +1,19 @@
 import Link from "next/link";
-import { useCallback, useLayoutEffect, useState } from "react";
+import { useCallback, useLayoutEffect, useRef, useState } from "react";
 import Navigation from "../../components/Navigation";
 import { useSupabaseContext } from "../../context/Supabase";
 import shuffle from "../../utils/shuffle";
-import { Attraction } from "../../utils/types";
+import { Attraction, Deck } from "../../utils/types";
 import { DECK_TYPE } from "./_constants";
+import { useDeckContext } from "../../context";
 
 export default function AttractionsDeck() {
   const { supabase, user } = useSupabaseContext();
+  const loadedAttractions = useRef(false);
   if (!supabase || !user) throw new Error("How did you even get here?");
-  const [loading, setLoading] = useState(false);
-  const [deck, setDeck] = useState<Attraction[]>([]);
+  const { getDecks, loadingDecks } = useDeckContext();
+  // const [loading, setLoading] = useState(false);
+  const [decks, setDecks] = useState<Deck[]>([]);
 
   // const getCard = useCallback(
   //   async (id: string) => {
@@ -29,22 +32,13 @@ export default function AttractionsDeck() {
   // );
 
   useLayoutEffect(() => {
-    if (!deck?.length && !loading) {
-      setLoading(true);
-      supabase
-        .from("decks")
-        .select("*")
-        .eq("user_id", user.id)
-        .eq("type", DECK_TYPE)
-        .then(({ data, error }) => {
-          if (data?.length) {
-            setDeck(shuffle(data[0].cards));
-            setLoading(false);
-          }
-          if (error) throw new Error(error.message);
-        });
+    if (decks.length === 0 && !loadedAttractions.current) {
+      loadedAttractions.current = true;
+      getDecks("attractions").then((getDecksResponse) => {
+        if (getDecksResponse?.length) setDecks(getDecksResponse);
+      });
     }
-  }, [deck, supabase, user, loading]);
+  }, [decks, supabase, user]);
 
   return (
     <div id="attractions-page">
@@ -54,12 +48,18 @@ export default function AttractionsDeck() {
       <p>Render Deck</p>
 
       <pre>
-        {loading ? (
+        {loadingDecks ? (
           "Loading..."
-        ) : deck?.length ? (
+        ) : decks?.length ? (
           <>
-            <p>Here is your deck</p>
-            <pre>{JSON.stringify(deck, undefined, 2)}</pre>
+            <p>Here are your decks</p>
+            <ul>
+              {decks.map((deck) => (
+                <li>{deck.name}</li>
+              ))}
+            </ul>
+
+            <pre>{JSON.stringify(decks, undefined, 2)}</pre>
           </>
         ) : (
           <p>

@@ -5,17 +5,22 @@ import type { Attraction } from "../../utils/types";
 export default function AttractionsCustomizeTableRow({
   card,
   selected = false,
-  onCheck,
+  onChange,
 }: {
   card: Attraction;
-  selected: boolean;
-  onCheck?: () => void;
+  selected?: boolean;
+  onChange?: (data: { card: Attraction; selected: boolean }) => void;
 }) {
   const [viewLargeCard, setViewLargeCard] = useState(false);
+  // const [isSelected, setIsSelected] = useState(selected);
 
   const toggleImageDialog = useCallback(() => {
     setViewLargeCard((largeCard) => !largeCard);
   }, [setViewLargeCard]);
+
+  const handleOnChange = () => {
+    onChange?.({ selected: !selected, card });
+  };
 
   const imagePath = card["image_uris/normal"];
   return (
@@ -25,7 +30,7 @@ export default function AttractionsCustomizeTableRow({
           type="checkbox"
           value={card.id}
           checked={selected}
-          onChange={onCheck}
+          onChange={handleOnChange}
         />
       </td>
       <td>

@@ -1,2 +1,3 @@
-export * from "./Game";
+export * from "./Cards";
+export * from "./Deck";
 export * from "./Supabase";
