@@ -49,7 +49,7 @@ export default function AttractionsDeck() {
         setOngoingCards(updatedOngoingCards);
       }
     },
-    [ongoingCards, setOngoingCards]
+    [ongoingCards, setOngoingCards, junkyardCards]
   );
 
   const handleResetAttractions = useCallback(() => {
@@ -58,7 +58,7 @@ export default function AttractionsDeck() {
       setCurrentCardIndex(-1);
       setAvailableCards(shuffle(availableCards));
     }
-  }, []);
+  }, [availableCards]);
 
   useLayoutEffect(() => {
     if (!availableCards.length && !loadedAttractions.current) {
@@ -75,7 +75,7 @@ export default function AttractionsDeck() {
         }
       });
     }
-  }, [supabase, user, getDecks]);
+  }, [supabase, user, getDecks, availableCards]);
 
   useLayoutEffect(() => {
     console.log({ reverseOrderOngoingCards });
