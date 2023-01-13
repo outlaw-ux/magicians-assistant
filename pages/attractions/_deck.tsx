@@ -41,11 +41,9 @@ export default function AttractionsDeck() {
       ) {
         const junkIdx = ongoingCards.findIndex((c) => c.id === card.id);
         const updatedOngoingCards = [...ongoingCards];
-        const newJunkyard = [...junkyardCards];
-        newJunkyard.push(card);
-        setJunkyardCards(newJunkyard);
         updatedOngoingCards.splice(junkIdx, 1);
-        console.log(updatedOngoingCards);
+
+        setJunkyardCards([...junkyardCards, card]);
         setOngoingCards(updatedOngoingCards);
       }
     },
@@ -83,22 +81,23 @@ export default function AttractionsDeck() {
 
   return (
     <div id="attractions-page">
-      <Navigation />
-
       {loadingDecks ? (
         "Loading..."
       ) : (
         <>
-          <h2>Current Attractions</h2>
+          <h3>Current Attractions</h3>
           <p>
-            <Link href="/attractions/customize">Customize Deck</Link>
+            This page&apos;s state is currently not saved. If you leave you will
+            lose your deck progress
           </p>
           <p>
             <button onClick={handleVisitAttraction}>
               Visit New Attraction
             </button>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <button onClick={handleResetAttractions}>Reset Attractions</button>
+            <button onClick={handleResetAttractions}>
+              Reset & Shuffle Attractions
+            </button>
           </p>
 
           {reverseOrderOngoingCards.map((attraction) => {
@@ -108,11 +107,11 @@ export default function AttractionsDeck() {
                 <p>
                   <strong>{attraction.name}</strong>
                 </p>
-                <p>
-                  {imagePath && (
+                {imagePath && (
+                  <p>
                     <Card src={imagePath} alt={`${attraction.oracle_text}`} />
-                  )}
-                </p>
+                  </p>
+                )}
                 <button onClick={() => handleSendToJunkyard(attraction)}>
                   Send &apos;{attraction.name}&apos; to Junkyard
                 </button>

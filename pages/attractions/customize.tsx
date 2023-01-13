@@ -47,8 +47,8 @@ export default function AttractionsCustomizeDeck() {
       <Navigation />
       <h2>Attractions Deck</h2>
       <p>
-        Once you&apos;ve customized your deck you can save it and access it from{" "}
-        <Link href="/attractions/deck">Your Deck</Link> page
+        Once you&apos;ve customized your deck you can access it from{" "}
+        <Link href="/attractions">Your Attractions</Link> page
       </p>
 
       {loadingCards && !attractionDeck?.cards ? (

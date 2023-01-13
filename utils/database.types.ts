@@ -443,91 +443,7 @@ export interface Database {
           variation?: boolean | null
         }
       }
-      decks: {
-        Row: {
-          cards: string | null
-          created_at: string | null
-          id: number
-          name: string
-          type: string | null
-          user_id: string | null
-        }
-        Insert: {
-          cards?: string | null
-          created_at?: string | null
-          id?: number
-          name?: string
-          type?: string | null
-          user_id?: string | null
-        }
-        Update: {
-          cards?: string | null
-          created_at?: string | null
-          id?: number
-          name?: string
-          type?: string | null
-          user_id?: string | null
-        }
-      }
-      games: {
-        Row: {
-          counters: Json | null
-          created_at: string | null
-          decks: Json | null
-          id: string
-          players: Json | null
-          starting_life: number | null
-          teams: Json | null
-          variant: string | null
-        }
-        Insert: {
-          counters?: Json | null
-          created_at?: string | null
-          decks?: Json | null
-          id?: string
-          players?: Json | null
-          starting_life?: number | null
-          teams?: Json | null
-          variant?: string | null
-        }
-        Update: {
-          counters?: Json | null
-          created_at?: string | null
-          decks?: Json | null
-          id?: string
-          players?: Json | null
-          starting_life?: number | null
-          teams?: Json | null
-          variant?: string | null
-        }
-      }
-      profiles: {
-        Row: {
-          avatar_url: string | null
-          full_name: string | null
-          id: string
-          updated_at: string | null
-          username: string | null
-          website: string | null
-        }
-        Insert: {
-          avatar_url?: string | null
-          full_name?: string | null
-          id: string
-          updated_at?: string | null
-          username?: string | null
-          website?: string | null
-        }
-        Update: {
-          avatar_url?: string | null
-          full_name?: string | null
-          id?: string
-          updated_at?: string | null
-          username?: string | null
-          website?: string | null
-        }
-      }
-      schemes: {
+      cards_schemes: {
         Row: {
           "all_parts/0/component": string | null
           "all_parts/0/id": string | null
@@ -862,7 +778,7 @@ export interface Database {
           variation?: boolean | null
         }
       }
-      stickers: {
+      cards_stickers: {
         Row: {
           artist: string | null
           "artist_ids/0": string | null
@@ -1155,7 +1071,7 @@ export interface Database {
           variation?: boolean | null
         }
       }
-      tokens: {
+      cards_tokens: {
         Row: {
           "all_parts/0/component": string | null
           "all_parts/0/id": string | null
@@ -1473,6 +1389,90 @@ export interface Database {
           type_line?: string | null
           uri?: string | null
           variation?: boolean | null
+        }
+      }
+      decks: {
+        Row: {
+          cards: string | null
+          created_at: string | null
+          id: number
+          name: string
+          type: string | null
+          user_id: string | null
+        }
+        Insert: {
+          cards?: string | null
+          created_at?: string | null
+          id?: number
+          name?: string
+          type?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          cards?: string | null
+          created_at?: string | null
+          id?: number
+          name?: string
+          type?: string | null
+          user_id?: string | null
+        }
+      }
+      games: {
+        Row: {
+          counters: string | null
+          created_at: string | null
+          decks: string | null
+          id: string
+          players: string
+          starting_life: number | null
+          teams: string | null
+          variant: string | null
+        }
+        Insert: {
+          counters?: string | null
+          created_at?: string | null
+          decks?: string | null
+          id?: string
+          players: string
+          starting_life?: number | null
+          teams?: string | null
+          variant?: string | null
+        }
+        Update: {
+          counters?: string | null
+          created_at?: string | null
+          decks?: string | null
+          id?: string
+          players?: string
+          starting_life?: number | null
+          teams?: string | null
+          variant?: string | null
+        }
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          full_name: string | null
+          id: string
+          updated_at: string | null
+          username: string | null
+          website: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          full_name?: string | null
+          id: string
+          updated_at?: string | null
+          username?: string | null
+          website?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          full_name?: string | null
+          id?: string
+          updated_at?: string | null
+          username?: string | null
+          website?: string | null
         }
       }
     }
