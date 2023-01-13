@@ -13,8 +13,12 @@ const OtpSms = () => {
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    phoneInputRef.current?.focus();
-  }, []);
+    if (sent) {
+      tokenInputRef.current?.focus();
+    } else {
+      phoneInputRef.current?.focus();
+    }
+  }, [sent]);
 
   const handleMagicLinkSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -40,7 +44,6 @@ const OtpSms = () => {
         errorOutput = error?.message;
 
         if (data) {
-          tokenInputRef.current?.focus();
           setSent(true);
           setMessage("Check your phone for the magic token");
         }

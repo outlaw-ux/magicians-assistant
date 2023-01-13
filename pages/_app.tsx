@@ -4,7 +4,13 @@ import type { Session } from "@supabase/auth-helpers-react";
 import { createBrowserSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { SessionContextProvider } from "@supabase/auth-helpers-react";
 import { Database } from "../utils/database.types";
-import { CardsProvider, DeckProvider, SupabaseProvider } from "../context";
+import {
+  CardsProvider,
+  DeckProvider,
+  FriendsProvider,
+  SupabaseProvider,
+  ProfileProvider,
+} from "../context";
 
 function App({
   Component,
@@ -20,11 +26,15 @@ function App({
       supabaseClient={supabaseClient}
       initialSession={pageProps.initialSession}>
       <SupabaseProvider>
-        <CardsProvider>
-          <DeckProvider>
-            <Component {...pageProps} />
-          </DeckProvider>
-        </CardsProvider>
+        <ProfileProvider>
+          <CardsProvider>
+            <DeckProvider>
+              <FriendsProvider>
+                <Component {...pageProps} />
+              </FriendsProvider>
+            </DeckProvider>
+          </CardsProvider>
+        </ProfileProvider>
       </SupabaseProvider>
     </SessionContextProvider>
   );

@@ -15,6 +15,12 @@ export default function Navigation() {
         <li>
           <Link href="/schemes">Schemes</Link>
         </li>
+        <li>
+          <Link href="/friends">Friends</Link>
+        </li>
+        <li>
+          <Link href="/settings">Settings</Link>
+        </li>
       </ul>
 
       <button

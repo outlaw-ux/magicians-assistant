@@ -1419,30 +1419,30 @@ export interface Database {
       }
       games: {
         Row: {
-          counters: string | null
           created_at: string | null
           decks: string | null
           id: string
+          is_active: boolean
           players: string
           starting_life: number | null
           teams: string | null
           variant: string | null
         }
         Insert: {
-          counters?: string | null
           created_at?: string | null
           decks?: string | null
           id?: string
+          is_active?: boolean
           players: string
           starting_life?: number | null
           teams?: string | null
           variant?: string | null
         }
         Update: {
-          counters?: string | null
           created_at?: string | null
           decks?: string | null
           id?: string
+          is_active?: boolean
           players?: string
           starting_life?: number | null
           teams?: string | null
@@ -1452,27 +1452,36 @@ export interface Database {
       profiles: {
         Row: {
           avatar_url: string | null
+          friends: string | null
           full_name: string | null
           id: string
+          pending_friends: string | null
+          phone: string | null
+          requested_friends: Json | null
           updated_at: string | null
           username: string | null
-          website: string | null
         }
         Insert: {
           avatar_url?: string | null
+          friends?: string | null
           full_name?: string | null
           id: string
+          pending_friends?: string | null
+          phone?: string | null
+          requested_friends?: Json | null
           updated_at?: string | null
           username?: string | null
-          website?: string | null
         }
         Update: {
           avatar_url?: string | null
+          friends?: string | null
           full_name?: string | null
           id?: string
+          pending_friends?: string | null
+          phone?: string | null
+          requested_friends?: Json | null
           updated_at?: string | null
           username?: string | null
-          website?: string | null
         }
       }
     }
