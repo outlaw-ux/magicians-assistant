@@ -4,6 +4,7 @@ import type { IFriendProfile } from "../../utils/types";
 
 export default function FriendsList() {
   const {
+    approveFriend,
     requestedFriends,
     currentFriends,
     pendingFriends,
@@ -12,6 +13,9 @@ export default function FriendsList() {
 
   const handleRejectRequest = (profile: IFriendProfile) => {
     cancelFriendRequest(profile);
+  };
+  const handleApproveRequest = (profile: IFriendProfile) => {
+    approveFriend(profile);
   };
 
   return (
@@ -42,7 +46,11 @@ export default function FriendsList() {
               <button type="button" onClick={() => handleRejectRequest(friend)}>
                 Deny
               </button>
-              <button type="button">Approve</button>
+              <button
+                type="button"
+                onClick={() => handleApproveRequest(friend)}>
+                Approve
+              </button>
             </li>
           ))}
         </ul>

@@ -52,6 +52,18 @@ export function FriendsProvider({ children }: { children: React.ReactNode }) {
     defaultContext.requestedFriends
   );
 
+  const rehydrateFriends = useCallback(() => {
+    setPendingFriends(defaultContext.pendingFriends);
+    setCurrentFriends(defaultContext.currentFriends);
+    setRequestedFriends(defaultContext.requestedFriends);
+    setLoadedFriends(false);
+  }, [
+    setPendingFriends,
+    setCurrentFriends,
+    setRequestedFriends,
+    setLoadedFriends,
+  ]);
+
   const searchFriend: IFriends["searchFriend"] = useCallback(
     async (searchValue: string) => {
       const { data, error } = await supabase
@@ -84,7 +96,7 @@ export function FriendsProvider({ children }: { children: React.ReactNode }) {
         .select()
         .then(async ({ data, error }) => {
           if (error) throw new Error(error.message);
-          return getProfile(id).then(
+          const newFriend: IFriendProfile = await getProfile(id).then(
             (profile) =>
               ({
                 username: profile?.username,
@@ -92,6 +104,9 @@ export function FriendsProvider({ children }: { children: React.ReactNode }) {
                 friend_id: data[0].id,
               } as IFriendProfile)
           );
+
+          setRequestedFriends((requested) => [...requested, newFriend]);
+          return newFriend;
         });
     },
     [supabase, user]
@@ -128,40 +143,47 @@ export function FriendsProvider({ children }: { children: React.ReactNode }) {
     });
   }, [supabase, user]);
 
-  const approveFriend = useCallback(async () => {
-    return Promise.resolve(null);
+  const approveFriend = useCallback(async (profile: IFriendProfile) => {
+    return supabase
+      .from("friends")
+      .update({
+        pending: false,
+      })
+      .eq("id", profile.friend_id)
+      .select()
+      .then(({ error }) => {
+        if (error) throw new Error(error.message);
+        setCurrentFriends((current) => [...current, profile]);
+        setPendingFriends((pending) => {
+          const pendingIdx = pending.findIndex(
+            (p) => p.friend_id === profile.friend_id
+          );
+          if (pendingIdx < 0) return pending;
+          pending.splice(pendingIdx, 1);
+          return pending;
+        });
+        return profile;
+      });
   }, []);
 
   const cancelFriendRequest = useCallback(
     async (profile: IFriendProfile) => {
       return supabase
         .from("friends")
-        .upsert({
+        .update({
           id: profile.friend_id,
           pending: false,
           rejected: true,
-          accepter: profile.id,
-          requester: user.id,
         })
+        .eq("id", profile.friend_id)
         .select()
         .then(({ error }) => {
           if (error) throw new Error(error.message);
-          if (isProfileRequestedFriend(profile.id)) {
-            setRequestedFriends((reqFriends) => {
-              reqFriends.splice(requestedFriendIndex(profile.id), 1);
-              return reqFriends;
-            });
-          }
-          if (isProfilePendingFriend(profile.id)) {
-            setPendingFriends((pendFriends) => {
-              pendFriends.splice(pendingFriendIndex(profile.id), 1);
-              return pendFriends;
-            });
-          }
+          rehydrateFriends();
           return true;
         });
     },
-    [supabase]
+    [supabase, rehydrateFriends]
   );
 
   const isProfileCurrentFriend = useCallback(
@@ -189,8 +211,9 @@ export function FriendsProvider({ children }: { children: React.ReactNode }) {
     [pendingFriends]
   );
   const isProfilePendingFriend = useCallback(
-    (profileId: IFriendProfile["id"]): boolean =>
-      pendingFriendIndex(profileId) >= 0,
+    (profileId: IFriendProfile["id"]): boolean => {
+      return pendingFriendIndex(profileId) >= 0;
+    },
     [pendingFriendIndex]
   );
 
