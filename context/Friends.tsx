@@ -192,29 +192,16 @@ export function FriendsProvider({ children }: { children: React.ReactNode }) {
     [currentFriends]
   );
 
-  const requestedFriendIndex = useCallback(
-    (profileId: IFriendProfile["id"]): number => {
-      return requestedFriends.findIndex((friend) => friend.id === profileId);
-    },
-    [requestedFriends]
-  );
   const isProfileRequestedFriend = useCallback(
     (profileId: IFriendProfile["id"]): boolean =>
-      requestedFriendIndex(profileId) >= 0,
-    [requestedFriendIndex]
+      requestedFriends.filter((friend) => friend.id === profileId).length > 0,
+    [requestedFriends]
   );
 
-  const pendingFriendIndex = useCallback(
-    (profileId: IFriendProfile["id"]): number => {
-      return pendingFriends.findIndex((friend) => friend.id === profileId);
-    },
-    [pendingFriends]
-  );
   const isProfilePendingFriend = useCallback(
-    (profileId: IFriendProfile["id"]): boolean => {
-      return pendingFriendIndex(profileId) >= 0;
-    },
-    [pendingFriendIndex]
+    (profileId: IFriendProfile["id"]): boolean =>
+      pendingFriends.filter((friend) => friend.id === profileId).length > 0,
+    [pendingFriends]
   );
 
   useLayoutEffect(() => {
