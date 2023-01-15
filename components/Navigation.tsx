@@ -6,13 +6,14 @@ import { useSupabaseContext } from "../context/Supabase";
 
 export default function Navigation() {
   const router = useRouter();
-  const { activeGame, endGame, startGame } = useGameContext();
+  const { activeGame, endGame, isGameCreator, startGame, leaveGame } =
+    useGameContext();
   const { supabase } = useSupabaseContext();
 
   const handleGame = useCallback(() => {
     const toggleGame = !!activeGame ? endGame : startGame;
     toggleGame();
-  }, [activeGame, startGame]);
+  }, [activeGame, endGame, startGame]);
 
   return (
     <div id="account-page">
@@ -32,9 +33,15 @@ export default function Navigation() {
       </ul>
 
       <p>
-        <button type="button" onClick={handleGame}>
-          {!!activeGame ? "End Game" : "Start Game"}
-        </button>
+        {!activeGame || isGameCreator ? (
+          <button type="button" onClick={handleGame}>
+            {!!activeGame ? "End Game" : "Start Game"}
+          </button>
+        ) : (
+          <button type="button" onClick={leaveGame}>
+            Leave Game
+          </button>
+        )}
       </p>
 
       <p>

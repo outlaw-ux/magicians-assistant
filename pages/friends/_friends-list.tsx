@@ -13,12 +13,18 @@ export default function FriendsList() {
     cancelFriendRequest,
   } = useFriendsContext();
 
-  const handleRejectRequest = (profile: IFriendProfile) => {
-    cancelFriendRequest(profile);
-  };
-  const handleApproveRequest = (profile: IFriendProfile) => {
-    approveFriend(profile);
-  };
+  const handleRejectRequest = useCallback(
+    (profile: IFriendProfile) => {
+      cancelFriendRequest(profile);
+    },
+    [cancelFriendRequest]
+  );
+  const handleApproveRequest = useCallback(
+    (profile: IFriendProfile) => {
+      approveFriend(profile);
+    },
+    [approveFriend]
+  );
 
   const isFriendInGame = useCallback(
     (profileId: IFriendProfile["id"]) => {
@@ -28,9 +34,10 @@ export default function FriendsList() {
   );
   const handleAddFriendToGame = useCallback(
     (profileId: IFriendProfile["id"]) => {
+      console.log(`handle add friend ${profileId}`);
       addFriendToGame(profileId);
     },
-    [gamePlayers, addFriendToGame]
+    [addFriendToGame]
   );
 
   return (
