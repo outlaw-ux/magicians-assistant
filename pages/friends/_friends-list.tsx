@@ -1,8 +1,10 @@
 import Link from "next/link";
-import { useFriendsContext } from "../../context";
+import { useCallback } from "react";
+import { useFriendsContext, useGameContext } from "../../context";
 import type { IFriendProfile } from "../../utils/types";
 
 export default function FriendsList() {
+  const { activeGame, gamePlayers, addFriendToGame } = useGameContext();
   const {
     approveFriend,
     requestedFriends,
@@ -18,6 +20,19 @@ export default function FriendsList() {
     approveFriend(profile);
   };
 
+  const isFriendInGame = useCallback(
+    (profileId: IFriendProfile["id"]) => {
+      return gamePlayers.includes(profileId);
+    },
+    [gamePlayers]
+  );
+  const handleAddFriendToGame = useCallback(
+    (profileId: IFriendProfile["id"]) => {
+      addFriendToGame(profileId);
+    },
+    [gamePlayers]
+  );
+
   return (
     <div id="friends-list">
       <h3>List</h3>
@@ -30,7 +45,16 @@ export default function FriendsList() {
           {currentFriends.map((friend) => (
             <li key={friend.id}>
               {friend.username} &mdash;{" "}
-              <button type="button">Add to Game Table</button>
+              {activeGame ? (
+                <button
+                  type="button"
+                  disabled={isFriendInGame(friend.id)}
+                  onClick={() => handleAddFriendToGame(friend.id)}>
+                  {isFriendInGame(friend.id) ? "In Game" : "Add to Game"}
+                </button>
+              ) : (
+                <em>Start Game to add players</em>
+              )}
             </li>
           ))}
         </ul>

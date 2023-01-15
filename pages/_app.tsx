@@ -10,6 +10,7 @@ import {
   FriendsProvider,
   SupabaseProvider,
   ProfileProvider,
+  GameProvider,
 } from "../context";
 
 function App({
@@ -27,13 +28,15 @@ function App({
       initialSession={pageProps.initialSession}>
       <SupabaseProvider>
         <ProfileProvider>
-          <CardsProvider>
-            <DeckProvider>
-              <FriendsProvider>
-                <Component {...pageProps} />
-              </FriendsProvider>
-            </DeckProvider>
-          </CardsProvider>
+          <GameProvider>
+            <CardsProvider>
+              <DeckProvider>
+                <FriendsProvider>
+                  <Component {...pageProps} />
+                </FriendsProvider>
+              </DeckProvider>
+            </CardsProvider>
+          </GameProvider>
         </ProfileProvider>
       </SupabaseProvider>
     </SessionContextProvider>

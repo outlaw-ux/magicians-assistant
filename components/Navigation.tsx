@@ -1,10 +1,17 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useCallback } from "react";
+import { useGameContext } from "../context";
 import { useSupabaseContext } from "../context/Supabase";
 
 export default function Navigation() {
   const router = useRouter();
+  const { activeGame, startGame } = useGameContext();
   const { supabase } = useSupabaseContext();
+
+  const handleGame = useCallback(() => {
+    startGame();
+  }, [startGame]);
 
   return (
     <div id="account-page">
@@ -23,13 +30,21 @@ export default function Navigation() {
         </li>
       </ul>
 
-      <button
-        onClick={async () => {
-          supabase && (await supabase.auth.signOut());
-          router.push("/");
-        }}>
-        Logout
-      </button>
+      <p>
+        <button type="button" onClick={handleGame}>
+          {!!activeGame ? "End Game" : "Start Game"}
+        </button>
+      </p>
+
+      <p>
+        <button
+          onClick={async () => {
+            supabase && (await supabase.auth.signOut());
+            router.push("/");
+          }}>
+          Logout
+        </button>
+      </p>
     </div>
   );
 }

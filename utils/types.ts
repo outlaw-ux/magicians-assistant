@@ -8,8 +8,9 @@ export type StickerCard = Database["public"]["Tables"]["cards_stickers"]["Row"];
 export type Deck = Database["public"]["Tables"]["decks"]["Row"];
 export type Profile = Database["public"]["Tables"]["profiles"]["Row"];
 export type Friend = Database["public"]["Tables"]["friends"]["Row"];
+export type Game = Database["public"]["Tables"]["games"]["Row"];
 
-export type DeckTypes = "attractions" | "schemes" | "tokens";
+export type DeckTypes = "attractions" | "schemes" | "tokens" | "stickers";
 export interface IFriendProfile {
   id: Profile["id"];
   username: Profile["username"];

@@ -3,3 +3,4 @@ export * from "./Deck";
 export * from "./Friends";
 export * from "./Supabase";
 export * from "./Profile";
+export * from "./Game";

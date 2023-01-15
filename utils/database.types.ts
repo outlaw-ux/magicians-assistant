@@ -1395,7 +1395,7 @@ export interface Database {
         Row: {
           cards: string | null
           created_at: string | null
-          id: number
+          id: string
           name: string
           type: string | null
           user_id: string | null
@@ -1403,7 +1403,7 @@ export interface Database {
         Insert: {
           cards?: string | null
           created_at?: string | null
-          id?: number
+          id?: string
           name?: string
           type?: string | null
           user_id?: string | null
@@ -1411,7 +1411,7 @@ export interface Database {
         Update: {
           cards?: string | null
           created_at?: string | null
-          id?: number
+          id?: string
           name?: string
           type?: string | null
           user_id?: string | null
@@ -1446,30 +1446,36 @@ export interface Database {
       games: {
         Row: {
           created_at: string | null
-          decks: string | null
+          creator: string
+          decks: string[] | null
+          game_type: string | null
           id: string
           is_active: boolean
-          players: string
+          players: string[]
           starting_life: number | null
           teams: string | null
           variant: string | null
         }
         Insert: {
           created_at?: string | null
-          decks?: string | null
+          creator: string
+          decks?: string[] | null
+          game_type?: string | null
           id?: string
           is_active?: boolean
-          players: string
+          players: string[]
           starting_life?: number | null
           teams?: string | null
           variant?: string | null
         }
         Update: {
           created_at?: string | null
-          decks?: string | null
+          creator?: string
+          decks?: string[] | null
+          game_type?: string | null
           id?: string
           is_active?: boolean
-          players?: string
+          players?: string[]
           starting_life?: number | null
           teams?: string | null
           variant?: string | null
