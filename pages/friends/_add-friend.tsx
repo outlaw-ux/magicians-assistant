@@ -23,7 +23,7 @@ export default function AddFriend({
         requestFriend(foundProfile);
       }
     }
-  }, [requestFriend, foundProfile]);
+  }, [requestFriend, foundProfile, approveFriend, isProfilePendingFriend]);
 
   const disabledButton = useMemo(() => {
     if (!foundProfile) return false;

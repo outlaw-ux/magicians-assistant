@@ -11,9 +11,7 @@ export type Friend = Database["public"]["Tables"]["friends"]["Row"];
 
 export type DeckTypes = "attractions" | "schemes" | "tokens";
 export interface IFriendProfile {
-  // profile_id: Profile["id"];
   id: Profile["id"];
   username: Profile["username"];
-  // friend_id: Friend["id"];
-  // pending: Friend["pending"];
+  friend_id: Friend["id"];
 }

@@ -5,7 +5,7 @@ import React, {
   useLayoutEffect,
   useState,
 } from "react";
-import type { IFriendProfile } from "../utils/types";
+import type { Friend, IFriendProfile } from "../utils/types";
 import { useProfileContext } from "./Profile";
 import { useSupabaseContext } from "./Supabase";
 
@@ -16,6 +16,7 @@ interface IFriends {
   searchFriend: (searchValue: string) => Promise<IFriendProfile | null>;
   requestFriend: (profile: IFriendProfile) => Promise<IFriendProfile | null>;
   approveFriend: (profile: IFriendProfile) => Promise<IFriendProfile | null>;
+  cancelFriendRequest: (profile: IFriendProfile) => Promise<boolean>;
   isProfileCurrentFriend: (id: IFriendProfile["id"]) => boolean;
   isProfileRequestedFriend: (id: IFriendProfile["id"]) => boolean;
   isProfilePendingFriend: (id: IFriendProfile["id"]) => boolean;
@@ -28,6 +29,7 @@ const defaultContext: IFriends = {
   searchFriend: () => Promise.resolve(null),
   requestFriend: () => Promise.resolve(null),
   approveFriend: () => Promise.resolve(null),
+  cancelFriendRequest: () => Promise.resolve(false),
   isProfileCurrentFriend: () => false,
   isProfileRequestedFriend: () => false,
   isProfilePendingFriend: () => false,
@@ -62,6 +64,7 @@ export function FriendsProvider({ children }: { children: React.ReactNode }) {
         return {
           username: data[0].username,
           id: data[0].id,
+          friend_id: "",
         };
       }
       return null;
@@ -71,7 +74,6 @@ export function FriendsProvider({ children }: { children: React.ReactNode }) {
 
   const requestFriend = useCallback(
     async ({ id }: IFriendProfile) => {
-      // todo: gotta make sure nothing is already pending
       return supabase
         .from("friends")
         .insert({
@@ -80,12 +82,16 @@ export function FriendsProvider({ children }: { children: React.ReactNode }) {
           pending: true,
         })
         .select()
-        .then(({ error }) => {
+        .then(async ({ data, error }) => {
           if (error) throw new Error(error.message);
-          return {
-            username: "",
-            id,
-          };
+          return getProfile(id).then(
+            (profile) =>
+              ({
+                username: profile?.username,
+                id,
+                friend_id: data[0].id,
+              } as IFriendProfile)
+          );
         });
     },
     [supabase, user]
@@ -95,11 +101,12 @@ export function FriendsProvider({ children }: { children: React.ReactNode }) {
     const { data, error } = await supabase
       .from("friends")
       .select("*")
+      .eq("rejected", false)
       .or(`requester.eq.${user.id},accepter.eq.${user.id}`);
 
     if (error) throw new Error(error.message);
 
-    return data.map((friend) => {
+    return data.map((friend: Friend) => {
       const profileId =
         friend.accepter === user.id ? friend.requester : friend.accepter;
       const addingFriendFnc =
@@ -108,9 +115,13 @@ export function FriendsProvider({ children }: { children: React.ReactNode }) {
 
       getProfile(profileId).then((profile) => {
         if (profile) {
-          setFriendFnc((friend) => [
-            ...friend,
-            { username: profile.username, id: profile.id },
+          setFriendFnc((frnd) => [
+            ...frnd,
+            {
+              username: profile.username,
+              id: profile.id,
+              friend_id: friend.id,
+            },
           ]);
         }
       });
@@ -121,22 +132,66 @@ export function FriendsProvider({ children }: { children: React.ReactNode }) {
     return Promise.resolve(null);
   }, []);
 
+  const cancelFriendRequest = useCallback(
+    async (profile: IFriendProfile) => {
+      return supabase
+        .from("friends")
+        .upsert({
+          id: profile.friend_id,
+          pending: false,
+          rejected: true,
+          accepter: profile.id,
+          requester: user.id,
+        })
+        .select()
+        .then(({ error }) => {
+          if (error) throw new Error(error.message);
+          if (isProfileRequestedFriend(profile.id)) {
+            setRequestedFriends((reqFriends) => {
+              reqFriends.splice(requestedFriendIndex(profile.id), 1);
+              return reqFriends;
+            });
+          }
+          if (isProfilePendingFriend(profile.id)) {
+            setPendingFriends((pendFriends) => {
+              pendFriends.splice(pendingFriendIndex(profile.id), 1);
+              return pendFriends;
+            });
+          }
+          return true;
+        });
+    },
+    [supabase]
+  );
+
   const isProfileCurrentFriend = useCallback(
     (profileId: IFriendProfile["id"]): boolean =>
       currentFriends.filter((friend) => friend.id === profileId).length > 0,
     [currentFriends]
   );
 
-  const isProfileRequestedFriend = useCallback(
-    (profileId: IFriendProfile["id"]): boolean =>
-      requestedFriends.filter((friend) => friend.id === profileId).length > 0,
+  const requestedFriendIndex = useCallback(
+    (profileId: IFriendProfile["id"]): number => {
+      return requestedFriends.findIndex((friend) => friend.id === profileId);
+    },
     [requestedFriends]
   );
+  const isProfileRequestedFriend = useCallback(
+    (profileId: IFriendProfile["id"]): boolean =>
+      requestedFriendIndex(profileId) >= 0,
+    [requestedFriendIndex]
+  );
 
+  const pendingFriendIndex = useCallback(
+    (profileId: IFriendProfile["id"]): number => {
+      return pendingFriends.findIndex((friend) => friend.id === profileId);
+    },
+    [pendingFriends]
+  );
   const isProfilePendingFriend = useCallback(
     (profileId: IFriendProfile["id"]): boolean =>
-      pendingFriends.filter((friend) => friend.id === profileId).length > 0,
-    [pendingFriends]
+      pendingFriendIndex(profileId) >= 0,
+    [pendingFriendIndex]
   );
 
   useLayoutEffect(() => {
@@ -159,6 +214,7 @@ export function FriendsProvider({ children }: { children: React.ReactNode }) {
         isProfileCurrentFriend,
         isProfileRequestedFriend,
         isProfilePendingFriend,
+        cancelFriendRequest,
       }}>
       {children}
     </FriendsContext.Provider>

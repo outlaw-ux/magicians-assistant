@@ -1422,21 +1422,24 @@ export interface Database {
           accepter: string
           created_at: string | null
           id: string
-          pending: boolean | null
+          pending: boolean
+          rejected: boolean
           requester: string
         }
         Insert: {
           accepter: string
           created_at?: string | null
           id?: string
-          pending?: boolean | null
+          pending?: boolean
+          rejected?: boolean
           requester: string
         }
         Update: {
           accepter?: string
           created_at?: string | null
           id?: string
-          pending?: boolean | null
+          pending?: boolean
+          rejected?: boolean
           requester?: string
         }
       }

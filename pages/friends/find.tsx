@@ -23,7 +23,7 @@ export default function FindFriendsPage() {
     searchFriend(debouncedSearchValue).then((newFriend) => {
       setFoundFriend(newFriend);
     });
-  }, [debouncedSearchValue, setFoundFriend]);
+  }, [debouncedSearchValue, setFoundFriend, searchFriend]);
 
   return (
     <div id="find-friends-page">

@@ -15,7 +15,7 @@ const EditProfile = () => {
   );
   const handleSaveProfile = useCallback(() => {
     saveProfile({ username: newUsername });
-  }, [newUsername]);
+  }, [newUsername, saveProfile]);
   const handleNewUsername = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const { value } = event.target;
@@ -32,7 +32,7 @@ const EditProfile = () => {
         <input
           type="text"
           id="new-username"
-          value={newUsername}
+          value={newUsername || ""}
           onChange={handleNewUsername}
         />
         <button type="submit" onClick={handleSaveProfile}>
