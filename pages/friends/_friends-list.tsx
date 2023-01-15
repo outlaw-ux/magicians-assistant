@@ -30,7 +30,7 @@ export default function FriendsList() {
     (profileId: IFriendProfile["id"]) => {
       addFriendToGame(profileId);
     },
-    [gamePlayers]
+    [gamePlayers, addFriendToGame]
   );
 
   return (

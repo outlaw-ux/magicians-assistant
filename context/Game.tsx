@@ -1,4 +1,10 @@
-import React, { createContext, useCallback, useContext, useState } from "react";
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useLayoutEffect,
+  useState,
+} from "react";
 import { Game, Profile } from "../utils/types";
 import { useSupabaseContext } from "./Supabase";
 
@@ -7,6 +13,7 @@ interface IGame {
   gamePlayers: Game["players"];
   addFriendToGame: (friendId: Profile["id"]) => Promise<Game | null>;
   startGame: () => Promise<Game | null>;
+  endGame: () => Promise<null>;
 }
 
 const defaultContext: IGame = {
@@ -14,6 +21,7 @@ const defaultContext: IGame = {
   gamePlayers: [],
   addFriendToGame: () => Promise.resolve(null),
   startGame: () => Promise.resolve(null),
+  endGame: () => Promise.resolve(null),
 };
 
 const GameContext = createContext(defaultContext);
@@ -21,6 +29,7 @@ const GameContext = createContext(defaultContext);
 export function GameProvider({ children }: { children: React.ReactNode }) {
   const { supabase, user } = useSupabaseContext();
   if (!supabase || !user) throw new Error("How did you even get here?");
+  const [loadedGame, setLoadedGame] = useState(false);
   const [activeGame, setActiveGame] = useState(defaultContext.activeGame);
   const [gamePlayers, setGamePlayers] = useState(defaultContext.gamePlayers);
 
@@ -51,24 +60,56 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     []
   );
 
+  const endGame: IGame["endGame"] = useCallback(async () => {
+    return supabase
+      .from("games")
+      .update({ is_active: false })
+      .eq("creator", user.id)
+      .eq("id", activeGame)
+      .then(({ error }) => {
+        if (error) throw new Error(error.message);
+        setActiveGame(null);
+        return null;
+      });
+  }, [activeGame, user, supabase]);
+
+  const getOngoingGame = useCallback(async () => {
+    return supabase
+      .from("games")
+      .select("*")
+      .eq("is_active", true)
+      .contains("players", [user.id])
+      .then(({ data, error }) => {
+        if (error) throw new Error(error.message);
+        if (data?.[0]) {
+          setGamePlayers(data[0].players);
+          setActiveGame(data[0].id);
+        }
+      });
+  }, [supabase, user]);
+
+  useLayoutEffect(() => {
+    if (!loadedGame) {
+      getOngoingGame().then(() => {
+        setLoadedGame(true);
+      });
+    }
+  }, [loadedGame, getOngoingGame]);
+
   // start game
   // - player.id      []
   // - deck.id        []
-  // - id             uuid
-  // - creator        profile.id
   // - game_type      standard/modern, commander/edh
   // - variant        treachery, archenemeny
   // - starting_life  number
-  // - is_active      bool
-  // end game
-  // - set is_active to false
+
   // restart game
   // - reshuffle all decks
   // - reset all life
   // - if variant redeal identity cards
   return (
     <GameContext.Provider
-      value={{ activeGame, startGame, addFriendToGame, gamePlayers }}>
+      value={{ activeGame, endGame, startGame, addFriendToGame, gamePlayers }}>
       {children}
     </GameContext.Provider>
   );

@@ -6,12 +6,13 @@ import { useSupabaseContext } from "../context/Supabase";
 
 export default function Navigation() {
   const router = useRouter();
-  const { activeGame, startGame } = useGameContext();
+  const { activeGame, endGame, startGame } = useGameContext();
   const { supabase } = useSupabaseContext();
 
   const handleGame = useCallback(() => {
-    startGame();
-  }, [startGame]);
+    const toggleGame = !!activeGame ? endGame : startGame;
+    toggleGame();
+  }, [activeGame, startGame]);
 
   return (
     <div id="account-page">
