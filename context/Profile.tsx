@@ -11,13 +11,17 @@ import { Profile } from "../utils/types";
 import { useSupabaseContext } from "./Supabase";
 
 interface IProfile {
-  username: string;
+  username: Profile["username"];
   saveProfile: (profile: Partial<Profile>) => Promise<Profile | void>;
+  getProfile: (id: Profile["id"]) => Promise<Profile | void>;
+  profile: Profile | undefined;
 }
 
 const defaultContext: IProfile = {
   username: username(),
   saveProfile: () => Promise.resolve(),
+  getProfile: () => Promise.resolve(),
+  profile: undefined,
 };
 
 const ProfileContext = createContext(defaultContext);
@@ -28,10 +32,26 @@ export function ProfileProvider({ children }: { children: React.ReactNode }) {
 
   const [onboarded, setOnboarded] = useState(false);
   const [username, setUsername] = useState(defaultContext.username);
+  const [profile, setProfile] = useState<Profile>();
 
-  const getProfile = useCallback(async () => {
-    return supabase.from("profiles").select("username").eq("id", user.id);
-  }, [supabase, user]);
+  const getProfile = useCallback(
+    async (id?: Profile["id"]) => {
+      if (profile && !id) return Promise.resolve(profile);
+
+      return supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", id || user.id)
+        .then(({ error, data }) => {
+          if (error) throw new Error(error.message);
+          if (data?.[0]?.username) {
+            setProfile(data[0]);
+          }
+          return data[0];
+        });
+    },
+    [supabase, user, profile]
+  );
 
   const saveProfile: IProfile["saveProfile"] = useCallback(
     async (profile) => {
@@ -45,6 +65,7 @@ export function ProfileProvider({ children }: { children: React.ReactNode }) {
           if (profile?.username && profile?.username !== username) {
             setUsername(profile.username);
           }
+          setProfile(data[0]);
           if (!onboarded) {
             setOnboarded(true);
           }
@@ -56,22 +77,18 @@ export function ProfileProvider({ children }: { children: React.ReactNode }) {
 
   useLayoutEffect(() => {
     if (!onboarded) {
-      getProfile().then(({ data, error }) => {
-        if (error) throw new Error(error.message);
-        if (data?.[0]?.username) {
-          setUsername(data[0].username);
+      getProfile().then((data: Profile) => {
+        if (data?.username) {
+          setUsername(data.username);
           setOnboarded(true);
         }
       });
     }
   }, [onboarded, getProfile]);
 
-  /*
-    check if Profile has `screenname` defined, if not, require they create one
-  */
-
   return (
-    <ProfileContext.Provider value={{ username, saveProfile }}>
+    <ProfileContext.Provider
+      value={{ username, saveProfile, profile, getProfile }}>
       {onboarded ? children : <NewProfile />}
     </ProfileContext.Provider>
   );

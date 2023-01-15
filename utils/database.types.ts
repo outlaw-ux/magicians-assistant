@@ -1417,6 +1417,29 @@ export interface Database {
           user_id?: string | null
         }
       }
+      friends: {
+        Row: {
+          accepter: string
+          created_at: string | null
+          id: string
+          pending: boolean | null
+          requester: string
+        }
+        Insert: {
+          accepter: string
+          created_at?: string | null
+          id?: string
+          pending?: boolean | null
+          requester: string
+        }
+        Update: {
+          accepter?: string
+          created_at?: string | null
+          id?: string
+          pending?: boolean | null
+          requester?: string
+        }
+      }
       games: {
         Row: {
           created_at: string | null
@@ -1451,35 +1474,17 @@ export interface Database {
       }
       profiles: {
         Row: {
-          avatar_url: string | null
-          friends: string | null
-          full_name: string | null
           id: string
-          pending_friends: string | null
-          phone: string | null
-          requested_friends: Json | null
           updated_at: string | null
           username: string | null
         }
         Insert: {
-          avatar_url?: string | null
-          friends?: string | null
-          full_name?: string | null
           id: string
-          pending_friends?: string | null
-          phone?: string | null
-          requested_friends?: Json | null
           updated_at?: string | null
           username?: string | null
         }
         Update: {
-          avatar_url?: string | null
-          friends?: string | null
-          full_name?: string | null
           id?: string
-          pending_friends?: string | null
-          phone?: string | null
-          requested_friends?: Json | null
           updated_at?: string | null
           username?: string | null
         }
