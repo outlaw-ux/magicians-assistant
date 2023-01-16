@@ -13,7 +13,15 @@ interface IGame {
   gamePlayers: Game["players"];
   isGameCreator: boolean;
   addFriendToGame: (friendId: Profile["id"]) => Promise<Game | null>;
-  startGame: () => Promise<Game | null>;
+  startGame: ({
+    startingLife,
+    type,
+    variant,
+  }: {
+    startingLife: Game["starting_life"];
+    type: Game["game_type"];
+    variant: Game["variant"];
+  }) => Promise<Game | null>;
   endGame: () => Promise<null>;
   leaveGame: () => Promise<null>;
 }
@@ -38,25 +46,31 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   const [gamePlayers, setGamePlayers] = useState(defaultContext.gamePlayers);
   const [isGameCreator, setIsGameCreator] = useState(false);
 
-  const startGame = useCallback(async () => {
-    if (!activeGame) {
-      return supabase
-        .from("games")
-        .insert({
-          creator: user.id,
-          is_active: true,
-          players: [user.id],
-        })
-        .select()
-        .then(({ data, error }) => {
-          if (error) throw new Error(error.message);
-          setGamePlayers([user.id]);
-          setActiveGame(data[0].id);
-          setIsGameCreator(true);
-          return data[0];
-        });
-    }
-  }, [activeGame]);
+  const startGame: IGame["startGame"] = useCallback(
+    async ({ startingLife, type, variant }) => {
+      if (!activeGame) {
+        return supabase
+          .from("games")
+          .insert({
+            creator: user.id,
+            is_active: true,
+            players: [user.id],
+            starting_life: startingLife,
+            game_type: type,
+            variant,
+          })
+          .select()
+          .then(({ data, error }) => {
+            if (error) throw new Error(error.message);
+            setGamePlayers([user.id]);
+            setActiveGame(data[0].id);
+            setIsGameCreator(true);
+            return data[0];
+          });
+      }
+    },
+    [activeGame]
+  );
 
   const addFriendToGame: IGame["addFriendToGame"] = useCallback(
     async (friendId) => {
@@ -135,9 +149,6 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
 
   // start game
   // - deck.id        []
-  // - game_type      standard/modern, commander/edh
-  // - variant        treachery, archenemeny
-  // - starting_life  number
 
   // restart game
   // - reshuffle all decks

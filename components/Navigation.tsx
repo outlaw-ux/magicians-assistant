@@ -6,18 +6,14 @@ import { useSupabaseContext } from "../context/Supabase";
 
 export default function Navigation() {
   const router = useRouter();
-  const { activeGame, endGame, isGameCreator, startGame, leaveGame } =
-    useGameContext();
   const { supabase } = useSupabaseContext();
-
-  const handleGame = useCallback(() => {
-    const toggleGame = !!activeGame ? endGame : startGame;
-    toggleGame();
-  }, [activeGame, endGame, startGame]);
 
   return (
     <div id="account-page">
-      <ul>
+      {/* <ul>
+        <li>
+          <Link href="/game">Play Game</Link>
+        </li>
         <li>
           <Link href="/attractions">Attractions</Link>
         </li>
@@ -30,19 +26,7 @@ export default function Navigation() {
         <li>
           <Link href="/settings">Settings</Link>
         </li>
-      </ul>
-
-      <p>
-        {!activeGame || isGameCreator ? (
-          <button type="button" onClick={handleGame}>
-            {!!activeGame ? "End Game" : "Start Game"}
-          </button>
-        ) : (
-          <button type="button" onClick={leaveGame}>
-            Leave Game
-          </button>
-        )}
-      </p>
+      </ul> */}
 
       <p>
         <button

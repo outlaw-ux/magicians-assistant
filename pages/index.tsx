@@ -1,16 +1,11 @@
 import Navigation from "../components/Navigation";
-import { useSupabaseContext } from "../context/Supabase";
 
-export default function Game() {
-  const { user } = useSupabaseContext();
-
+export default function HomePage() {
   return (
-    <div id="account-page">
+    <div id="home-page">
       <h2>Home Page</h2>
 
       <Navigation />
-
-      <pre>{JSON.stringify(user, undefined, 2)}</pre>
     </div>
   );
 }
