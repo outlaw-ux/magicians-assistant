@@ -1,57 +1,42 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { useCallback } from "react";
 import { useGameContext } from "../context";
+import { useSupabaseContext } from "../context/Supabase";
 
 export default function Navigation() {
-  const { toggleGameStart } = useGameContext();
+  const router = useRouter();
+  const { supabase } = useSupabaseContext();
 
   return (
-    <>
-      <ul>
+    <div id="account-page">
+      {/* <ul>
         <li>
-          <Link href="/">Home</Link>
+          <Link href="/game">Play Game</Link>
         </li>
         <li>
-          <Link href="/schemes">Archenemy Schemes</Link>
+          <Link href="/attractions">Attractions</Link>
         </li>
         <li>
-          Unfinity
-          <ul>
-            <li>
-              <Link href="/attractions">Attractions</Link>
-            </li>
-            <li>
-              <Link href="/stickers">Stickers</Link>
-            </li>
-          </ul>
-        </li>
-        {/* <li>
-          <Link href="/counters">Counter Manager</Link>
-        </li> */}
-        <li>
-          <Link href="/tokens">Token Manager</Link>
+          <Link href="/schemes">Schemes</Link>
         </li>
         <li>
-          <Link href="/dice-roller">Dice Roller</Link>
+          <Link href="/friends">Friends</Link>
         </li>
         <li>
-          <Link href="/life-tracker">Life Tracker</Link>
+          <Link href="/settings">Settings</Link>
         </li>
-        {/* <li>
-          <Link href="/treachery">Treachery</Link>
-        </li> */}
-      </ul>
-      <button
-        onClick={() => {
-          if (
-            window.confirm(`Are you sure you want to end your current session?`)
-          ) {
-            toggleGameStart();
-          }
-        }}
-      >
-        End Game
-      </button>
-      <hr />
-    </>
+      </ul> */}
+
+      <p>
+        <button
+          onClick={async () => {
+            supabase && (await supabase.auth.signOut());
+            router.push("/");
+          }}>
+          Logout
+        </button>
+      </p>
+    </div>
   );
 }

@@ -1,23 +1,19 @@
-import Head from "next/head";
+import Link from "next/link";
 import Navigation from "../../components/Navigation";
-import CurrentAttractions from "./_current";
+import AttractionsDeck from "./_deck";
 
 export default function AttractionsPage() {
   return (
-    <>
-      <Head>
-        <title>Unfinity Attractions :: Magicians Assistant</title>
-        <meta name="description" content="" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+    <div id="attractions-page">
+      <Navigation />
+      <h2>Attractions</h2>
+      <ul>
+        <li>
+          <Link href="/attractions/customize">Customize Deck</Link>
+        </li>
+      </ul>
 
-      <main>
-        <h1>Unfinity Attractions</h1>
-        <Navigation />
-
-        <CurrentAttractions />
-      </main>
-    </>
+      <AttractionsDeck />
+    </div>
   );
 }

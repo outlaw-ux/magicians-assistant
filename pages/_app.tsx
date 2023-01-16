@@ -1,28 +1,45 @@
-import "../styles/globals.css";
+import { useState } from "react";
 import type { AppProps } from "next/app";
+import type { Session } from "@supabase/auth-helpers-react";
+import { createBrowserSupabaseClient } from "@supabase/auth-helpers-nextjs";
+import { SessionContextProvider } from "@supabase/auth-helpers-react";
+import { Database } from "../utils/database.types";
 import {
-  AttractionsContextWrapper,
-  DiceContextWrapper,
-  GameContextWrapper,
-  LifeContextWrapper,
-  SchemesContextWrapper,
-  BattlefieldContextWrapper,
+  CardsProvider,
+  DeckProvider,
+  FriendsProvider,
+  SupabaseProvider,
+  ProfileProvider,
+  GameProvider,
 } from "../context";
 
-export default function App({ Component, pageProps }: AppProps) {
+function App({
+  Component,
+  pageProps,
+}: AppProps<{
+  initialSession: Session;
+}>) {
+  const [supabaseClient] = useState(() =>
+    createBrowserSupabaseClient<Database>()
+  );
   return (
-    <GameContextWrapper>
-      <BattlefieldContextWrapper>
-        <AttractionsContextWrapper>
-          <LifeContextWrapper>
-            <DiceContextWrapper>
-              <SchemesContextWrapper>
-                <Component {...pageProps} />
-              </SchemesContextWrapper>
-            </DiceContextWrapper>
-          </LifeContextWrapper>
-        </AttractionsContextWrapper>
-      </BattlefieldContextWrapper>
-    </GameContextWrapper>
+    <SessionContextProvider
+      supabaseClient={supabaseClient}
+      initialSession={pageProps.initialSession}>
+      <SupabaseProvider>
+        <ProfileProvider>
+          <GameProvider>
+            <CardsProvider>
+              <DeckProvider>
+                <FriendsProvider>
+                  <Component {...pageProps} />
+                </FriendsProvider>
+              </DeckProvider>
+            </CardsProvider>
+          </GameProvider>
+        </ProfileProvider>
+      </SupabaseProvider>
+    </SessionContextProvider>
   );
 }
+export default App;

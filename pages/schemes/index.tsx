@@ -1,26 +1,19 @@
-import Head from "next/head";
+import Link from "next/link";
 import Navigation from "../../components/Navigation";
-import CurrentScheme from "./_current";
-import OngoingSchemes from "./_ongoing";
+import SchemesDeck from "./_deck";
 
 export default function SchemesPage() {
   return (
-    <>
-      <Head>
-        <title>Schemes :: Magicians Assistant</title>
-        <meta name="description" content="" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+    <div id="schemes-page">
+      <Navigation />
+      <h2>Schemes</h2>
+      <ul>
+        <li>
+          <Link href="/schemes/customize">Customize Deck</Link>
+        </li>
+      </ul>
 
-      <main>
-        <h1>Schemes</h1>
-        <Navigation />
-
-        <CurrentScheme />
-
-        <OngoingSchemes />
-      </main>
-    </>
+      <SchemesDeck />
+    </div>
   );
 }

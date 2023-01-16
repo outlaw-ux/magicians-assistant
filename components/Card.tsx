@@ -24,8 +24,8 @@ export default function Card({
       height={height}
       alt={alt}
       onLoad={onLoad}
-      placeholder="blur"
-      blurDataURL="/assets/loading.jpg"
+      // placeholder="blur"
+      // blurDataURL="/assets/loading.jpg"
       onClick={onClick}
     />
   );
