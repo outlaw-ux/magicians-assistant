@@ -1391,6 +1391,44 @@ export interface Database {
           variation?: boolean | null
         }
       }
+      cards_treachery: {
+        Row: {
+          artist: string | null
+          id: string
+          name: string | null
+          rarity: string | null
+          rulings: string[] | null
+          text: string | null
+          type: string | null
+          "types/subtype": string | null
+          "types/supertype": string | null
+          uri: string | null
+        }
+        Insert: {
+          artist?: string | null
+          id?: string
+          name?: string | null
+          rarity?: string | null
+          rulings?: string[] | null
+          text?: string | null
+          type?: string | null
+          "types/subtype"?: string | null
+          "types/supertype"?: string | null
+          uri?: string | null
+        }
+        Update: {
+          artist?: string | null
+          id?: string
+          name?: string | null
+          rarity?: string | null
+          rulings?: string[] | null
+          text?: string | null
+          type?: string | null
+          "types/subtype"?: string | null
+          "types/supertype"?: string | null
+          uri?: string | null
+        }
+      }
       decks: {
         Row: {
           cards: string | null
@@ -1443,6 +1481,40 @@ export interface Database {
           requester?: string
         }
       }
+      game_invites: {
+        Row: {
+          created_at: string | null
+          game_id: string
+          id: number
+          profile_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          game_id: string
+          id?: number
+          profile_id: string
+        }
+        Update: {
+          created_at?: string | null
+          game_id?: string
+          id?: number
+          profile_id?: string
+        }
+      }
+      game_players: {
+        Row: {
+          game_id: string
+          profile_id: string
+        }
+        Insert: {
+          game_id: string
+          profile_id: string
+        }
+        Update: {
+          game_id?: string
+          profile_id?: string
+        }
+      }
       games: {
         Row: {
           created_at: string | null
@@ -1451,7 +1523,6 @@ export interface Database {
           game_type: string | null
           id: string
           is_active: boolean
-          players: string[]
           starting_life: number | null
           teams: string | null
           variant: string | null
@@ -1463,7 +1534,6 @@ export interface Database {
           game_type?: string | null
           id?: string
           is_active?: boolean
-          players: string[]
           starting_life?: number | null
           teams?: string | null
           variant?: string | null
@@ -1475,7 +1545,6 @@ export interface Database {
           game_type?: string | null
           id?: string
           is_active?: boolean
-          players?: string[]
           starting_life?: number | null
           teams?: string | null
           variant?: string | null
@@ -1483,16 +1552,19 @@ export interface Database {
       }
       profiles: {
         Row: {
+          current_game: string | null
           id: string
           updated_at: string | null
           username: string | null
         }
         Insert: {
+          current_game?: string | null
           id: string
           updated_at?: string | null
           username?: string | null
         }
         Update: {
+          current_game?: string | null
           id?: string
           updated_at?: string | null
           username?: string | null
