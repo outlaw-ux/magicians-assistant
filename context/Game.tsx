@@ -103,20 +103,22 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   }, [activeGame, user, supabase]);
 
   const getOngoingGame = useCallback(async () => {
-    return supabase
-      .from("games")
-      .select("*")
-      .eq("is_active", true)
-      .contains("players", [user.id])
-      .then(({ data, error }) => {
-        if (error) throw new Error(error.message);
-        if (data?.[0]) {
-          setGamePlayers(data[0].players);
-          setActiveGame(data[0].id);
-          setIsGameCreator(data[0].creator === user.id);
-        }
-        return data[0];
-      });
+    return (
+      supabase
+        .from("games")
+        .select("*")
+        .eq("is_active", true)
+        // .contains("players", [user.id])
+        .then(({ data, error }) => {
+          if (error) throw new Error(error.message);
+          if (data?.[0]) {
+            setGamePlayers(data[0].players);
+            setActiveGame(data[0].id);
+            setIsGameCreator(data[0].creator === user.id);
+          }
+          return data[0];
+        })
+    );
   }, [supabase, user]);
 
   const leaveGame = useCallback(async () => {
@@ -124,18 +126,20 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     const playerIdx = updatedPlayers.findIndex((id) => id === user.id);
     updatedPlayers.splice(playerIdx, 1);
 
-    return supabase
-      .from("games")
-      .update({ players: updatedPlayers })
-      .eq("id", activeGame)
-      .contains("players", [user.id])
-      .then(({ error }) => {
-        if (error) throw new Error(error.message);
-        setGamePlayers(defaultContext.gamePlayers);
-        setActiveGame(defaultContext.activeGame);
-        setIsGameCreator(defaultContext.isGameCreator);
-        return null;
-      });
+    return (
+      supabase
+        .from("games")
+        .update({ players: updatedPlayers })
+        .eq("id", activeGame)
+        // .contains("players", [user.id])
+        .then(({ error }) => {
+          if (error) throw new Error(error.message);
+          setGamePlayers(defaultContext.gamePlayers);
+          setActiveGame(defaultContext.activeGame);
+          setIsGameCreator(defaultContext.isGameCreator);
+          return null;
+        })
+    );
   }, [activeGame, supabase, user, gamePlayers]);
 
   useLayoutEffect(() => {

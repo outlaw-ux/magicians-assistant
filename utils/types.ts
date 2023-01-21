@@ -11,8 +11,4 @@ export type Friend = Database["public"]["Tables"]["friends"]["Row"];
 export type Game = Database["public"]["Tables"]["games"]["Row"];
 
 export type DeckTypes = "attractions" | "schemes" | "tokens" | "stickers";
-export interface IFriendProfile {
-  id: Profile["id"];
-  username: Profile["username"];
-  friend_id: Friend["id"];
-}
+export interface IFriendProfile extends Profile {}

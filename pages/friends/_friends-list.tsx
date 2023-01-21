@@ -6,39 +6,40 @@ import type { IFriendProfile } from "../../utils/types";
 export default function FriendsList() {
   const { activeGame, gamePlayers, addFriendToGame } = useGameContext();
   const {
-    approveFriend,
-    requestedFriends,
-    currentFriends,
+    // approveFriend,
+    // requestedFriends,
+    // currentFriends,
     pendingFriends,
-    cancelFriendRequest,
+    requestFriend,
+    // cancelFriendRequest,
   } = useFriendsContext();
 
-  const handleRejectRequest = useCallback(
-    (profile: IFriendProfile) => {
-      cancelFriendRequest(profile);
-    },
-    [cancelFriendRequest]
-  );
+  // const handleRejectRequest = useCallback(
+  //   (profile: IFriendProfile) => {
+  //     cancelFriendRequest(profile);
+  //   },
+  //   [cancelFriendRequest]
+  // );
   const handleApproveRequest = useCallback(
     (profile: IFriendProfile) => {
-      approveFriend(profile);
+      requestFriend(profile);
     },
-    [approveFriend]
+    [requestFriend]
   );
 
-  const isFriendInGame = useCallback(
-    (profileId: IFriendProfile["id"]) => {
-      return gamePlayers.includes(profileId);
-    },
-    [gamePlayers]
-  );
-  const handleAddFriendToGame = useCallback(
-    (profileId: IFriendProfile["id"]) => {
-      console.log(`handle add friend ${profileId}`);
-      addFriendToGame(profileId);
-    },
-    [addFriendToGame]
-  );
+  // const isFriendInGame = useCallback(
+  //   (profileId: IFriendProfile["id"]) => {
+  //     return gamePlayers.includes(profileId);
+  //   },
+  //   [gamePlayers]
+  // );
+  // const handleAddFriendToGame = useCallback(
+  //   (profileId: IFriendProfile["id"]) => {
+  //     console.log(`handle add friend ${profileId}`);
+  //     addFriendToGame(profileId);
+  //   },
+  //   [addFriendToGame]
+  // );
 
   return (
     <div id="friends-list">
@@ -46,7 +47,7 @@ export default function FriendsList() {
       <p>
         <Link href="/friends/find">Find friends</Link>
       </p>
-      <h4>Current Friends</h4>
+      {/* <h4>Current Friends</h4>
       {currentFriends?.length ? (
         <ul>
           {currentFriends.map((friend) => (
@@ -67,16 +68,17 @@ export default function FriendsList() {
         </ul>
       ) : (
         <p>No friends, go find some</p>
-      )}
+      )} */}
+
       <h4>Awaiting Your Aproval</h4>
       {pendingFriends?.length ? (
         <ul>
           {pendingFriends.map((friend) => (
             <li key={friend.id}>
               {friend.username} &mdash;{" "}
-              <button type="button" onClick={() => handleRejectRequest(friend)}>
+              {/* <button type="button" onClick={() => handleRejectRequest(friend)}>
                 Deny
-              </button>
+              </button> */}
               <button
                 type="button"
                 onClick={() => handleApproveRequest(friend)}>
@@ -89,7 +91,7 @@ export default function FriendsList() {
         <p>No pending friends</p>
       )}
 
-      <h4>Your Requests</h4>
+      {/* <h4>Your Requests</h4>
       {requestedFriends?.length ? (
         <ul>
           {requestedFriends.map((friend) => (
@@ -103,7 +105,7 @@ export default function FriendsList() {
         </ul>
       ) : (
         <p>No friend requests</p>
-      )}
+      )} */}
     </div>
   );
 }

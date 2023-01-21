@@ -5,34 +5,39 @@ import React, {
   useLayoutEffect,
   useState,
 } from "react";
+import {
+  FunctionsHttpError,
+  FunctionsRelayError,
+  FunctionsFetchError,
+} from "@supabase/supabase-js";
 import type { Friend, IFriendProfile } from "../utils/types";
 import { useProfileContext } from "./Profile";
 import { useSupabaseContext } from "./Supabase";
 
 interface IFriends {
-  currentFriends: IFriendProfile[];
+  // currentFriends: IFriendProfile[];
   pendingFriends: IFriendProfile[];
-  requestedFriends: IFriendProfile[];
+  // requestedFriends: IFriendProfile[];
   searchFriend: (searchValue: string) => Promise<IFriendProfile | null>;
   requestFriend: (profile: IFriendProfile) => Promise<IFriendProfile | null>;
-  approveFriend: (profile: IFriendProfile) => Promise<IFriendProfile | null>;
-  cancelFriendRequest: (profile: IFriendProfile) => Promise<boolean>;
-  isProfileCurrentFriend: (id: IFriendProfile["id"]) => boolean;
-  isProfileRequestedFriend: (id: IFriendProfile["id"]) => boolean;
-  isProfilePendingFriend: (id: IFriendProfile["id"]) => boolean;
+  // approveFriend: (profile: IFriendProfile) => Promise<IFriendProfile | null>;
+  // cancelFriendRequest: (profile: IFriendProfile) => Promise<boolean>;
+  // isProfileCurrentFriend: (id: IFriendProfile["id"]) => boolean;
+  // isProfileRequestedFriend: (id: IFriendProfile["id"]) => boolean;
+  // isProfilePendingFriend: (id: IFriendProfile["id"]) => boolean;
 }
 
 const defaultContext: IFriends = {
-  currentFriends: [],
+  // currentFriends: [],
   pendingFriends: [],
-  requestedFriends: [],
+  // requestedFriends: [],
   searchFriend: () => Promise.resolve(null),
   requestFriend: () => Promise.resolve(null),
-  approveFriend: () => Promise.resolve(null),
-  cancelFriendRequest: () => Promise.resolve(false),
-  isProfileCurrentFriend: () => false,
-  isProfileRequestedFriend: () => false,
-  isProfilePendingFriend: () => false,
+  // approveFriend: () => Promise.resolve(null),
+  // cancelFriendRequest: () => Promise.resolve(false),
+  // isProfileCurrentFriend: () => false,
+  // isProfileRequestedFriend: () => false,
+  // isProfilePendingFriend: () => false,
 };
 
 const FriendsContext = createContext(defaultContext);
@@ -45,24 +50,24 @@ export function FriendsProvider({ children }: { children: React.ReactNode }) {
   const [pendingFriends, setPendingFriends] = useState(
     defaultContext.pendingFriends
   );
-  const [currentFriends, setCurrentFriends] = useState(
-    defaultContext.currentFriends
-  );
-  const [requestedFriends, setRequestedFriends] = useState(
-    defaultContext.requestedFriends
-  );
+  // const [currentFriends, setCurrentFriends] = useState(
+  //   defaultContext.currentFriends
+  // );
+  // const [requestedFriends, setRequestedFriends] = useState(
+  //   defaultContext.requestedFriends
+  // );
 
-  const rehydrateFriends = useCallback(() => {
-    setPendingFriends(defaultContext.pendingFriends);
-    setCurrentFriends(defaultContext.currentFriends);
-    setRequestedFriends(defaultContext.requestedFriends);
-    setLoadedFriends(false);
-  }, [
-    setPendingFriends,
-    setCurrentFriends,
-    setRequestedFriends,
-    setLoadedFriends,
-  ]);
+  // const rehydrateFriends = useCallback(() => {
+  //   setPendingFriends(defaultContext.pendingFriends);
+  //   setCurrentFriends(defaultContext.currentFriends);
+  //   setRequestedFriends(defaultContext.requestedFriends);
+  //   setLoadedFriends(false);
+  // }, [
+  //   setPendingFriends,
+  //   setCurrentFriends,
+  //   setRequestedFriends,
+  //   setLoadedFriends,
+  // ]);
 
   const searchFriend: IFriends["searchFriend"] = useCallback(
     async (searchValue: string) => {
@@ -76,7 +81,6 @@ export function FriendsProvider({ children }: { children: React.ReactNode }) {
         return {
           username: data[0].username,
           id: data[0].id,
-          friend_id: "",
         };
       }
       return null;
@@ -89,9 +93,8 @@ export function FriendsProvider({ children }: { children: React.ReactNode }) {
       return supabase
         .from("friends")
         .insert({
-          accepter: id,
-          requester: user.id,
-          pending: true,
+          profile_one: user.id,
+          profile_two: id,
         })
         .select()
         .then(async ({ data, error }) => {
@@ -101,11 +104,10 @@ export function FriendsProvider({ children }: { children: React.ReactNode }) {
               ({
                 username: profile?.username,
                 id,
-                friend_id: data[0].id,
               } as IFriendProfile)
           );
-
-          setRequestedFriends((requested) => [...requested, newFriend]);
+          console.log("requeste friend", newFriend);
+          // setRequestedFriends((requested) => [...requested, newFriend]);
           return newFriend;
         });
     },
@@ -113,118 +115,111 @@ export function FriendsProvider({ children }: { children: React.ReactNode }) {
   );
 
   const getFriends = useCallback(async () => {
-    const { data, error } = await supabase
-      .from("friends")
-      .select("*")
-      .eq("rejected", false)
-      .or(`requester.eq.${user.id},accepter.eq.${user.id}`);
+    const { data, error } = await supabase.functions.invoke(
+      "requested-friends"
+    );
 
-    if (error) throw new Error(error.message);
+    if (error instanceof FunctionsHttpError) {
+      console.log("Function returned an error", error.message);
+    } else if (error instanceof FunctionsRelayError) {
+      console.log("Relay error:", error.message);
+    } else if (error instanceof FunctionsFetchError) {
+      console.log("Fetch error:", error.message);
+    }
 
-    return data.map((friend: Friend) => {
-      const profileId =
-        friend.accepter === user.id ? friend.requester : friend.accepter;
-      const addingFriendFnc =
-        friend.accepter === user.id ? setPendingFriends : setRequestedFriends;
-      const setFriendFnc = friend.pending ? addingFriendFnc : setCurrentFriends;
+    console.log(data);
+    // setPendingFriends(data.pendingFriends);
+    return data;
+  }, [supabase]);
 
-      getProfile(profileId).then((profile) => {
-        if (profile) {
-          setFriendFnc((frnd) => [
-            ...frnd,
-            {
-              username: profile.username,
-              id: profile.id,
-              friend_id: friend.id,
-            },
-          ]);
-        }
-      });
-    });
-  }, [supabase, user]);
+  // const approveFriend = useCallback(async (profile: IFriendProfile) => {
+  //   return supabase
+  //     .from("friends")
+  //     .update({
+  //       pending: false,
+  //     })
+  //     .eq("id", profile.friend_id)
+  //     .select()
+  //     .then(({ error }) => {
+  //       if (error) throw new Error(error.message);
+  //       setCurrentFriends((current) => [...current, profile]);
+  //       setPendingFriends((pending) => {
+  //         const pendingIdx = pending.findIndex(
+  //           (p) => p.friend_id === profile.friend_id
+  //         );
+  //         if (pendingIdx < 0) return pending;
+  //         pending.splice(pendingIdx, 1);
+  //         return pending;
+  //       });
+  //       return profile;
+  //     });
+  // }, []);
 
-  const approveFriend = useCallback(async (profile: IFriendProfile) => {
-    return supabase
-      .from("friends")
-      .update({
-        pending: false,
-      })
-      .eq("id", profile.friend_id)
-      .select()
-      .then(({ error }) => {
-        if (error) throw new Error(error.message);
-        setCurrentFriends((current) => [...current, profile]);
-        setPendingFriends((pending) => {
-          const pendingIdx = pending.findIndex(
-            (p) => p.friend_id === profile.friend_id
-          );
-          if (pendingIdx < 0) return pending;
-          pending.splice(pendingIdx, 1);
-          return pending;
-        });
-        return profile;
-      });
-  }, []);
+  // const cancelFriendRequest = useCallback(
+  //   async (profile: IFriendProfile) => {
+  //     return supabase
+  //       .from("friends")
+  //       .update({
+  //         id: profile.friend_id,
+  //         pending: false,
+  //         rejected: true,
+  //       })
+  //       .eq("id", profile.friend_id)
+  //       .select()
+  //       .then(({ error }) => {
+  //         if (error) throw new Error(error.message);
+  //         rehydrateFriends();
+  //         return true;
+  //       });
+  //   },
+  //   [supabase, rehydrateFriends]
+  // );
 
-  const cancelFriendRequest = useCallback(
-    async (profile: IFriendProfile) => {
-      return supabase
-        .from("friends")
-        .update({
-          id: profile.friend_id,
-          pending: false,
-          rejected: true,
-        })
-        .eq("id", profile.friend_id)
-        .select()
-        .then(({ error }) => {
-          if (error) throw new Error(error.message);
-          rehydrateFriends();
-          return true;
-        });
-    },
-    [supabase, rehydrateFriends]
-  );
+  // const isProfileCurrentFriend = useCallback(
+  //   (profileId: IFriendProfile["id"]): boolean =>
+  //     currentFriends.filter((friend) => friend.id === profileId).length > 0,
+  //   [currentFriends]
+  // );
 
-  const isProfileCurrentFriend = useCallback(
-    (profileId: IFriendProfile["id"]): boolean =>
-      currentFriends.filter((friend) => friend.id === profileId).length > 0,
-    [currentFriends]
-  );
+  // const isProfileRequestedFriend = useCallback(
+  //   (profileId: IFriendProfile["id"]): boolean =>
+  //     requestedFriends.filter((friend) => friend.id === profileId).length > 0,
+  //   [requestedFriends]
+  // );
 
-  const isProfileRequestedFriend = useCallback(
-    (profileId: IFriendProfile["id"]): boolean =>
-      requestedFriends.filter((friend) => friend.id === profileId).length > 0,
-    [requestedFriends]
-  );
+  // const isProfilePendingFriend = useCallback(
+  //   (profileId: IFriendProfile["id"]): boolean =>
+  //     pendingFriends.filter((friend) => friend.id === profileId).length > 0,
+  //   [pendingFriends]
+  // );
 
-  const isProfilePendingFriend = useCallback(
-    (profileId: IFriendProfile["id"]): boolean =>
-      pendingFriends.filter((friend) => friend.id === profileId).length > 0,
-    [pendingFriends]
-  );
+  // useLayoutEffect(() => {
+  //   if (!loadedFriends) {
+  //     getFriends().then(() => {
+  //       setLoadedFriends(true);
+  //     });
+  //   }
+  // }, [loadedFriends]);
 
   useLayoutEffect(() => {
     if (!loadedFriends) {
-      getFriends().then(() => {
-        setLoadedFriends(true);
-      });
+      getFriends();
     }
   }, [loadedFriends]);
 
   return (
     <FriendsContext.Provider
       value={{
-        currentFriends,
+        // currentFriends,
         pendingFriends,
-        requestedFriends,
-        approveFriend,
+        // requestedFriends,
+        // approveFriend,
         searchFriend,
         requestFriend,
-        isProfileCurrentFriend,
-        isProfileRequestedFriend,
-        isProfilePendingFriend,
-        cancelFriendRequest,
+        // isProfileCurrentFriend,
+        // isProfileRequestedFriend,
+        // isProfilePendingFriend,
+        // cancelFriendRequest,
       }}>
       {children}
     </FriendsContext.Provider>
