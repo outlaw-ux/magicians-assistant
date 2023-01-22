@@ -1391,6 +1391,44 @@ export interface Database {
           variation?: boolean | null
         }
       }
+      cards_treachery: {
+        Row: {
+          artist: string | null
+          id: string
+          name: string | null
+          rarity: string | null
+          rulings: string[] | null
+          text: string | null
+          type: string | null
+          "types/subtype": string | null
+          "types/supertype": string | null
+          uri: string | null
+        }
+        Insert: {
+          artist?: string | null
+          id?: string
+          name?: string | null
+          rarity?: string | null
+          rulings?: string[] | null
+          text?: string | null
+          type?: string | null
+          "types/subtype"?: string | null
+          "types/supertype"?: string | null
+          uri?: string | null
+        }
+        Update: {
+          artist?: string | null
+          id?: string
+          name?: string | null
+          rarity?: string | null
+          rulings?: string[] | null
+          text?: string | null
+          type?: string | null
+          "types/subtype"?: string | null
+          "types/supertype"?: string | null
+          uri?: string | null
+        }
+      }
       decks: {
         Row: {
           cards: string | null
@@ -1419,28 +1457,59 @@ export interface Database {
       }
       friends: {
         Row: {
-          accepter: string
           created_at: string | null
           id: string
-          pending: boolean
-          rejected: boolean
-          requester: string
+          profile_one: string
+          profile_two: string
         }
         Insert: {
-          accepter: string
           created_at?: string | null
           id?: string
-          pending?: boolean
-          rejected?: boolean
-          requester: string
+          profile_one: string
+          profile_two: string
         }
         Update: {
-          accepter?: string
           created_at?: string | null
           id?: string
-          pending?: boolean
-          rejected?: boolean
-          requester?: string
+          profile_one?: string
+          profile_two?: string
+        }
+      }
+      game_invites: {
+        Row: {
+          created_at: string | null
+          creator_id: string | null
+          game_id: string
+          id: string
+          profile_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          creator_id?: string | null
+          game_id: string
+          id?: string
+          profile_id: string
+        }
+        Update: {
+          created_at?: string | null
+          creator_id?: string | null
+          game_id?: string
+          id?: string
+          profile_id?: string
+        }
+      }
+      game_players: {
+        Row: {
+          game_id: string
+          profile_id: string
+        }
+        Insert: {
+          game_id: string
+          profile_id: string
+        }
+        Update: {
+          game_id?: string
+          profile_id?: string
         }
       }
       games: {
@@ -1451,7 +1520,6 @@ export interface Database {
           game_type: string | null
           id: string
           is_active: boolean
-          players: string[]
           starting_life: number | null
           teams: string | null
           variant: string | null
@@ -1463,7 +1531,6 @@ export interface Database {
           game_type?: string | null
           id?: string
           is_active?: boolean
-          players: string[]
           starting_life?: number | null
           teams?: string | null
           variant?: string | null
@@ -1475,7 +1542,6 @@ export interface Database {
           game_type?: string | null
           id?: string
           is_active?: boolean
-          players?: string[]
           starting_life?: number | null
           teams?: string | null
           variant?: string | null
@@ -1503,7 +1569,18 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      "get-profile": {
+        Args: { user_id: string }
+        Returns: Record<string, unknown>[]
+      }
+      "pending-friends": {
+        Args: { user_id: string }
+        Returns: Record<string, unknown>[]
+      }
+      "requested-friends": {
+        Args: { user_id: string }
+        Returns: Record<string, unknown>[]
+      }
     }
     Enums: {
       [_ in never]: never

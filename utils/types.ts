@@ -1,4 +1,4 @@
-import { Database } from "./database.types";
+import { Database } from "../supabase/functions/_shared/database.types";
 
 export type Attraction =
   Database["public"]["Tables"]["cards_attractions"]["Row"];
@@ -14,5 +14,4 @@ export type DeckTypes = "attractions" | "schemes" | "tokens" | "stickers";
 export interface IFriendProfile {
   id: Profile["id"];
   username: Profile["username"];
-  friend_id: Friend["id"];
 }

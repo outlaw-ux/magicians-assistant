@@ -3,7 +3,7 @@ import { useFriendsContext, useGameContext } from "../../context";
 import Navigation from "../../components/Navigation";
 
 export default function Game() {
-  const { currentFriends } = useFriendsContext();
+  // const { currentFriends } = useFriendsContext();
   const { activeGame, endGame, isGameCreator, startGame, leaveGame } =
     useGameContext();
 
@@ -96,7 +96,7 @@ export default function Game() {
             </label>
           </p>
 
-          <div>
+          {/* <div>
             <p>
               <strong>Select Players</strong>
             </p>
@@ -117,7 +117,7 @@ export default function Game() {
                 );
               })}
             </ul>
-          </div>
+          </div> */}
           <p>
             <button type="submit">Start Game</button>
           </p>

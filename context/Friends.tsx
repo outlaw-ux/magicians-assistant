@@ -2,37 +2,35 @@ import React, {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useLayoutEffect,
   useState,
 } from "react";
-import type { Friend, IFriendProfile } from "../utils/types";
-import { useProfileContext } from "./Profile";
+import {
+  FunctionsHttpError,
+  FunctionsRelayError,
+  FunctionsFetchError,
+  PostgrestResponse,
+} from "@supabase/supabase-js";
+import type { Profile, IFriendProfile } from "../utils/types";
 import { useSupabaseContext } from "./Supabase";
 
 interface IFriends {
-  currentFriends: IFriendProfile[];
-  pendingFriends: IFriendProfile[];
-  requestedFriends: IFriendProfile[];
+  mutualFriends: Profile[];
+  pendingFriends: Profile[];
+  requestedFriends: Profile[];
   searchFriend: (searchValue: string) => Promise<IFriendProfile | null>;
   requestFriend: (profile: IFriendProfile) => Promise<IFriendProfile | null>;
   approveFriend: (profile: IFriendProfile) => Promise<IFriendProfile | null>;
-  cancelFriendRequest: (profile: IFriendProfile) => Promise<boolean>;
-  isProfileCurrentFriend: (id: IFriendProfile["id"]) => boolean;
-  isProfileRequestedFriend: (id: IFriendProfile["id"]) => boolean;
-  isProfilePendingFriend: (id: IFriendProfile["id"]) => boolean;
 }
 
 const defaultContext: IFriends = {
-  currentFriends: [],
+  mutualFriends: [],
   pendingFriends: [],
   requestedFriends: [],
   searchFriend: () => Promise.resolve(null),
   requestFriend: () => Promise.resolve(null),
   approveFriend: () => Promise.resolve(null),
-  cancelFriendRequest: () => Promise.resolve(false),
-  isProfileCurrentFriend: () => false,
-  isProfileRequestedFriend: () => false,
-  isProfilePendingFriend: () => false,
 };
 
 const FriendsContext = createContext(defaultContext);
@@ -40,29 +38,29 @@ const FriendsContext = createContext(defaultContext);
 export function FriendsProvider({ children }: { children: React.ReactNode }) {
   const { supabase, user } = useSupabaseContext();
   if (!supabase || !user) throw new Error("How did you even get here?");
-  const { getProfile } = useProfileContext();
   const [loadedFriends, setLoadedFriends] = useState(false);
-  const [pendingFriends, setPendingFriends] = useState(
-    defaultContext.pendingFriends
-  );
-  const [currentFriends, setCurrentFriends] = useState(
-    defaultContext.currentFriends
+  const [pendingFriends, setPendingFriends] = useState<
+    IFriends["pendingFriends"]
+  >(defaultContext.pendingFriends);
+  const [mutualFriends, setMutualFriends] = useState(
+    defaultContext.mutualFriends
   );
   const [requestedFriends, setRequestedFriends] = useState(
     defaultContext.requestedFriends
   );
 
-  const rehydrateFriends = useCallback(() => {
-    setPendingFriends(defaultContext.pendingFriends);
-    setCurrentFriends(defaultContext.currentFriends);
-    setRequestedFriends(defaultContext.requestedFriends);
-    setLoadedFriends(false);
-  }, [
-    setPendingFriends,
-    setCurrentFriends,
-    setRequestedFriends,
-    setLoadedFriends,
-  ]);
+  const getProfile = useCallback(
+    async (user_id: string): Promise<Profile> => {
+      const { data, error }: PostgrestResponse<Profile> = await supabase.rpc(
+        "get-profile",
+        { user_id }
+      );
+
+      if (error) throw new Error(error.message);
+      return Promise.resolve(data as unknown as Profile);
+    },
+    [supabase]
+  );
 
   const searchFriend: IFriends["searchFriend"] = useCallback(
     async (searchValue: string) => {
@@ -76,7 +74,6 @@ export function FriendsProvider({ children }: { children: React.ReactNode }) {
         return {
           username: data[0].username,
           id: data[0].id,
-          friend_id: "",
         };
       }
       return null;
@@ -89,23 +86,33 @@ export function FriendsProvider({ children }: { children: React.ReactNode }) {
       return supabase
         .from("friends")
         .insert({
-          accepter: id,
-          requester: user.id,
-          pending: true,
+          profile_one: user.id,
+          profile_two: id,
         })
         .select()
-        .then(async ({ data, error }) => {
+        .then(async ({ error }) => {
           if (error) throw new Error(error.message);
-          const newFriend: IFriendProfile = await getProfile(id).then(
-            (profile) =>
-              ({
-                username: profile?.username,
-                id,
-                friend_id: data[0].id,
-              } as IFriendProfile)
-          );
+          const newFriend = await getProfile(id);
 
-          setRequestedFriends((requested) => [...requested, newFriend]);
+          return newFriend;
+        });
+    },
+    [supabase, user]
+  );
+
+  const approveFriend = useCallback(
+    async ({ id }: IFriendProfile) => {
+      return supabase
+        .from("friends")
+        .insert({
+          profile_one: user.id,
+          profile_two: id,
+        })
+        .select()
+        .then(async ({ error }) => {
+          if (error) throw new Error(error.message);
+          const newFriend = await getProfile(id);
+
           return newFriend;
         });
     },
@@ -113,96 +120,37 @@ export function FriendsProvider({ children }: { children: React.ReactNode }) {
   );
 
   const getFriends = useCallback(async () => {
-    const { data, error } = await supabase
-      .from("friends")
-      .select("*")
-      .eq("rejected", false)
-      .or(`requester.eq.${user.id},accepter.eq.${user.id}`);
+    const { data, error } = await supabase.functions.invoke(
+      "requested-friends"
+    );
 
-    if (error) throw new Error(error.message);
+    if (error instanceof FunctionsHttpError) {
+      console.log("Function returned an error", error.message);
+    } else if (error instanceof FunctionsRelayError) {
+      console.log("Relay error:", error.message);
+    } else if (error instanceof FunctionsFetchError) {
+      console.log("Fetch error:", error.message);
+    }
 
-    return data.map((friend: Friend) => {
-      const profileId =
-        friend.accepter === user.id ? friend.requester : friend.accepter;
-      const addingFriendFnc =
-        friend.accepter === user.id ? setPendingFriends : setRequestedFriends;
-      const setFriendFnc = friend.pending ? addingFriendFnc : setCurrentFriends;
-
-      getProfile(profileId).then((profile) => {
-        if (profile) {
-          setFriendFnc((frnd) => [
-            ...frnd,
-            {
-              username: profile.username,
-              id: profile.id,
-              friend_id: friend.id,
-            },
-          ]);
-        }
+    if (data) {
+      data.pendingFriends.forEach(async (user_id: Profile["id"]) => {
+        const data = await getProfile(user_id);
+        setPendingFriends((pending: Profile[]) => [...pending, data]);
       });
-    });
-  }, [supabase, user]);
 
-  const approveFriend = useCallback(async (profile: IFriendProfile) => {
-    return supabase
-      .from("friends")
-      .update({
-        pending: false,
-      })
-      .eq("id", profile.friend_id)
-      .select()
-      .then(({ error }) => {
-        if (error) throw new Error(error.message);
-        setCurrentFriends((current) => [...current, profile]);
-        setPendingFriends((pending) => {
-          const pendingIdx = pending.findIndex(
-            (p) => p.friend_id === profile.friend_id
-          );
-          if (pendingIdx < 0) return pending;
-          pending.splice(pendingIdx, 1);
-          return pending;
-        });
-        return profile;
+      data.requestedFriends.forEach(async (user_id: Profile["id"]) => {
+        const data = await getProfile(user_id);
+        setRequestedFriends((requested: Profile[]) => [...requested, data]);
       });
-  }, []);
 
-  const cancelFriendRequest = useCallback(
-    async (profile: IFriendProfile) => {
-      return supabase
-        .from("friends")
-        .update({
-          id: profile.friend_id,
-          pending: false,
-          rejected: true,
-        })
-        .eq("id", profile.friend_id)
-        .select()
-        .then(({ error }) => {
-          if (error) throw new Error(error.message);
-          rehydrateFriends();
-          return true;
-        });
-    },
-    [supabase, rehydrateFriends]
-  );
+      data.mutualFriends.forEach(async (user_id: Profile["id"]) => {
+        const data = await getProfile(user_id);
+        setMutualFriends((mutual: Profile[]) => [...mutual, data]);
+      });
+    }
 
-  const isProfileCurrentFriend = useCallback(
-    (profileId: IFriendProfile["id"]): boolean =>
-      currentFriends.filter((friend) => friend.id === profileId).length > 0,
-    [currentFriends]
-  );
-
-  const isProfileRequestedFriend = useCallback(
-    (profileId: IFriendProfile["id"]): boolean =>
-      requestedFriends.filter((friend) => friend.id === profileId).length > 0,
-    [requestedFriends]
-  );
-
-  const isProfilePendingFriend = useCallback(
-    (profileId: IFriendProfile["id"]): boolean =>
-      pendingFriends.filter((friend) => friend.id === profileId).length > 0,
-    [pendingFriends]
-  );
+    return data;
+  }, [supabase]);
 
   useLayoutEffect(() => {
     if (!loadedFriends) {
@@ -212,19 +160,103 @@ export function FriendsProvider({ children }: { children: React.ReactNode }) {
     }
   }, [loadedFriends]);
 
+  useEffect(() => {
+    const pendingFriendRequests = supabase
+      .channel("pending-friend-requests")
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "friends",
+          filter: `profile_two=eq.${user.id}`,
+        },
+        async (payload) => {
+          if (payload.new && "profile_one" in payload.new) {
+            const profileId = `${payload.new.profile_one}`;
+            const pendingFriend = await getProfile(profileId);
+
+            setPendingFriends((pending: Profile[]) => [
+              ...pending,
+              pendingFriend,
+            ]);
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(pendingFriendRequests);
+    };
+  }, [supabase, user]);
+
+  useEffect(() => {
+    const acceptedFriendRequest = supabase
+      .channel("accepted-friend-request")
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "friends",
+          filter: `profile_one=eq.${user.id}`,
+        },
+        async (payload) => {
+          if (payload.new && "profile_two" in payload.new) {
+            const profileId = `${payload.new.profile_two}`;
+            const requestedFriend = await getProfile(profileId);
+
+            setRequestedFriends((requested: Profile[]) => [
+              ...requested,
+              requestedFriend,
+            ]);
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(acceptedFriendRequest);
+    };
+  }, [supabase, user]);
+
+  useEffect(() => {
+    const newMutuals: Profile[] = [];
+    requestedFriends.forEach((friend) => {
+      const potentialMutuals = pendingFriends.filter(
+        (pending) => pending.id === friend.id
+      );
+      newMutuals.push(...potentialMutuals);
+    });
+
+    newMutuals.forEach((mutual) => {
+      setPendingFriends((pending) => {
+        const idx = pending.findIndex((p) => p.id === mutual.id);
+        if (idx >= 0) pending.splice(idx, 1);
+        return pending;
+      });
+
+      setRequestedFriends((requested) => {
+        const idx = requested.findIndex((r) => r.id === mutual.id);
+        if (idx >= 0) requested.splice(idx, 1);
+        return requested;
+      });
+    });
+
+    if (newMutuals.length) {
+      setMutualFriends((mutuals: Profile[]) => [...mutuals, ...newMutuals]);
+    }
+  }, [requestedFriends, pendingFriends]);
+
   return (
     <FriendsContext.Provider
       value={{
-        currentFriends,
+        approveFriend,
+        mutualFriends,
         pendingFriends,
         requestedFriends,
-        approveFriend,
         searchFriend,
         requestFriend,
-        isProfileCurrentFriend,
-        isProfileRequestedFriend,
-        isProfilePendingFriend,
-        cancelFriendRequest,
       }}>
       {children}
     </FriendsContext.Provider>

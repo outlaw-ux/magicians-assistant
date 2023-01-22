@@ -10,7 +10,7 @@ export default function Navigation() {
 
   return (
     <div id="account-page">
-      {/* <ul>
+      <ul>
         <li>
           <Link href="/game">Play Game</Link>
         </li>
@@ -26,7 +26,7 @@ export default function Navigation() {
         <li>
           <Link href="/settings">Settings</Link>
         </li>
-      </ul> */}
+      </ul>
 
       <p>
         <button

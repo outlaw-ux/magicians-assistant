@@ -8,37 +8,38 @@ export default function FriendsList() {
   const {
     approveFriend,
     requestedFriends,
-    currentFriends,
+    mutualFriends,
     pendingFriends,
-    cancelFriendRequest,
+    requestFriend,
+    // cancelFriendRequest,
   } = useFriendsContext();
 
-  const handleRejectRequest = useCallback(
-    (profile: IFriendProfile) => {
-      cancelFriendRequest(profile);
-    },
-    [cancelFriendRequest]
-  );
+  // const handleRejectRequest = useCallback(
+  //   (profile: IFriendProfile) => {
+  //     cancelFriendRequest(profile);
+  //   },
+  //   [cancelFriendRequest]
+  // );
   const handleApproveRequest = useCallback(
     (profile: IFriendProfile) => {
       approveFriend(profile);
     },
-    [approveFriend]
+    [requestFriend]
   );
 
-  const isFriendInGame = useCallback(
-    (profileId: IFriendProfile["id"]) => {
-      return gamePlayers.includes(profileId);
-    },
-    [gamePlayers]
-  );
-  const handleAddFriendToGame = useCallback(
-    (profileId: IFriendProfile["id"]) => {
-      console.log(`handle add friend ${profileId}`);
-      addFriendToGame(profileId);
-    },
-    [addFriendToGame]
-  );
+  // const isFriendInGame = useCallback(
+  //   (profileId: IFriendProfile["id"]) => {
+  //     return gamePlayers.includes(profileId);
+  //   },
+  //   [gamePlayers]
+  // );
+  // const handleAddFriendToGame = useCallback(
+  //   (profileId: IFriendProfile["id"]) => {
+  //     console.log(`handle add friend ${profileId}`);
+  //     addFriendToGame(profileId);
+  //   },
+  //   [addFriendToGame]
+  // );
 
   return (
     <div id="friends-list">
@@ -46,18 +47,19 @@ export default function FriendsList() {
       <p>
         <Link href="/friends/find">Find friends</Link>
       </p>
-      <h4>Current Friends</h4>
-      {currentFriends?.length ? (
+      <h4>Mutual Friends</h4>
+      {mutualFriends?.length ? (
         <ul>
-          {currentFriends.map((friend) => (
+          {mutualFriends.map((friend) => (
             <li key={friend.id}>
               {friend.username} &mdash;{" "}
               {activeGame ? (
                 <button
                   type="button"
-                  disabled={isFriendInGame(friend.id)}
-                  onClick={() => handleAddFriendToGame(friend.id)}>
-                  {isFriendInGame(friend.id) ? "In Game" : "Add to Game"}
+                  // disabled={isFriendInGame(friend.id)}
+                  // onClick={() => handleAddFriendToGame(friend.id)}
+                >
+                  {/* {isFriendInGame(friend.id) ? "In Game" : "Add to Game"} */}
                 </button>
               ) : (
                 <em>Start Game to add players</em>
@@ -68,15 +70,16 @@ export default function FriendsList() {
       ) : (
         <p>No friends, go find some</p>
       )}
+
       <h4>Awaiting Your Aproval</h4>
       {pendingFriends?.length ? (
         <ul>
           {pendingFriends.map((friend) => (
             <li key={friend.id}>
               {friend.username} &mdash;{" "}
-              <button type="button" onClick={() => handleRejectRequest(friend)}>
+              {/* <button type="button" onClick={() => handleRejectRequest(friend)}>
                 Deny
-              </button>
+              </button> */}
               <button
                 type="button"
                 onClick={() => handleApproveRequest(friend)}>
@@ -94,10 +97,13 @@ export default function FriendsList() {
         <ul>
           {requestedFriends.map((friend) => (
             <li key={friend.id}>
-              {friend.username} &mdash;{" "}
-              <button type="button" onClick={() => handleRejectRequest(friend)}>
+              {friend.username}
+              {/* &mdash;{" "} */}
+              {/* <button
+                type="button"
+                onClick={() => handleRejectRequest(friend)}>
                 Cancel friend request
-              </button>
+              </button> */}
             </li>
           ))}
         </ul>
