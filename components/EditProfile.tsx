@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from "react";
-import { username as generateUsername } from "react-lorem-ipsum";
+import randomWords from "random-words";
 import { useProfileContext } from "../context";
 
 const EditProfile = () => {
@@ -9,12 +9,16 @@ const EditProfile = () => {
   const handleGenerateUsername = useCallback(
     (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
       e.preventDefault();
-      setNewUsername(generateUsername());
+      const randomUsername = randomWords({ exactly: 2, join: "-" });
+      const randomNumber = Math.floor(1000 + Math.random() * 9000);
+      setNewUsername(`${randomUsername}-${randomNumber}`);
     },
     [setNewUsername]
   );
   const handleSaveProfile = useCallback(() => {
-    saveProfile({ username: newUsername });
+    saveProfile({
+      username: encodeURIComponent(`${newUsername?.toLowerCase().trim()}`),
+    });
   }, [newUsername, saveProfile]);
   const handleNewUsername = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {

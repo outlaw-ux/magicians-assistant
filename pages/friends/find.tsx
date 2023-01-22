@@ -14,7 +14,7 @@ export default function FindFriendsPage() {
   const handleSearch = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const { value } = event.target;
-      setSearchValue(value);
+      setSearchValue(value.toLowerCase());
     },
     [setSearchValue]
   );

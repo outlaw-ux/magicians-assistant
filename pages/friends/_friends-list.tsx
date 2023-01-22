@@ -5,21 +5,9 @@ import type { IFriendProfile } from "../../utils/types";
 
 export default function FriendsList() {
   const { activeGame } = useGameContext();
-  const {
-    approveFriend,
-    requestedFriends,
-    mutualFriends,
-    pendingFriends,
-    requestFriend,
-    // cancelFriendRequest,
-  } = useFriendsContext();
+  const { approveFriend, requestedFriends, mutualFriends, pendingFriends } =
+    useFriendsContext();
 
-  // const handleRejectRequest = useCallback(
-  //   (profile: IFriendProfile) => {
-  //     cancelFriendRequest(profile);
-  //   },
-  //   [cancelFriendRequest]
-  // );
   const handleApproveRequest = useCallback(
     (profile: IFriendProfile) => {
       approveFriend(profile);

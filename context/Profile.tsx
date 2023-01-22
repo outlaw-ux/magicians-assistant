@@ -53,11 +53,12 @@ export function ProfileProvider({ children }: { children: React.ReactNode }) {
     [supabase, user, profile]
   );
 
+  //todo: move this to Edge Function to better sanitize input data
   const saveProfile: IProfile["saveProfile"] = useCallback(
     async (profile) => {
       return supabase
         .from("profiles")
-        .update({ ...profile, id: user.id })
+        .update({ ...profile })
         .eq("id", user.id)
         .select()
         .then(({ data, error }) => {

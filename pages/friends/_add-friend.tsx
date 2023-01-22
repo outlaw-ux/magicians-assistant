@@ -37,18 +37,13 @@ export default function AddFriend({
         requestFriend(foundProfile);
       }
     }
-  }, [requestFriend, foundProfile]);
+  }, [requestFriend, foundProfile, approveFriend, isProfilePendingFriend]);
 
   const disabledButton = useMemo(() => {
     if (!foundProfile) return false;
 
     return isProfileRequestedFriend || isProfileMutualFriend;
-  }, [
-    foundProfile,
-    isProfileMutualFriend,
-    isProfileRequestedFriend,
-    isProfilePendingFriend,
-  ]);
+  }, [foundProfile, isProfileMutualFriend, isProfileRequestedFriend]);
 
   const buttonText = useMemo(() => {
     if (!foundProfile) return "Add Friend";
