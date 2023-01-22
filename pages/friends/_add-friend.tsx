@@ -8,47 +8,61 @@ export default function AddFriend({
   foundProfile: IFriendProfile | null;
 }) {
   const {
-    // approveFriend,
+    approveFriend,
     requestFriend,
-    // isProfileCurrentFriend,
-    // isProfileRequestedFriend,
-    // isProfilePendingFriend,
+    pendingFriends,
+    requestedFriends,
+    mutualFriends,
   } = useFriendsContext();
+
+  const isProfilePendingFriend = useMemo(() => {
+    return (
+      pendingFriends.filter(({ id }) => id === foundProfile?.id).length > 0
+    );
+  }, [foundProfile, pendingFriends]);
+  const isProfileRequestedFriend = useMemo(() => {
+    return (
+      requestedFriends.filter(({ id }) => id === foundProfile?.id).length > 0
+    );
+  }, [foundProfile, requestedFriends]);
+  const isProfileMutualFriend = useMemo(() => {
+    return mutualFriends.filter(({ id }) => id === foundProfile?.id).length > 0;
+  }, [foundProfile, mutualFriends]);
 
   const handleAddFriend = useCallback(() => {
     if (foundProfile) {
-      //   if (isProfilePendingFriend(foundProfile.id)) {
-      //     approveFriend(foundProfile);
-      //   } else {
-      requestFriend(foundProfile);
-      //   }
+      if (isProfilePendingFriend) {
+        approveFriend(foundProfile);
+      } else {
+        requestFriend(foundProfile);
+      }
     }
   }, [requestFriend, foundProfile]);
 
-  // const disabledButton = useMemo(() => {
-  //   if (!foundProfile) return false;
-  //   if (
-  //     isProfileCurrentFriend(foundProfile.id) ||
-  //     isProfileRequestedFriend(foundProfile.id)
-  //   )
-  //     return true;
+  const disabledButton = useMemo(() => {
+    if (!foundProfile) return false;
 
-  //   return false;
-  // }, [foundProfile, isProfileCurrentFriend, isProfileRequestedFriend]);
+    return isProfileRequestedFriend || isProfileMutualFriend;
+  }, [
+    foundProfile,
+    isProfileMutualFriend,
+    isProfileRequestedFriend,
+    isProfilePendingFriend,
+  ]);
 
-  // const buttonText = useMemo(() => {
-  //   if (!foundProfile) return "Add Friend";
-  //   if (isProfileCurrentFriend(foundProfile.id)) return "Already Friends";
-  //   if (isProfileRequestedFriend(foundProfile.id)) return "Pending Request";
-  //   if (isProfilePendingFriend(foundProfile.id)) return "Approve Request";
+  const buttonText = useMemo(() => {
+    if (!foundProfile) return "Add Friend";
+    if (isProfileMutualFriend) return "Already Friends";
+    if (isProfileRequestedFriend) return "Pending Request";
+    if (isProfilePendingFriend) return "Approve Request";
 
-  //   return "Add Friend";
-  // }, [
-  //   foundProfile,
-  //   isProfileCurrentFriend,
-  //   isProfileRequestedFriend,
-  //   isProfilePendingFriend,
-  // ]);
+    return "Add Friend";
+  }, [
+    foundProfile,
+    isProfileMutualFriend,
+    isProfileRequestedFriend,
+    isProfilePendingFriend,
+  ]);
 
   return (
     <div id="add-friend">
@@ -58,10 +72,8 @@ export default function AddFriend({
           <button
             type="button"
             onClick={handleAddFriend}
-            // disabled={disabledButton}
-          >
-            {/* {buttonText} */}
-            Add Friend
+            disabled={disabledButton}>
+            {buttonText}
           </button>
         </p>
       ) : (
