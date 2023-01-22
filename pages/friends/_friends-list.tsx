@@ -4,7 +4,7 @@ import { useFriendsContext, useGameContext } from "../../context";
 import type { IFriendProfile } from "../../utils/types";
 
 export default function FriendsList() {
-  const { activeGame, gamePlayers, addFriendToGame } = useGameContext();
+  const { activeGame } = useGameContext();
   const {
     approveFriend,
     requestedFriends,
@@ -24,7 +24,7 @@ export default function FriendsList() {
     (profile: IFriendProfile) => {
       approveFriend(profile);
     },
-    [requestFriend]
+    [approveFriend]
   );
 
   // const isFriendInGame = useCallback(

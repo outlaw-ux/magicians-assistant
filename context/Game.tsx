@@ -10,7 +10,6 @@ import { useSupabaseContext } from "./Supabase";
 
 interface IGame {
   activeGame: Game["id"] | null;
-  gamePlayers: Game["players"];
   isGameCreator: boolean;
   addFriendToGame: (friendId: Profile["id"]) => Promise<Game | null>;
   startGame: ({
@@ -28,7 +27,6 @@ interface IGame {
 
 const defaultContext: IGame = {
   activeGame: null,
-  gamePlayers: [],
   isGameCreator: false,
   addFriendToGame: () => Promise.resolve(null),
   startGame: () => Promise.resolve(null),
@@ -43,7 +41,6 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   if (!supabase || !user) throw new Error("How did you even get here?");
   const [loadedGame, setLoadedGame] = useState(false);
   const [activeGame, setActiveGame] = useState(defaultContext.activeGame);
-  const [gamePlayers, setGamePlayers] = useState(defaultContext.gamePlayers);
   const [isGameCreator, setIsGameCreator] = useState(false);
 
   const startGame: IGame["startGame"] = useCallback(
@@ -62,7 +59,6 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
           .select()
           .then(({ data, error }) => {
             if (error) throw new Error(error.message);
-            setGamePlayers([user.id]);
             setActiveGame(data[0].id);
             setIsGameCreator(true);
             return data[0];
@@ -74,19 +70,17 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
 
   const addFriendToGame: IGame["addFriendToGame"] = useCallback(
     async (friendId) => {
-      const updatedPlayers = [...gamePlayers, friendId];
       return supabase
         .from("games")
-        .update({ players: updatedPlayers })
+        .update({})
         .eq("id", activeGame)
         .select()
         .then(({ data, error }) => {
           if (error) throw new Error(error.message);
-          setGamePlayers(updatedPlayers);
           return data?.[0];
         });
     },
-    [gamePlayers, supabase, user, activeGame]
+    [supabase, user, activeGame]
   );
 
   const endGame: IGame["endGame"] = useCallback(async () => {
@@ -112,7 +106,6 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         .then(({ data, error }) => {
           if (error) throw new Error(error.message);
           if (data?.[0]) {
-            setGamePlayers(data[0].players);
             setActiveGame(data[0].id);
             setIsGameCreator(data[0].creator === user.id);
           }
@@ -122,7 +115,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   }, [supabase, user]);
 
   const leaveGame = useCallback(async () => {
-    const updatedPlayers = [...gamePlayers];
+    const updatedPlayers = [...[]];
     const playerIdx = updatedPlayers.findIndex((id) => id === user.id);
     updatedPlayers.splice(playerIdx, 1);
 
@@ -134,13 +127,12 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         // .contains("players", [user.id])
         .then(({ error }) => {
           if (error) throw new Error(error.message);
-          setGamePlayers(defaultContext.gamePlayers);
           setActiveGame(defaultContext.activeGame);
           setIsGameCreator(defaultContext.isGameCreator);
           return null;
         })
     );
-  }, [activeGame, supabase, user, gamePlayers]);
+  }, [activeGame, supabase, user]);
 
   useLayoutEffect(() => {
     // todo: setup subscription to games table changes
@@ -162,7 +154,6 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     <GameContext.Provider
       value={{
         activeGame,
-        gamePlayers,
         isGameCreator,
         endGame,
         startGame,
