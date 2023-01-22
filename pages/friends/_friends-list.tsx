@@ -6,7 +6,7 @@ import type { IFriendProfile } from "../../utils/types";
 export default function FriendsList() {
   const { activeGame, gamePlayers, addFriendToGame } = useGameContext();
   const {
-    // approveFriend,
+    approveFriend,
     requestedFriends,
     mutualFriends,
     pendingFriends,
@@ -22,7 +22,7 @@ export default function FriendsList() {
   // );
   const handleApproveRequest = useCallback(
     (profile: IFriendProfile) => {
-      requestFriend(profile);
+      approveFriend(profile);
     },
     [requestFriend]
   );
@@ -97,12 +97,13 @@ export default function FriendsList() {
         <ul>
           {requestedFriends.map((friend) => (
             <li key={friend.id}>
-              {friend.username} &mdash;{" "}
-              <button
+              {friend.username}
+              {/* &mdash;{" "} */}
+              {/* <button
                 type="button"
-                onClick={() => {} /*() => handleRejectRequest(friend)*/}>
+                onClick={() => handleRejectRequest(friend)}>
                 Cancel friend request
-              </button>
+              </button> */}
             </li>
           ))}
         </ul>

@@ -1,4 +1,4 @@
-import { Database } from "../supabase/functions/_shared/database.types.ts";
+import { Database } from "../supabase/functions/_shared/database.types";
 
 export type Attraction =
   Database["public"]["Tables"]["cards_attractions"]["Row"];
