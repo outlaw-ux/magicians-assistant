@@ -5,8 +5,6 @@
     }
   ],
   "settings": {
-    "files.autoSave": "onFocusChange",
-    "deno.enable": true,
-    "deno.unstable": true
+    "files.autoSave": "onFocusChange"
   }
 }

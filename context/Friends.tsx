@@ -57,7 +57,7 @@ export function FriendsProvider({ children }: { children: React.ReactNode }) {
     defaultContext.requestedFriends
   );
 
-  const getProfile = async (user_id: string) => {
+  const getProfile = async (user_id: string): Profile => {
     const { data, error } = await supabase.rpc("get-profile", {
       user_id,
     });
@@ -108,13 +108,7 @@ export function FriendsProvider({ children }: { children: React.ReactNode }) {
         .select()
         .then(async ({ data, error }) => {
           if (error) throw new Error(error.message);
-          const newFriend: IFriendProfile = await getProfile(id).then(
-            (profile) =>
-              ({
-                username: profile?.username,
-                id,
-              } as IFriendProfile)
-          );
+          const newFriend = await getProfile(id);
 
           setRequestedFriends((requested) => [...requested, newFriend]);
           return newFriend;
