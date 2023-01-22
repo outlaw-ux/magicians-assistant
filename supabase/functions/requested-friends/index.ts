@@ -5,7 +5,9 @@
 import { serve } from "https://deno.land/std@0.131.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.4.1";
 import { corsHeaders } from "../_shared/cors.ts";
-import { IFriendProfile } from "../_shared/types.ts";
+import type { Database } from "../_shared/database.types.ts";
+
+type Profile = Database["public"]["Tables"]["profiles"]["Row"];
 
 console.log(`Function "requested-friends" up and running!`);
 
@@ -28,27 +30,14 @@ serve(async (req: Request) => {
         global: {
           headers: { Authorization: req.headers.get("Authorization")! },
         },
-      },
+      }
     );
     // Now we can get the session or user object
     const {
       data: { user },
     } = await supabaseClient.auth.getUser();
-    const requestedFriends: IFriendProfile[] = [];
-    const pendingFriends: IFriendProfile[] = [];
-    const mutualFriends: IFriendProfile[] = [];
 
     if (!user) throw new Error("cant find user");
-
-    const getProfileUsername = (id: IFriendProfile["id"]) => {
-      return supabaseClient
-        .from("profiles")
-        .select("username")
-        .eq("id", id).then(({ data, error }) => {
-          if (error) throw error;
-          return data?.[0];
-        });
-    };
 
     // And we can run queries in the context of our authenticated user
     const { data: requesterData, error: requesterError } = await supabaseClient
@@ -64,40 +53,37 @@ serve(async (req: Request) => {
         .eq("profile_two", user.id);
     if (pendingFriendError) throw pendingFriendError;
 
-    // data = requests
-    // foreach data to match request.id with user.id to find mutuals
-    // if no match, keep in request array, if match, remove from requests array
-    // find all places user.id is profile_two and not matching request.id
+    const requestedFriends: Profile["id"][] = requesterData.map(
+      ({ profile_two }) => profile_two
+    );
 
-    requesterData.forEach(async (request) => {
-      const { data: requestData, error: requestError } = await supabaseClient
-        .from("friends")
-        .select("*")
-        .eq("profile_one", request.profile_two)
-        .eq("profile_two", user.id);
-      if (requestError) throw requestError;
+    const pendingFriends: Profile["id"][] = pendingFriendData.map(
+      ({ profile_one }) => profile_one
+    );
 
-      getProfileUsername(requestData.profile_one).then((username) => {
-        mutualFriends.push({ id: requestData.profile_one, username });
-      });
+    const mutualFriends: Profile["id"][] = [];
+    requestedFriends.forEach((reqFriend) => {
+      if (pendingFriends.includes(reqFriend)) {
+        mutualFriends.push(reqFriend);
+      }
     });
-
-    requesterData.forEach(async (request) => {
-      const { username } = await getProfileUsername(request.profile_two);
-      requestedFriends.push({ id: request.profile_two, username });
-    });
-
-    pendingFriendData.forEach(async (request) => {
-      const { username } = await getProfileUsername(request.profile_one);
-      pendingFriends.push({ id: request.profile_one, username });
-    });
+    const filteredPendingFriends = pendingFriends.filter(
+      (f) => !mutualFriends.includes(f)
+    );
+    const filteredRequestedFriends = requestedFriends.filter(
+      (f) => !mutualFriends.includes(f)
+    );
 
     return new Response(
-      JSON.stringify({ mutualFriends, requestedFriends, pendingFriends }),
+      JSON.stringify({
+        mutualFriends,
+        pendingFriends: filteredPendingFriends,
+        requestedFriends: filteredRequestedFriends,
+      }),
       {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
         status: 200,
-      },
+      }
     );
   } catch (error) {
     return new Response(JSON.stringify({ error: error.message }), {
@@ -108,7 +94,7 @@ serve(async (req: Request) => {
 });
 
 // To invoke:
-// curl -i --location --request POST 'http://localhost:54321/functions/v1/select-from-table-with-auth-rls' \
-//   --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24ifQ.625_WdcF3KHqz5amU0x2X5WWHP-OEs_4qj0ssLNHzTs' \
-//   --header 'Content-Type: application/json' \
-//   --data '{"id":"e5d79b55-2f75-4071-ad9a-fb661ddc014d"}'
+// curl --request POST 'https://npqxiigutfvuvenxjacw.functions.supabase.co/requested-friends' \
+//   --header 'apiKey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5wcXhpaWd1dGZ2dXZlbnhqYWN3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2NzMxMzc4MDcsImV4cCI6MTk4ODcxMzgwN30.l3ZtumNpmC7VMxXzdUC_6dp9XBthO5KIc3AMiL90-Og' \
+//   --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNjc0MzUwODExLCJzdWIiOiJlNWQ3OWI1NS0yZjc1LTQwNzEtYWQ5YS1mYjY2MWRkYzAxNGQiLCJlbWFpbCI6IiIsInBob25lIjoiMTMxNDc2NjQ0MzIiLCJhcHBfbWV0YWRhdGEiOnsicHJvdmlkZXIiOiJwaG9uZSIsInByb3ZpZGVycyI6WyJwaG9uZSJdfSwidXNlcl9tZXRhZGF0YSI6e30sInJvbGUiOiJhdXRoZW50aWNhdGVkIiwiYWFsIjoiYWFsMSIsImFtciI6W3sibWV0aG9kIjoib3RwIiwidGltZXN0YW1wIjoxNjc0MzQ3MjExfV0sInNlc3Npb25faWQiOiI0YWQ0MGQ2My02Yzg2LTQ4NTYtOGYyZC1lMjEwOGU3M2FlMjYifQ.yNwyzAfl9UQuY1kNUZIULYlofSU-VkDDExiPOOMZU0I' \
+//   --header 'Content-Type: application/json'

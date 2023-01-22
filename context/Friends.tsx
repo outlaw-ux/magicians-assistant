@@ -2,6 +2,7 @@ import React, {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useLayoutEffect,
   useState,
 } from "react";
@@ -10,14 +11,14 @@ import {
   FunctionsRelayError,
   FunctionsFetchError,
 } from "@supabase/supabase-js";
-import type { Friend, IFriendProfile } from "../utils/types";
+import type { Profile, IFriendProfile } from "../utils/types";
 import { useProfileContext } from "./Profile";
 import { useSupabaseContext } from "./Supabase";
 
 interface IFriends {
-  // currentFriends: IFriendProfile[];
-  pendingFriends: IFriendProfile[];
-  // requestedFriends: IFriendProfile[];
+  mutualFriends: Profile[];
+  pendingFriends: Profile[];
+  requestedFriends: Profile[];
   searchFriend: (searchValue: string) => Promise<IFriendProfile | null>;
   requestFriend: (profile: IFriendProfile) => Promise<IFriendProfile | null>;
   // approveFriend: (profile: IFriendProfile) => Promise<IFriendProfile | null>;
@@ -28,9 +29,9 @@ interface IFriends {
 }
 
 const defaultContext: IFriends = {
-  // currentFriends: [],
+  mutualFriends: [],
   pendingFriends: [],
-  // requestedFriends: [],
+  requestedFriends: [],
   searchFriend: () => Promise.resolve(null),
   requestFriend: () => Promise.resolve(null),
   // approveFriend: () => Promise.resolve(null),
@@ -45,17 +46,25 @@ const FriendsContext = createContext(defaultContext);
 export function FriendsProvider({ children }: { children: React.ReactNode }) {
   const { supabase, user } = useSupabaseContext();
   if (!supabase || !user) throw new Error("How did you even get here?");
-  const { getProfile } = useProfileContext();
   const [loadedFriends, setLoadedFriends] = useState(false);
-  const [pendingFriends, setPendingFriends] = useState(
-    defaultContext.pendingFriends
+  const [pendingFriends, setPendingFriends] = useState<
+    IFriends["pendingFriends"]
+  >(defaultContext.pendingFriends);
+  const [mutualFriends, setMutualFriends] = useState(
+    defaultContext.mutualFriends
   );
-  // const [currentFriends, setCurrentFriends] = useState(
-  //   defaultContext.currentFriends
-  // );
-  // const [requestedFriends, setRequestedFriends] = useState(
-  //   defaultContext.requestedFriends
-  // );
+  const [requestedFriends, setRequestedFriends] = useState(
+    defaultContext.requestedFriends
+  );
+
+  const getProfile = async (user_id: string) => {
+    const { data, error } = await supabase.rpc("get-profile", {
+      user_id,
+    });
+
+    if (error) throw new Error(error.message);
+    return data;
+  };
 
   // const rehydrateFriends = useCallback(() => {
   //   setPendingFriends(defaultContext.pendingFriends);
@@ -106,8 +115,8 @@ export function FriendsProvider({ children }: { children: React.ReactNode }) {
                 id,
               } as IFriendProfile)
           );
-          console.log("requeste friend", newFriend);
-          // setRequestedFriends((requested) => [...requested, newFriend]);
+
+          setRequestedFriends((requested) => [...requested, newFriend]);
           return newFriend;
         });
     },
@@ -127,8 +136,23 @@ export function FriendsProvider({ children }: { children: React.ReactNode }) {
       console.log("Fetch error:", error.message);
     }
 
-    console.log(data);
-    // setPendingFriends(data.pendingFriends);
+    if (data) {
+      data.pendingFriends.forEach(async (user_id: Profile["id"]) => {
+        const data = await getProfile(user_id);
+        setPendingFriends((pending: string[]) => [...pending, data]);
+      });
+
+      data.requestedFriends.forEach(async (user_id: Profile["id"]) => {
+        const data = await getProfile(user_id);
+        setRequestedFriends((requested: string[]) => [...requested, data]);
+      });
+
+      data.mutualFriends.forEach(async (user_id: Profile["id"]) => {
+        const data = await getProfile(user_id);
+        setMutualFriends((mutual: string[]) => [...mutual, data]);
+      });
+    }
+
     return data;
   }, [supabase]);
 
@@ -175,44 +199,20 @@ export function FriendsProvider({ children }: { children: React.ReactNode }) {
   //   [supabase, rehydrateFriends]
   // );
 
-  // const isProfileCurrentFriend = useCallback(
-  //   (profileId: IFriendProfile["id"]): boolean =>
-  //     currentFriends.filter((friend) => friend.id === profileId).length > 0,
-  //   [currentFriends]
-  // );
-
-  // const isProfileRequestedFriend = useCallback(
-  //   (profileId: IFriendProfile["id"]): boolean =>
-  //     requestedFriends.filter((friend) => friend.id === profileId).length > 0,
-  //   [requestedFriends]
-  // );
-
-  // const isProfilePendingFriend = useCallback(
-  //   (profileId: IFriendProfile["id"]): boolean =>
-  //     pendingFriends.filter((friend) => friend.id === profileId).length > 0,
-  //   [pendingFriends]
-  // );
-
-  // useLayoutEffect(() => {
-  //   if (!loadedFriends) {
-  //     getFriends().then(() => {
-  //       setLoadedFriends(true);
-  //     });
-  //   }
-  // }, [loadedFriends]);
-
   useLayoutEffect(() => {
     if (!loadedFriends) {
-      getFriends();
+      getFriends().then(() => {
+        setLoadedFriends(true);
+      });
     }
   }, [loadedFriends]);
 
   return (
     <FriendsContext.Provider
       value={{
-        // currentFriends,
+        mutualFriends,
         pendingFriends,
-        // requestedFriends,
+        requestedFriends,
         // approveFriend,
         searchFriend,
         requestFriend,

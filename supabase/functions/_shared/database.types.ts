@@ -1549,19 +1549,16 @@ export interface Database {
       }
       profiles: {
         Row: {
-          current_game: string | null
           id: string
           updated_at: string | null
           username: string | null
         }
         Insert: {
-          current_game?: string | null
           id: string
           updated_at?: string | null
           username?: string | null
         }
         Update: {
-          current_game?: string | null
           id?: string
           updated_at?: string | null
           username?: string | null
@@ -1572,7 +1569,18 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      "get-profile": {
+        Args: { user_id: string }
+        Returns: Record<string, unknown>[]
+      }
+      "pending-friends": {
+        Args: { user_id: string }
+        Returns: Record<string, unknown>[]
+      }
+      "requested-friends": {
+        Args: { user_id: string }
+        Returns: Record<string, unknown>[]
+      }
     }
     Enums: {
       [_ in never]: never

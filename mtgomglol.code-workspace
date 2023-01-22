@@ -1,0 +1,12 @@
+{
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {
+    "files.autoSave": "onFocusChange",
+    "deno.enable": true,
+    "deno.unstable": true
+  }
+}

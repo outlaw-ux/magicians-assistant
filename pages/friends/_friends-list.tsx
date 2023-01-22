@@ -7,8 +7,8 @@ export default function FriendsList() {
   const { activeGame, gamePlayers, addFriendToGame } = useGameContext();
   const {
     // approveFriend,
-    // requestedFriends,
-    // currentFriends,
+    requestedFriends,
+    mutualFriends,
     pendingFriends,
     requestFriend,
     // cancelFriendRequest,
@@ -47,18 +47,19 @@ export default function FriendsList() {
       <p>
         <Link href="/friends/find">Find friends</Link>
       </p>
-      {/* <h4>Current Friends</h4>
-      {currentFriends?.length ? (
+      <h4>Mutual Friends</h4>
+      {mutualFriends?.length ? (
         <ul>
-          {currentFriends.map((friend) => (
+          {mutualFriends.map((friend) => (
             <li key={friend.id}>
               {friend.username} &mdash;{" "}
               {activeGame ? (
                 <button
                   type="button"
-                  disabled={isFriendInGame(friend.id)}
-                  onClick={() => handleAddFriendToGame(friend.id)}>
-                  {isFriendInGame(friend.id) ? "In Game" : "Add to Game"}
+                  // disabled={isFriendInGame(friend.id)}
+                  // onClick={() => handleAddFriendToGame(friend.id)}
+                >
+                  {/* {isFriendInGame(friend.id) ? "In Game" : "Add to Game"} */}
                 </button>
               ) : (
                 <em>Start Game to add players</em>
@@ -68,7 +69,7 @@ export default function FriendsList() {
         </ul>
       ) : (
         <p>No friends, go find some</p>
-      )} */}
+      )}
 
       <h4>Awaiting Your Aproval</h4>
       {pendingFriends?.length ? (
@@ -91,13 +92,15 @@ export default function FriendsList() {
         <p>No pending friends</p>
       )}
 
-      {/* <h4>Your Requests</h4>
+      <h4>Your Requests</h4>
       {requestedFriends?.length ? (
         <ul>
           {requestedFriends.map((friend) => (
             <li key={friend.id}>
               {friend.username} &mdash;{" "}
-              <button type="button" onClick={() => handleRejectRequest(friend)}>
+              <button
+                type="button"
+                onClick={() => {} /*() => handleRejectRequest(friend)*/}>
                 Cancel friend request
               </button>
             </li>
@@ -105,7 +108,7 @@ export default function FriendsList() {
         </ul>
       ) : (
         <p>No friend requests</p>
-      )} */}
+      )}
     </div>
   );
 }
