@@ -5,10 +5,10 @@ import React, {
   useLayoutEffect,
   useState,
 } from "react";
-import { username } from "react-lorem-ipsum";
 import NewProfile from "../components/EditProfile";
 import { Profile } from "../utils/types";
 import { useSupabaseContext } from "./Supabase";
+import randomWords from "random-words";
 
 interface IProfile {
   username: Profile["username"];
@@ -17,8 +17,11 @@ interface IProfile {
   profile: Profile | undefined;
 }
 
+const randomUsername = randomWords({ exactly: 2, join: "-" });
+const randomNumber = Math.floor(1000 + Math.random() * 9000);
+
 const defaultContext: IProfile = {
-  username: username(),
+  username: `${randomUsername}-${randomNumber}`,
   saveProfile: () => Promise.resolve(),
   getProfile: () => Promise.resolve(),
   profile: undefined,
