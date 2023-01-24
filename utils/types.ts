@@ -15,3 +15,10 @@ export interface IFriendProfile {
   id: Profile["id"];
   username: Profile["username"];
 }
+
+export interface GameVariants {
+  [key: string]: {
+    minPlayers: number;
+    title: string;
+  };
+}

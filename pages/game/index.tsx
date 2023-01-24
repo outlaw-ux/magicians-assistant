@@ -1,30 +1,22 @@
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { useFriendsContext, useGameContext } from "../../context";
 import Navigation from "../../components/Navigation";
+import { IFriendProfile } from "../../utils/types";
+import ChoosePlayer from "./_choose-player";
+import { gameVariants } from "../../utils/constants";
 
 export default function Game() {
-  // const { currentFriends } = useFriendsContext();
+  const { mutualFriends } = useFriendsContext();
   const { activeGame, endGame, isGameCreator, startGame, leaveGame } =
     useGameContext();
-
+  const [selectedPlayers, setSelectedPlayers] = useState<
+    IFriendProfile["id"][]
+  >([]);
+  const [startingLife, setStartingLife] = useState(40);
+  const [gameVariant, setGameVariant] = useState("none");
   const handleEndGame = useCallback(endGame, [endGame]);
   const handleLeaveGame = useCallback(leaveGame, [leaveGame]);
   const isActivateGame = useMemo(() => !!activeGame, [activeGame]);
-
-  const handleStartGame = useCallback(
-    (event: React.FormEvent<HTMLFormElement>) => {
-      event.preventDefault();
-
-      console.log(event.currentTarget?.["players[]"].value);
-
-      const startingLife = Number(event.currentTarget?.["starting-life"].value);
-      const variant = event.currentTarget?.["variant"].value;
-      const type = event.currentTarget?.["type"].value;
-
-      startGame({ startingLife, variant, type });
-    },
-    [startGame]
-  );
 
   const endGameButton = useMemo(
     () => (
@@ -35,6 +27,62 @@ export default function Game() {
       </button>
     ),
     [isGameCreator, handleEndGame, handleLeaveGame]
+  );
+
+  const handleStartGame = useCallback(
+    (event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+
+      console.log(selectedPlayers, startingLife, gameVariant);
+
+      // startGame({
+      //   life: startingLife,
+      //   variant: gameVariant,
+      //   players: selectedPlayers,
+      // });
+    },
+    [selectedPlayers, startGame, startingLife, gameVariant]
+  );
+
+  const handleChangeVariant = useCallback(
+    (event: React.ChangeEvent<HTMLSelectElement>) => {
+      setGameVariant(event.currentTarget.value);
+    },
+    []
+  );
+
+  const handleChangeStartingLife = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setStartingLife(Number(event.currentTarget.value));
+    },
+    []
+  );
+
+  const togglePlayer = useCallback(
+    (playerId: IFriendProfile["id"]) => {
+      if (selectedPlayers.includes(playerId)) {
+        handleRemovePlayer(playerId);
+      } else {
+        handleAddPlayer(playerId);
+      }
+    },
+    [selectedPlayers]
+  );
+  const handleAddPlayer = useCallback(
+    (playerId: IFriendProfile["id"]) => {
+      setSelectedPlayers([...selectedPlayers, playerId]);
+    },
+    [togglePlayer, selectedPlayers]
+  );
+  const handleRemovePlayer = useCallback(
+    (playerId: IFriendProfile["id"]) => {
+      const players = [...selectedPlayers];
+      const playerIdx = players.findIndex((p) => p === playerId);
+      if (playerIdx >= 0) players.splice(playerIdx, 1);
+
+      setSelectedPlayers(players);
+    },
+    [togglePlayer, selectedPlayers]
   );
 
   return (
@@ -59,65 +107,46 @@ export default function Game() {
               type="number"
               id="starting-life"
               name="starting-life"
-              defaultValue={40}
+              value={startingLife}
+              onChange={handleChangeStartingLife}
               required
               min={10}
               max={100}
             />
           </p>
-          <p>
-            <label htmlFor="type">Game Type</label>
-            <select id="type" name="type">
-              <option value="commander">Commander/EDH</option>
-            </select>
-          </p>
 
           <p>
             <label htmlFor="variant">Game Variant</label>
-            <select id="variant" name="variant">
-              <option value="">None</option>
-              <option value="treachery">Treachery</option>
-              <option value="archenemy">Archenemy</option>
+            <select id="variant" name="variant" onChange={handleChangeVariant}>
+              {Object.keys(gameVariants).map((variant) => (
+                <option
+                  value={variant}
+                  key={variant}
+                  selected={gameVariant === variant}>
+                  {gameVariants[variant].title}
+                </option>
+              ))}
             </select>
           </p>
 
-          <p>
-            <label title="Coming Soon">
-              <input
-                type="checkbox"
-                value="planeschase"
-                disabled
-                alt="Coming Soon"
-              />
-              Include Planeschase?{" "}
-              <small>
-                <em>coming soon</em>
-              </small>
-            </label>
-          </p>
-
-          {/* <div>
+          <div>
             <p>
               <strong>Select Players</strong>
             </p>
 
             <ul>
-              {currentFriends.map((friend) => {
+              {mutualFriends.map((friend) => {
                 return (
-                  <li key={friend.id}>
-                    <label>
-                      <input
-                        type="checkbox"
-                        value={friend.id}
-                        name="players[]"
-                      />
-                      {friend.username}
-                    </label>
-                  </li>
+                  <ChoosePlayer
+                    key={friend.id}
+                    friend={friend}
+                    checked={selectedPlayers.includes(friend.id)}
+                    onChange={togglePlayer}
+                  />
                 );
               })}
             </ul>
-          </div> */}
+          </div>
           <p>
             <button type="submit">Start Game</button>
           </p>
