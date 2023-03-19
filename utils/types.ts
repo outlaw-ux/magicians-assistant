@@ -11,9 +11,16 @@ export type Friend = Database["public"]["Tables"]["friends"]["Row"];
 export type Game = Database["public"]["Tables"]["games"]["Row"];
 
 export type DeckTypes = "attractions" | "schemes" | "tokens" | "stickers";
+
 export interface IFriendProfile {
   id: Profile["id"];
   username: Profile["username"];
+}
+
+export interface IGameRequest {
+  variant: Game["variant"];
+  startingLife: Game["starting_life"];
+  players: IFriendProfile["id"][];
 }
 
 export interface GameVariants {

@@ -5,114 +5,168 @@ import React, {
   useLayoutEffect,
   useState,
 } from "react";
-import { Game, Profile } from "../utils/types";
+import { PostgrestResponse } from "@supabase/supabase-js";
+import { Game, IFriendProfile, IGameRequest } from "../utils/types";
 import { useSupabaseContext } from "./Supabase";
 
 interface IGame {
   activeGame: Game["id"] | null;
   isGameCreator: boolean;
-  addFriendToGame: (friendId: Profile["id"]) => Promise<Game | null>;
-  startGame: ({
+  isInGame: (id: IFriendProfile["id"]) => Promise<boolean>;
+  isInvitedToActiveGame: (id: IFriendProfile["id"]) => Promise<boolean>;
+  addToGame: (id: IFriendProfile["id"]) => Promise<void>;
+  createGame: ({
     startingLife,
-    type,
+    players,
     variant,
-  }: {
-    startingLife: Game["starting_life"];
-    type: Game["game_type"];
-    variant: Game["variant"];
-  }) => Promise<Game | null>;
+  }: IGameRequest) => Promise<Game["id"] | null>;
   endGame: () => Promise<null>;
-  leaveGame: () => Promise<null>;
+  // leaveGame: () => Promise<null>;
 }
 
 const defaultContext: IGame = {
   activeGame: null,
   isGameCreator: false,
-  addFriendToGame: () => Promise.resolve(null),
-  startGame: () => Promise.resolve(null),
+  isInGame: () => Promise.resolve(false),
+  isInvitedToActiveGame: () => Promise.resolve(false),
+  addToGame: () => Promise.resolve(),
+  createGame: () => Promise.resolve(null),
   endGame: () => Promise.resolve(null),
-  leaveGame: () => Promise.resolve(null),
+  // leaveGame: () => Promise.resolve(null),
 };
 
 const GameContext = createContext(defaultContext);
 
 export function GameProvider({ children }: { children: React.ReactNode }) {
-  // const { supabase, user } = useSupabaseContext();
-  // if (!supabase || !user) throw new Error("How did you even get here?");
-  // const [loadedGame, setLoadedGame] = useState(false);
-  // const [activeGame, setActiveGame] = useState(defaultContext.activeGame);
-  // const [isGameCreator, setIsGameCreator] = useState(false);
+  const { supabase, user } = useSupabaseContext();
+  if (!supabase || !user) throw new Error("How did you even get here?");
+  const [loadedGame, setLoadedGame] = useState(false);
+  const [activeGame, setActiveGame] = useState(defaultContext.activeGame);
+  const [isGameCreator, setIsGameCreator] = useState(false);
 
-  // const startGame: IGame["startGame"] = useCallback(
-  //   async ({ startingLife, type, variant }) => {
-  //     if (!activeGame) {
-  //       return supabase
-  //         .from("games")
-  //         .insert({
-  //           creator: user.id,
-  //           is_active: true,
-  //           players: [user.id],
-  //           starting_life: startingLife,
-  //           game_type: type,
-  //           variant,
-  //         })
-  //         .select()
-  //         .then(({ data, error }) => {
-  //           if (error) throw new Error(error.message);
-  //           setActiveGame(data[0].id);
-  //           setIsGameCreator(true);
-  //           return data[0];
-  //         });
-  //     }
-  //   },
-  //   [activeGame]
-  // );
+  const createGame: IGame["createGame"] = useCallback(
+    async ({ startingLife, players, variant }) => {
+      return supabase
+        .from("games")
+        .insert({
+          variant,
+          starting_life: startingLife,
+          active: true,
+          creator_id: user.id,
+        })
+        .select()
+        .then(async ({ data, error }) => {
+          if (error) throw error;
 
-  // const addFriendToGame: IGame["addFriendToGame"] = useCallback(
-  //   async (friendId) => {
-  //     return supabase
-  //       .from("games")
-  //       .update({})
-  //       .eq("id", activeGame)
-  //       .select()
-  //       .then(({ data, error }) => {
-  //         if (error) throw new Error(error.message);
-  //         return data?.[0];
-  //       });
-  //   },
-  //   [supabase, user, activeGame]
-  // );
+          const gameId = data[0].id;
 
-  // const endGame: IGame["endGame"] = useCallback(async () => {
-  //   return supabase
-  //     .from("games")
-  //     .update({ is_active: false })
-  //     .eq("creator", user.id)
-  //     .eq("id", activeGame)
-  //     .then(({ error }) => {
-  //       if (error) throw new Error(error.message);
-  //       setActiveGame(null);
-  //       return null;
-  //     });
-  // }, [activeGame, user, supabase]);
+          const playerData = players.map((playerId) => ({
+            game_id: gameId,
+            profile_id: playerId,
+          }));
+          playerData.push({ game_id: gameId, profile_id: user.id });
 
-  // const getOngoingGame = useCallback(async () => {
-  //   return (
-  //     supabase
-  //       .from("games")
-  //       .select("*")
-  //       .eq("is_active", true)
-  //       // .contains("players", [user.id])
-  //       .then(({ data, error }) => {
-  //         if (error) throw new Error(error.message);
-  //         if (data?.[0]) {
-  //           setActiveGame(data[0].id);
-  //           setIsGameCreator(data[0].creator === user.id);
-  //         }
-  //         return data[0];
-  //       })
-  //   );
-  // }, [supabase, user]);
+          await supabase
+            .from("game_invites")
+            .insert(playerData)
+            .then(({ error }) => {
+              if (error) throw error;
+            });
+
+          setActiveGame(gameId);
+          setIsGameCreator(true);
+          return gameId;
+        });
+    },
+    []
+  );
+
+  const addToGame: IGame["addToGame"] = useCallback(
+    async (id) => {
+      return supabase
+        .from("game_invites")
+        .insert({ game_id: activeGame, profile_id: id })
+        .then(({ error }) => {
+          if (error) throw error;
+        });
+    },
+    [supabase, user, activeGame]
+  );
+
+  const endGame: IGame["endGame"] = useCallback(async () => {
+    return supabase
+      .from("games")
+      .update({ active: false })
+      .eq("id", activeGame)
+      .then(({ error }) => {
+        if (error) throw error;
+        setActiveGame(null);
+        setIsGameCreator(false);
+        return null;
+      });
+  }, [activeGame, user, supabase]);
+
+  const getOngoingGame = useCallback(async () => {
+    return supabase
+      .from("games")
+      .select("*")
+      .eq("active", true)
+      .then(({ data, error }) => {
+        if (error) throw new Error(error.message);
+        if (data?.[0]) {
+          setActiveGame(data[0].id);
+          setIsGameCreator(data[0].creator_id === user.id);
+        }
+        return data[0];
+      });
+  }, [supabase, user]);
+
+  const isInvitedToActiveGame: IGame["isInvitedToActiveGame"] = useCallback(
+    async (friendId: IFriendProfile["id"]) => {
+      console.log("isInvitedToActiveGame", activeGame);
+      if (!activeGame) return false;
+
+      const { data, error } = await supabase
+        .from("games")
+        .select(
+          `
+          id,
+          game_invites (
+            game_id
+          )
+        `
+        )
+        .match({
+          "game_invites.profile_id": friendId,
+          id: activeGame,
+        });
+
+      if (error) throw new Error(error.message);
+      console.log("isInvitedToActiveGame", data);
+      // return Promise.resolve(data as Partial<Game>);
+      return Promise.resolve(data.length > 0);
+    },
+    [activeGame, supabase]
+  );
+
+  const isInGame: IGame["isInGame"] = useCallback(
+    async (id) => {
+      const gameInvites = await supabase
+        .from("game_invites")
+        .select("game_id")
+        .eq("profile_id", id)
+        .then(({ data, error }) => {
+          if (error) throw new Error(error.message);
+
+          console.log("isInGame", data);
+
+          return false;
+        });
+
+      return gameInvites;
+    },
+    [supabase]
+  );
 
   // const leaveGame = useCallback(async () => {
   //   const updatedPlayers = [...[]];
@@ -134,27 +188,27 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   //   );
   // }, [activeGame, supabase, user]);
 
-  // useLayoutEffect(() => {
-  //   // todo: setup subscription to games table changes
-  //   if (!loadedGame) {
-  //     // getOngoingGame().then(() => {
-  //     setLoadedGame(true);
-  //     // });
-  //   }
-  // }, [loadedGame, getOngoingGame]);
+  useLayoutEffect(() => {
+    // todo: setup subscription to games table changes
+    if (!loadedGame) {
+      getOngoingGame().then(() => {
+        setLoadedGame(true);
+      });
+    }
+  }, [loadedGame, getOngoingGame]);
 
   return (
     <GameContext.Provider
-      value={
-        {
-          // activeGame,
-          // isGameCreator,
-          // endGame,
-          // startGame,
-          // addFriendToGame,
-          // leaveGame,
-        }
-      }>
+      value={{
+        activeGame,
+        isGameCreator,
+        endGame,
+        createGame,
+        isInGame,
+        addToGame,
+        isInvitedToActiveGame,
+        // leaveGame,
+      }}>
       {children}
     </GameContext.Provider>
   );

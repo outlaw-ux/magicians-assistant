@@ -1,21 +1,21 @@
 import React, { useCallback, useMemo, useState } from "react";
 import { useFriendsContext, useGameContext } from "../../context";
 import Navigation from "../../components/Navigation";
-import { IFriendProfile } from "../../utils/types";
+import type { IFriendProfile } from "../../utils/types";
 import ChoosePlayer from "./_choose-player";
 import { gameVariants } from "../../utils/constants";
 
 export default function Game() {
   const { mutualFriends } = useFriendsContext();
-  const { activeGame, endGame, isGameCreator, startGame, leaveGame } =
-    useGameContext();
+  // const { activeGame, endGame, isGameCreator, startGame, leaveGame } = useGameContext();
+  const { activeGame, createGame, endGame, isGameCreator } = useGameContext();
   const [selectedPlayers, setSelectedPlayers] = useState<
     IFriendProfile["id"][]
   >([]);
   const [startingLife, setStartingLife] = useState(40);
   const [gameVariant, setGameVariant] = useState("none");
   const handleEndGame = useCallback(endGame, [endGame]);
-  const handleLeaveGame = useCallback(leaveGame, [leaveGame]);
+  const handleLeaveGame = useCallback(() => null, []);
   const isActivateGame = useMemo(() => !!activeGame, [activeGame]);
 
   const endGameButton = useMemo(
@@ -33,15 +33,13 @@ export default function Game() {
     (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
 
-      console.log(selectedPlayers, startingLife, gameVariant);
-
-      // startGame({
-      //   life: startingLife,
-      //   variant: gameVariant,
-      //   players: selectedPlayers,
-      // });
+      createGame({
+        startingLife,
+        variant: gameVariant,
+        players: selectedPlayers,
+      });
     },
-    [selectedPlayers, startGame, startingLife, gameVariant]
+    [selectedPlayers, createGame, startingLife, gameVariant]
   );
 
   const handleChangeVariant = useCallback(
@@ -92,7 +90,12 @@ export default function Game() {
       <Navigation />
 
       {isActivateGame ? (
-        <h3>Currently in a game</h3>
+        <h3>
+          Currently in a game:{" "}
+          <pre>
+            <code>{activeGame}</code>
+          </pre>
+        </h3>
       ) : (
         <h3>Start a new game</h3>
       )}
@@ -117,12 +120,13 @@ export default function Game() {
 
           <p>
             <label htmlFor="variant">Game Variant</label>
-            <select id="variant" name="variant" onChange={handleChangeVariant}>
+            <select
+              id="variant"
+              name="variant"
+              onChange={handleChangeVariant}
+              value={gameVariant}>
               {Object.keys(gameVariants).map((variant) => (
-                <option
-                  value={variant}
-                  key={variant}
-                  selected={gameVariant === variant}>
+                <option value={variant} key={variant}>
                   {gameVariants[variant].title}
                 </option>
               ))}

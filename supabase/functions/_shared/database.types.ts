@@ -1478,72 +1478,46 @@ export interface Database {
       game_invites: {
         Row: {
           created_at: string | null
-          creator_id: string | null
           game_id: string
           id: string
           profile_id: string
         }
         Insert: {
           created_at?: string | null
-          creator_id?: string | null
           game_id: string
           id?: string
           profile_id: string
         }
         Update: {
           created_at?: string | null
-          creator_id?: string | null
           game_id?: string
           id?: string
-          profile_id?: string
-        }
-      }
-      game_players: {
-        Row: {
-          game_id: string
-          profile_id: string
-        }
-        Insert: {
-          game_id: string
-          profile_id: string
-        }
-        Update: {
-          game_id?: string
           profile_id?: string
         }
       }
       games: {
         Row: {
+          active: boolean
           created_at: string | null
-          creator: string
-          decks: string[] | null
-          game_type: string | null
+          creator_id: string
           id: string
-          is_active: boolean
           starting_life: number | null
-          teams: string | null
           variant: string | null
         }
         Insert: {
+          active?: boolean
           created_at?: string | null
-          creator: string
-          decks?: string[] | null
-          game_type?: string | null
+          creator_id: string
           id?: string
-          is_active?: boolean
           starting_life?: number | null
-          teams?: string | null
           variant?: string | null
         }
         Update: {
+          active?: boolean
           created_at?: string | null
-          creator?: string
-          decks?: string[] | null
-          game_type?: string | null
+          creator_id?: string
           id?: string
-          is_active?: boolean
           starting_life?: number | null
-          teams?: string | null
           variant?: string | null
         }
       }
@@ -1569,14 +1543,6 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
-      "get-profile": {
-        Args: { user_id: string }
-        Returns: Record<string, unknown>[]
-      }
-      "pending-friends": {
-        Args: { user_id: string }
-        Returns: Record<string, unknown>[]
-      }
       "requested-friends": {
         Args: { user_id: string }
         Returns: Record<string, unknown>[]

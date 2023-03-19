@@ -2,9 +2,10 @@ import Link from "next/link";
 import { useCallback } from "react";
 import { useFriendsContext, useGameContext } from "../../context";
 import type { IFriendProfile } from "../../utils/types";
+import MutualFriend from "./_mutual-friend";
 
 export default function FriendsList() {
-  const { activeGame } = useGameContext();
+  const { activeGame, isInGame } = useGameContext();
   const { approveFriend, requestedFriends, mutualFriends, pendingFriends } =
     useFriendsContext();
 
@@ -15,12 +16,6 @@ export default function FriendsList() {
     [approveFriend]
   );
 
-  // const isFriendInGame = useCallback(
-  //   (profileId: IFriendProfile["id"]) => {
-  //     return gamePlayers.includes(profileId);
-  //   },
-  //   [gamePlayers]
-  // );
   // const handleAddFriendToGame = useCallback(
   //   (profileId: IFriendProfile["id"]) => {
   //     console.log(`handle add friend ${profileId}`);
@@ -39,27 +34,14 @@ export default function FriendsList() {
       {mutualFriends?.length ? (
         <ul>
           {mutualFriends.map((friend) => (
-            <li key={friend.id}>
-              {friend.username} &mdash;{" "}
-              {activeGame ? (
-                <button
-                  type="button"
-                  // disabled={isFriendInGame(friend.id)}
-                  // onClick={() => handleAddFriendToGame(friend.id)}
-                >
-                  {/* {isFriendInGame(friend.id) ? "In Game" : "Add to Game"} */}
-                </button>
-              ) : (
-                <em>Start Game to add players</em>
-              )}
-            </li>
+            <MutualFriend key={friend.id} {...friend} />
           ))}
         </ul>
       ) : (
         <p>No friends, go find some</p>
       )}
 
-      <h4>Awaiting Your Aproval</h4>
+      <h4>Awaiting Your Approval</h4>
       {pendingFriends?.length ? (
         <ul>
           {pendingFriends.map((friend) => (
