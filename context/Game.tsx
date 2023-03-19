@@ -2,11 +2,11 @@ import React, {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useLayoutEffect,
   useState,
 } from "react";
-import { PostgrestResponse } from "@supabase/supabase-js";
-import { Game, IFriendProfile, IGameRequest } from "../utils/types";
+import type { Game, IFriendProfile, IGameRequest } from "../utils/types";
 import { useSupabaseContext } from "./Supabase";
 
 interface IGame {
@@ -21,7 +21,7 @@ interface IGame {
     variant,
   }: IGameRequest) => Promise<Game["id"] | null>;
   endGame: () => Promise<null>;
-  // leaveGame: () => Promise<null>;
+  leaveGame: () => Promise<null>;
 }
 
 const defaultContext: IGame = {
@@ -32,7 +32,7 @@ const defaultContext: IGame = {
   addToGame: () => Promise.resolve(),
   createGame: () => Promise.resolve(null),
   endGame: () => Promise.resolve(null),
-  // leaveGame: () => Promise.resolve(null),
+  leaveGame: () => Promise.resolve(null),
 };
 
 const GameContext = createContext(defaultContext);
@@ -46,7 +46,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
 
   const createGame: IGame["createGame"] = useCallback(
     async ({ startingLife, players, variant }) => {
-      return supabase
+      const { data: newGame, error: newGameError } = await supabase
         .from("games")
         .insert({
           variant,
@@ -54,31 +54,30 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
           active: true,
           creator_id: user.id,
         })
-        .select()
-        .then(async ({ data, error }) => {
-          if (error) throw error;
+        .select("*");
 
-          const gameId = data[0].id;
+      if (newGameError) throw new Error(newGameError.message);
 
-          const playerData = players.map((playerId) => ({
-            game_id: gameId,
-            profile_id: playerId,
-          }));
-          playerData.push({ game_id: gameId, profile_id: user.id });
+      const gameId = newGame[0].id;
 
-          await supabase
-            .from("game_invites")
-            .insert(playerData)
-            .then(({ error }) => {
-              if (error) throw error;
-            });
+      const playerData = players.map((playerId) => ({
+        game_id: gameId,
+        profile_id: playerId,
+      }));
+      playerData.push({ game_id: gameId, profile_id: user.id });
 
-          setActiveGame(gameId);
-          setIsGameCreator(true);
-          return gameId;
+      await supabase
+        .from("game_invites")
+        .insert(playerData)
+        .then(({ error }) => {
+          if (error) throw new Error(error.message);
         });
+
+      setActiveGame(gameId);
+      setIsGameCreator(true);
+      return gameId;
     },
-    []
+    [user]
   );
 
   const addToGame: IGame["addToGame"] = useCallback(
@@ -109,15 +108,39 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   const getOngoingGame = useCallback(async () => {
     return supabase
       .from("games")
-      .select("*")
-      .eq("active", true)
+      .select(
+        `
+          id,
+          creator_id,
+          game_invites (
+            game_id, profile_id
+          )
+        `
+      )
+      .match({
+        "game_invites.profile_id": user.id,
+        active: true,
+      })
       .then(({ data, error }) => {
         if (error) throw new Error(error.message);
-        if (data?.[0]) {
-          setActiveGame(data[0].id);
-          setIsGameCreator(data[0].creator_id === user.id);
+        console.log({ data });
+
+        let gameId, creatorId;
+
+        if (data?.[0] && data?.[0].game_invites) {
+          creatorId = data?.[0].creator_id;
+
+          if (Array.isArray(data?.[0].game_invites)) {
+            gameId = data?.[0].game_invites?.[0]?.game_id;
+          } else {
+            gameId = data?.[0].game_invites.game_id;
+          }
+
+          setActiveGame(gameId);
+          setIsGameCreator(creatorId === user.id);
         }
-        return data[0];
+
+        return gameId;
       });
   }, [supabase, user]);
 
@@ -142,8 +165,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         });
 
       if (error) throw new Error(error.message);
-      console.log("isInvitedToActiveGame", data);
-      // return Promise.resolve(data as Partial<Game>);
+
       return Promise.resolve(data.length > 0);
     },
     [activeGame, supabase]
@@ -168,34 +190,75 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     [supabase]
   );
 
-  // const leaveGame = useCallback(async () => {
-  //   const updatedPlayers = [...[]];
-  //   const playerIdx = updatedPlayers.findIndex((id) => id === user.id);
-  //   updatedPlayers.splice(playerIdx, 1);
+  const leaveGame = useCallback(async () => {
+    const leaveGame = await supabase
+      .from("game_invites")
+      .delete()
+      .eq("profile_id", user.id)
+      .then(({ error }) => {
+        if (error) throw new Error(error.message);
 
-  //   return (
-  //     supabase
-  //       .from("games")
-  //       .update({ players: updatedPlayers })
-  //       .eq("id", activeGame)
-  //       // .contains("players", [user.id])
-  //       .then(({ error }) => {
-  //         if (error) throw new Error(error.message);
-  //         setActiveGame(defaultContext.activeGame);
-  //         setIsGameCreator(defaultContext.isGameCreator);
-  //         return null;
-  //       })
-  //   );
-  // }, [activeGame, supabase, user]);
+        setActiveGame(null);
+
+        return null;
+      });
+
+    return leaveGame;
+  }, [user]);
 
   useLayoutEffect(() => {
-    // todo: setup subscription to games table changes
     if (!loadedGame) {
       getOngoingGame().then(() => {
         setLoadedGame(true);
       });
     }
   }, [loadedGame, getOngoingGame]);
+
+  useEffect(() => {
+    const gameInvitationChannel = supabase
+      .channel("game-invitation")
+      .on(
+        "postgres_changes",
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "game_invites",
+          filter: `profile_id=eq.${user.id}`,
+        },
+        async (payload) => {
+          setActiveGame(payload.new.game_id);
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(gameInvitationChannel);
+    };
+  }, [supabase, user]);
+
+  useEffect(() => {
+    const gameEndedChannel = supabase
+      .channel("game-ended")
+      .on(
+        "postgres_changes",
+        {
+          event: "UPDATE",
+          schema: "public",
+          table: "games",
+          filter: `id=eq.${activeGame}`,
+        },
+        async (payload) => {
+          if (!payload.new.active) {
+            setActiveGame(null);
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(gameEndedChannel);
+    };
+  }, [supabase, activeGame]);
 
   return (
     <GameContext.Provider
@@ -207,7 +270,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         isInGame,
         addToGame,
         isInvitedToActiveGame,
-        // leaveGame,
+        leaveGame,
       }}>
       {children}
     </GameContext.Provider>

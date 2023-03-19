@@ -1,32 +1,31 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useFriendsContext, useGameContext } from "../../context";
 import Navigation from "../../components/Navigation";
 import type { IFriendProfile } from "../../utils/types";
 import ChoosePlayer from "./_choose-player";
 import { gameVariants } from "../../utils/constants";
+import ActiveGame from "./_active-game";
 
 export default function Game() {
   const { mutualFriends } = useFriendsContext();
   // const { activeGame, endGame, isGameCreator, startGame, leaveGame } = useGameContext();
-  const { activeGame, createGame, endGame, isGameCreator } = useGameContext();
+  const { activeGame, createGame, endGame, isGameCreator, leaveGame } =
+    useGameContext();
   const [selectedPlayers, setSelectedPlayers] = useState<
     IFriendProfile["id"][]
   >([]);
   const [startingLife, setStartingLife] = useState(40);
   const [gameVariant, setGameVariant] = useState("none");
   const handleEndGame = useCallback(endGame, [endGame]);
-  const handleLeaveGame = useCallback(() => null, []);
   const isActivateGame = useMemo(() => !!activeGame, [activeGame]);
 
   const endGameButton = useMemo(
     () => (
-      <button
-        type="button"
-        onClick={isGameCreator ? handleEndGame : handleLeaveGame}>
+      <button type="button" onClick={isGameCreator ? handleEndGame : leaveGame}>
         {isGameCreator ? "End Game" : "Leave Game"}
       </button>
     ),
-    [isGameCreator, handleEndGame, handleLeaveGame]
+    [isGameCreator, handleEndGame, leaveGame]
   );
 
   const handleStartGame = useCallback(
@@ -66,12 +65,14 @@ export default function Game() {
     },
     [selectedPlayers]
   );
+
   const handleAddPlayer = useCallback(
     (playerId: IFriendProfile["id"]) => {
       setSelectedPlayers([...selectedPlayers, playerId]);
     },
     [togglePlayer, selectedPlayers]
   );
+
   const handleRemovePlayer = useCallback(
     (playerId: IFriendProfile["id"]) => {
       const players = [...selectedPlayers];
@@ -83,28 +84,23 @@ export default function Game() {
     [togglePlayer, selectedPlayers]
   );
 
+  useEffect(() => {
+    setSelectedPlayers(mutualFriends.map(({ id }) => id));
+  }, [mutualFriends]);
+
   return (
     <div id="game-page">
       <h2>Game Page</h2>
 
       <Navigation />
 
-      {isActivateGame ? (
-        <h3>
-          Currently in a game:{" "}
-          <pre>
-            <code>{activeGame}</code>
-          </pre>
-        </h3>
-      ) : (
-        <h3>Start a new game</h3>
-      )}
+      {isActivateGame ? <ActiveGame /> : <h3>Start a new game</h3>}
 
       {isActivateGame ? (
         endGameButton
       ) : (
         <form onSubmit={handleStartGame}>
-          <p>
+          <p hidden>
             <label htmlFor="starting-life">Starting Life for All Players</label>
             <input
               type="number"
@@ -118,13 +114,15 @@ export default function Game() {
             />
           </p>
 
-          <p>
+          <p hidden>
             <label htmlFor="variant">Game Variant</label>
             <select
               id="variant"
               name="variant"
               onChange={handleChangeVariant}
-              value={gameVariant}>
+              defaultValue="treachery"
+              // value={gameVariant}
+            >
               {Object.keys(gameVariants).map((variant) => (
                 <option value={variant} key={variant}>
                   {gameVariants[variant].title}

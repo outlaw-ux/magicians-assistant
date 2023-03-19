@@ -1,7 +1,17 @@
-import OtpSms from "./OtpSms";
+import { Auth } from "@supabase/auth-ui-react";
+import { ThemeSupa } from "@supabase/auth-ui-shared";
+import { useSupabaseContext } from "../context";
 
-const Auth = () => {
-  return <OtpSms />;
+const App = () => {
+  const { supabase } = useSupabaseContext();
+  if (!supabase) return null;
+
+  return (
+    <Auth
+      supabaseClient={supabase}
+      appearance={{ theme: ThemeSupa }}
+      providers={["discord"]}
+    />
+  );
 };
-
-export default Auth;
+export default App;
